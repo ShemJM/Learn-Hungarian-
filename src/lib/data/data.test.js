@@ -11,6 +11,7 @@ import {
   buildFamilySentence,
   childCountSentence
 } from './citizenship.js';
+import { alphabet, groups, letterPhrase } from './alphabet.js';
 
 describe('lessons data', () => {
   it('has at least 8 lessons with unique ids', () => {
@@ -176,5 +177,38 @@ describe('citizenship interview data', () => {
       { gender: 'son', name: 'Bence', age: '' }
     ]);
     expect(two.hu).toBe('Két gyermekem van. A lányom neve Zsófia, 5 éves. A fiam neve Bence.');
+  });
+});
+
+describe('alphabet data', () => {
+  it('covers the full 44-letter Hungarian alphabet with unique letters', () => {
+    expect(alphabet.length).toBe(44);
+    expect(new Set(alphabet.map((l) => l.letter)).size).toBe(alphabet.length);
+  });
+
+  it('every letter has a name, pronunciation guide and a full example word', () => {
+    for (const l of alphabet) {
+      expect(l.name, l.letter).toBeTruthy();
+      expect(l.namePron, l.letter).toBeTruthy();
+      expect(groups.map((g) => g.id), l.letter).toContain(l.group);
+      expect(l.example.hu, l.letter).toBeTruthy();
+      expect(l.example.en, l.letter).toBeTruthy();
+      expect(l.example.pron, l.letter).toBeTruthy();
+      expect(l.example.hu.toLowerCase(), l.letter).toContain(l.letter.toLowerCase());
+    }
+  });
+
+  it('groups every letter into vowel, consonant, digraph or foreign', () => {
+    const byGroup = {};
+    for (const l of alphabet) byGroup[l.group] = (byGroup[l.group] || 0) + 1;
+    expect(byGroup.vowel).toBe(14);
+    expect(byGroup.consonant).toBe(17);
+    expect(byGroup.digraph).toBe(9);
+    expect(byGroup.foreign).toBe(4);
+  });
+
+  it('builds a spell-it-out phrase from the letter name and example word', () => {
+    const b = alphabet.find((l) => l.letter === 'b');
+    expect(letterPhrase(b)).toEqual({ hu: 'Bé, mint bicikli.', en: 'B, as in "bicycle".' });
   });
 });
