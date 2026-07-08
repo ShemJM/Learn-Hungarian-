@@ -71,6 +71,12 @@ describe('App (smoke test)', () => {
     expect(target.textContent).toContain('Word Scramble');
   });
 
+  it('shows alphabet practice on the pronunciation page', () => {
+    navigate('#/pronunciation');
+    expect(target.textContent).toContain('Alphabet Practice');
+    expect(target.textContent).toContain('bicikli');
+  });
+
   it('routes to the citizenship interview prep section', () => {
     navigate('#/citizenship');
     expect(target.textContent).toContain('Citizenship Interview Prep');

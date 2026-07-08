@@ -1,5 +1,6 @@
 <script>
   import { lessons, allPhrases } from '../lib/data/lessons.js';
+  import { alphabet, groups, letterPhrase } from '../lib/data/alphabet.js';
   import { progress } from '../lib/progress.js';
   import { recognitionAvailable, hasHungarianVoice, ttsAvailable } from '../lib/speech.js';
   import PronunciationCheck from '../lib/components/PronunciationCheck.svelte';
@@ -8,6 +9,11 @@
 
   let filter = $state('all');
   let filtered = $derived(filter === 'all' ? phrases : phrases.filter((p) => p.lessonId === filter));
+
+  let letterFilter = $state('all');
+  let filteredLetters = $derived(
+    letterFilter === 'all' ? alphabet : alphabet.filter((l) => l.group === letterFilter)
+  );
 
   const tricky = [
     { hu: 'gyógyszertár', en: 'pharmacy — the ultimate gy challenge!' },
@@ -41,6 +47,41 @@
     You can still listen and repeat — try Chrome or Edge for full functionality.
   </div>
 {/if}
+
+<div class="card">
+  <h3>🔤 Alphabet Practice</h3>
+  <p class="muted">
+    Say each letter's name, then a word that uses it — the way Hungarians actually spell things out loud
+    ("<span class="hu">bé, mint bicikli</span>" — "B, as in bicycle"). Great for names, addresses and
+    spelling over the phone.
+  </p>
+  <label class="muted">
+    Filter:
+    <select bind:value={letterFilter}>
+      {#each groups as g}
+        <option value={g.id}>{g.label}</option>
+      {/each}
+    </select>
+  </label>
+  {#each filteredLetters as l}
+    {@const phrase = letterPhrase(l)}
+    <div class="row letter-row">
+      <div class="letter-info">
+        <span class="letter-big">{l.letter}</span>
+        <div>
+          <div><span class="hu">{phrase.hu}</span> <span class="muted">— {phrase.en}</span>
+            {#if ($progress.pronunciationStars[phrase.hu] || 0) >= 0.7}<span>⭐</span>{/if}
+          </div>
+          <div class="muted small">
+            letter name: {l.name} ({l.namePron}) · example: {l.example.hu} ({l.example.pron})
+          </div>
+          {#if l.note}<div class="muted small note">ℹ️ {l.note}</div>{/if}
+        </div>
+      </div>
+      <PronunciationCheck text={phrase.hu} />
+    </div>
+  {/each}
+</div>
 
 <div class="card">
   <h3>😅 Tongue-twister corner</h3>
@@ -87,6 +128,21 @@
   }
   .row:last-child {
     border-bottom: none;
+  }
+  .letter-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .letter-big {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    min-width: 2ch;
+    text-align: center;
+  }
+  .note {
+    font-style: italic;
   }
   select {
     font: inherit;

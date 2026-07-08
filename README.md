@@ -15,7 +15,9 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   word, phrase, example sentence, reading and dialogue line.
 - **🎤 Pronunciation checks** — speak into your microphone and get a similarity score against
   the target phrase (speech recognition + Levenshtein scoring), with a dedicated
-  *Pronunciation Lab* including a tongue-twister corner (`gyógyszertár`, anyone?).
+  *Pronunciation Lab* including a tongue-twister corner (`gyógyszertár`, anyone?) and full
+  **alphabet practice**: say each of the 44 letters' names plus a word that uses it (`bé, mint
+  bicikli`) — the same way Hungarians spell things out loud.
 - **🧩 7 grammar guides** — alphabet & pronunciation, vowel harmony, "to be", present-tense
   conjugation (indefinite vs definite), cases & suffixes, articles/plurals/possession, and
   word order & questions. All with audio examples and tables.
