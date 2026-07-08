@@ -3,6 +3,14 @@ import { lessons, getLesson, allWords, allPhrases } from './lessons.js';
 import { grammarGuides, getGuide } from './grammar.js';
 import { readings, getReading } from './readings.js';
 import { dialogues, getDialogue } from './dialogues.js';
+import {
+  generalTips,
+  interviewCategories,
+  buildJobSentence,
+  buildResidenceSentence,
+  buildFamilySentence,
+  childCountSentence
+} from './citizenship.js';
 
 describe('lessons data', () => {
   it('has at least 8 lessons with unique ids', () => {
@@ -115,5 +123,58 @@ describe('dialogues data', () => {
   it('getDialogue works', () => {
     expect(getDialogue('cafe')?.title).toBe('At the Café');
     expect(getDialogue('nope')).toBeNull();
+  });
+});
+
+describe('citizenship interview data', () => {
+  it('has general tips', () => {
+    expect(generalTips.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('every category has questions with tips and at least one answer', () => {
+    expect(interviewCategories.length).toBeGreaterThanOrEqual(4);
+    for (const cat of interviewCategories) {
+      expect(cat.questions.length, cat.id).toBeGreaterThan(0);
+      for (const q of cat.questions) {
+        expect(q.hu, `${cat.id}: ${q.hu}`).toBeTruthy();
+        expect(q.en, `${cat.id}: ${q.hu}`).toBeTruthy();
+        expect(q.tip, `${cat.id}: ${q.hu}`).toBeTruthy();
+        expect(q.answers.length, `${cat.id}: ${q.hu}`).toBeGreaterThan(0);
+        for (const a of q.answers) {
+          expect(a.hu, `${cat.id}: ${q.hu}`).toBeTruthy();
+          expect(a.en, `${cat.id}: ${q.hu}`).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('covers having no children, one child and multiple children', () => {
+    expect(childCountSentence(0).hu).toBe('Nincs gyermekem.');
+    expect(childCountSentence(1).hu).toBe('Egy gyermekem van.');
+    expect(childCountSentence(2).hu).toBe('Két gyermekem van.');
+  });
+
+  it('builds a job sentence from any valid option combination', () => {
+    const s = buildJobSentence('dev', 'manufacturing', 'twohundred');
+    expect(s.hu).toBe('Szoftverfejlesztőként dolgozom egy gyártó cégnél. Körülbelül kétszáz ember dolgozik ott.');
+    expect(s.en).toContain('software developer');
+    expect(s.en).toContain('two hundred');
+  });
+
+  it('builds a residence sentence for Budapest and for a region, with an optional city', () => {
+    expect(buildResidenceSentence('budapest').hu).toBe('Budapesten élek.');
+    const regional = buildResidenceSentence('southwest', 'Pécs');
+    expect(regional.hu).toBe('Magyarországon élek, az ország délnyugati részén. Lakóhelyem: Pécs.');
+  });
+
+  it('builds a family sentence covering zero, one and several children with names', () => {
+    expect(buildFamilySentence(0, []).hu).toBe('Nincs gyermekem.');
+    const one = buildFamilySentence(1, [{ gender: 'son', name: 'Tamás', age: '8' }]);
+    expect(one.hu).toBe('Egy gyermekem van. A fiam neve Tamás, 8 éves.');
+    const two = buildFamilySentence(2, [
+      { gender: 'daughter', name: 'Zsófia', age: '5' },
+      { gender: 'son', name: 'Bence', age: '' }
+    ]);
+    expect(two.hu).toBe('Két gyermekem van. A lányom neve Zsófia, 5 éves. A fiam neve Bence.');
   });
 });

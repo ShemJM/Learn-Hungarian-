@@ -11,7 +11,8 @@
     { href: '#/reading', icon: '📖', title: 'Reading', desc: `${readings.length} graded reading texts with tap-to-translate and comprehension questions.` },
     { href: '#/conversation', icon: '💬', title: 'Conversation', desc: `${dialogues.length} real-life dialogues — listen, then play your role out loud.` },
     { href: '#/pronunciation', icon: '🎤', title: 'Pronunciation Lab', desc: 'Listen to native-style audio and get instant feedback on your speech.' },
-    { href: '#/games', icon: '🎲', title: 'Mini Games', desc: 'Flashcards, matching pairs, word scramble and a listening challenge.' }
+    { href: '#/games', icon: '🎲', title: 'Mini Games', desc: 'Flashcards, matching pairs, word scramble and a listening challenge.' },
+    { href: '#/citizenship', icon: '🪪', title: 'Citizenship Interview Prep', desc: 'Common naturalisation interview questions, model answers and tips, plus builders for your own job, home and family sentences.' }
   ];
 
   let quizzesDone = $derived(Object.keys($progress.quizScores).length);
