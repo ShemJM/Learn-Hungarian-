@@ -28,7 +28,7 @@ describe('App (smoke test)', () => {
   it('renders the home page with the main navigation', () => {
     expect(target.textContent).toContain('Learn Hungarian');
     expect(target.textContent).toContain('Üdvözöllek');
-    for (const label of ['Lessons', 'Grammar', 'Reading', 'Conversation', 'Pronunciation', 'Games']) {
+    for (const label of ['Lessons', 'Grammar', 'Reading', 'Conversation', 'Pronunciation', 'Games', 'Citizenship']) {
       expect(target.textContent).toContain(label);
     }
   });
@@ -69,6 +69,12 @@ describe('App (smoke test)', () => {
     expect(target.textContent).toContain('Matching Pairs');
     navigate('#/games/scramble');
     expect(target.textContent).toContain('Word Scramble');
+  });
+
+  it('routes to the citizenship interview prep section', () => {
+    navigate('#/citizenship');
+    expect(target.textContent).toContain('Citizenship Interview Prep');
+    expect(target.textContent).toContain('Build your own answers');
   });
 
   it('falls back to home for unknown routes', () => {

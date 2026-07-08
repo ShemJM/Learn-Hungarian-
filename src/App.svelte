@@ -8,6 +8,7 @@
   import Conversation from './pages/Conversation.svelte';
   import Games from './pages/Games.svelte';
   import Pronunciation from './pages/Pronunciation.svelte';
+  import Citizenship from './pages/Citizenship.svelte';
 
   const nav = [
     { path: 'home', label: 'Home', icon: '🏠' },
@@ -16,7 +17,8 @@
     { path: 'reading', label: 'Reading', icon: '📖' },
     { path: 'conversation', label: 'Conversation', icon: '💬' },
     { path: 'pronunciation', label: 'Pronunciation', icon: '🎤' },
-    { path: 'games', label: 'Games', icon: '🎲' }
+    { path: 'games', label: 'Games', icon: '🎲' },
+    { path: 'citizenship', label: 'Citizenship', icon: '🪪' }
   ];
 </script>
 
@@ -53,6 +55,8 @@
     <Pronunciation />
   {:else if $route.page === 'games'}
     <Games game={$route.param} />
+  {:else if $route.page === 'citizenship'}
+    <Citizenship />
   {:else}
     <Home />
   {/if}

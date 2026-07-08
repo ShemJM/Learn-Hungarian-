@@ -28,6 +28,10 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   Best scores are saved.
 - **📈 Progress tracking** — quiz scores, known words, completed readings/dialogues and
   pronunciation stars, persisted in `localStorage`.
+- **🪪 Citizenship interview prep** — common naturalisation (honosítás) interview questions
+  about yourself, your home, your job and your family, each with model answers and grammar
+  tips, plus interactive sentence builders so you can assemble grammatically correct answers
+  about your own real job, region and children.
 
 ## Getting started
 
@@ -65,7 +69,7 @@ src/
   App.svelte            app shell + navigation
   pages/                one component per section (Lessons, Grammar, Reading, ...)
   lib/
-    data/               the course content (lessons, grammar, readings, dialogues)
+    data/               the course content (lessons, grammar, readings, dialogues, citizenship)
     components/         shared UI (AudioButton, PronunciationCheck, Quiz)
     games/              the four mini games
     speech.js           text-to-speech + speech recognition + scoring
