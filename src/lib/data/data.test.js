@@ -12,6 +12,7 @@ import {
   childCountSentence
 } from './citizenship.js';
 import { alphabet, groups, letterPhrase } from './alphabet.js';
+import { technique, tiers, allRolledRItems } from './rolledR.js';
 
 describe('lessons data', () => {
   it('has at least 8 lessons with unique ids', () => {
@@ -210,5 +211,33 @@ describe('alphabet data', () => {
   it('builds a spell-it-out phrase from the letter name and example word', () => {
     const b = alphabet.find((l) => l.letter === 'b');
     expect(letterPhrase(b)).toEqual({ hu: 'Bé, mint bicikli.', en: 'B, as in "bicycle".' });
+  });
+});
+
+describe('rolled R practice data', () => {
+  it('has technique tips with a title and explanation', () => {
+    expect(technique.length).toBeGreaterThanOrEqual(3);
+    for (const tip of technique) {
+      expect(tip.title).toBeTruthy();
+      expect(tip.text).toBeTruthy();
+    }
+  });
+
+  it('has graduated practice tiers, each fully defined', () => {
+    expect(tiers.length).toBeGreaterThanOrEqual(3);
+    for (const tier of tiers) {
+      expect(tier.title, tier.id).toBeTruthy();
+      expect(tier.description, tier.id).toBeTruthy();
+      expect(tier.items.length, tier.id).toBeGreaterThan(0);
+      for (const item of tier.items) {
+        expect(item.hu, tier.id).toBeTruthy();
+        expect(item.en, tier.id).toBeTruthy();
+      }
+    }
+  });
+
+  it('has no duplicate practice items across tiers', () => {
+    const items = allRolledRItems().map((i) => i.hu);
+    expect(new Set(items).size).toBe(items.length);
   });
 });
