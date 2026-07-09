@@ -81,6 +81,7 @@ describe('App (smoke test)', () => {
     navigate('#/citizenship');
     expect(target.textContent).toContain('Citizenship Interview Prep');
     expect(target.textContent).toContain('Build your own answers');
+    expect(target.textContent).toContain('Introduce yourself out loud');
   });
 
   it('falls back to home for unknown routes', () => {

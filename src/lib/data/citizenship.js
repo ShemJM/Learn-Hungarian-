@@ -22,6 +22,7 @@ export const interviewCategories = [
     id: 'personal',
     icon: '🙋',
     title: 'Introducing Yourself',
+    freePrompt: 'Introduce yourself out loud — your name, age, and where you are from.',
     questions: [
       {
         hu: 'Mi a neve?',
@@ -56,6 +57,7 @@ export const interviewCategories = [
     id: 'residence',
     icon: '🏠',
     title: 'Where You Live',
+    freePrompt: 'Say out loud where you live, how long you have lived there, and which part of the country it is in.',
     questions: [
       {
         hu: 'Hol lakik? / Hol él?',
@@ -91,6 +93,7 @@ export const interviewCategories = [
     id: 'work',
     icon: '💼',
     title: 'Your Job',
+    freePrompt: 'Describe your job out loud — what you do, where you work, and roughly how many people work there.',
     questions: [
       {
         hu: 'Mivel foglalkozik? / Mi a foglalkozása?',
@@ -126,6 +129,7 @@ export const interviewCategories = [
     id: 'family',
     icon: '👨‍👩‍👧‍👦',
     title: 'Family & Children',
+    freePrompt: 'Talk out loud about your family — whether you are married, whether you have children, and their names and ages.',
     questions: [
       {
         hu: 'Nős / férjnél van? Van családja?',
@@ -163,6 +167,7 @@ export const interviewCategories = [
     id: 'citizenship',
     icon: '🇭🇺',
     title: 'Hungary & Citizenship',
+    freePrompt: 'Explain out loud, in your own words, why you want to become a Hungarian citizen.',
     questions: [
       {
         hu: 'Miért szeretne magyar állampolgár lenni?',

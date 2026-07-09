@@ -1,5 +1,6 @@
 <script>
   import AudioButton from '../lib/components/AudioButton.svelte';
+  import FreeSpeech from '../lib/components/FreeSpeech.svelte';
   import {
     generalTips,
     interviewCategories,
@@ -72,6 +73,9 @@
         </div>
       </div>
     {/each}
+    {#if cat.freePrompt}
+      <FreeSpeech prompt={cat.freePrompt} />
+    {/if}
   </div>
 {/each}
 
