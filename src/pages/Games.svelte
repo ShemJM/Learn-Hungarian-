@@ -4,10 +4,12 @@
   import Matching from '../lib/games/Matching.svelte';
   import Scramble from '../lib/games/Scramble.svelte';
   import Listening from '../lib/games/Listening.svelte';
+  import QuickFire from '../lib/games/QuickFire.svelte';
 
   let { game = null } = $props();
 
   const games = [
+    { id: 'quickfire', icon: '⚡', title: 'Quick Fire', desc: 'Full-screen speed round: a word flashes up, tap its translation before the timer runs out.' },
     { id: 'flashcards', icon: '🃏', title: 'Flashcards', desc: 'Flip cards and mark the words you know.' },
     { id: 'matching', icon: '🧠', title: 'Matching Pairs', desc: 'Match Hungarian words with their English meanings against the clock.' },
     { id: 'scramble', icon: '🔀', title: 'Word Scramble', desc: 'Unscramble the Hungarian word from its English meaning.' },
@@ -31,7 +33,9 @@
   </div>
 {:else}
   <a href="#/games" class="muted back">← All games</a>
-  {#if game === 'flashcards'}
+  {#if game === 'quickfire'}
+    <QuickFire />
+  {:else if game === 'flashcards'}
     <Flashcards />
   {:else if game === 'matching'}
     <Matching />
