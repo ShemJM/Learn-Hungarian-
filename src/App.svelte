@@ -8,6 +8,7 @@
   import Conversation from './pages/Conversation.svelte';
   import Games from './pages/Games.svelte';
   import Pronunciation from './pages/Pronunciation.svelte';
+  import RolledR from './pages/RolledR.svelte';
   import Citizenship from './pages/Citizenship.svelte';
 
   const nav = [
@@ -17,6 +18,7 @@
     { path: 'reading', label: 'Reading', icon: '📖' },
     { path: 'conversation', label: 'Conversation', icon: '💬' },
     { path: 'pronunciation', label: 'Pronunciation', icon: '🎤' },
+    { path: 'rolled-r', label: "Roll your R's", icon: '👅' },
     { path: 'games', label: 'Games', icon: '🎲' },
     { path: 'citizenship', label: 'Citizenship', icon: '🪪' }
   ];
@@ -53,6 +55,8 @@
     <Conversation id={$route.param} />
   {:else if $route.page === 'pronunciation'}
     <Pronunciation />
+  {:else if $route.page === 'rolled-r'}
+    <RolledR />
   {:else if $route.page === 'games'}
     <Games game={$route.param} />
   {:else if $route.page === 'citizenship'}

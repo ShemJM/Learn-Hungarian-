@@ -5,6 +5,7 @@
   import Scramble from '../lib/games/Scramble.svelte';
   import Listening from '../lib/games/Listening.svelte';
   import QuickFire from '../lib/games/QuickFire.svelte';
+  import SpellSay from '../lib/games/SpellSay.svelte';
 
   let { game = null } = $props();
 
@@ -13,7 +14,8 @@
     { id: 'flashcards', icon: '🃏', title: 'Flashcards', desc: 'Flip cards and mark the words you know.' },
     { id: 'matching', icon: '🧠', title: 'Matching Pairs', desc: 'Match Hungarian words with their English meanings against the clock.' },
     { id: 'scramble', icon: '🔀', title: 'Word Scramble', desc: 'Unscramble the Hungarian word from its English meaning.' },
-    { id: 'listening', icon: '👂', title: 'Listening Challenge', desc: 'Hear a Hungarian word and pick what it means.' }
+    { id: 'listening', icon: '👂', title: 'Listening Challenge', desc: 'Hear a Hungarian word and pick what it means.' },
+    { id: 'spellsay', icon: '⏱️', title: 'Spell & Say Sprint', desc: 'Type the English word, say it out loud, and see how many you can nail in 60 seconds.' }
   ];
 </script>
 
@@ -43,6 +45,8 @@
     <Scramble />
   {:else if game === 'listening'}
     <Listening />
+  {:else if game === 'spellsay'}
+    <SpellSay />
   {:else}
     <p>Game not found.</p>
   {/if}

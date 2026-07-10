@@ -103,8 +103,8 @@ export function listenOnce({ lang = 'hu-HU', timeoutMs = 8000 } = {}) {
  * Resolves { transcript, score } where score is the best similarity (0..1)
  * across the recognizer's alternatives.
  */
-export async function checkPronunciation(target) {
-  const alternatives = await listenOnce();
+export async function checkPronunciation(target, { lang = 'hu-HU' } = {}) {
+  const alternatives = await listenOnce({ lang });
   let best = { transcript: alternatives[0] || '', score: 0 };
   for (const transcript of alternatives) {
     const score = similarity(transcript, target);
