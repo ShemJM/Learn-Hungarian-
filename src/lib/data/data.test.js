@@ -133,9 +133,10 @@ describe('citizenship interview data', () => {
     expect(generalTips.length).toBeGreaterThanOrEqual(3);
   });
 
-  it('every category has questions with tips and at least one answer', () => {
+  it('every category has questions with tips, at least one answer, and a free-speech prompt', () => {
     expect(interviewCategories.length).toBeGreaterThanOrEqual(4);
     for (const cat of interviewCategories) {
+      expect(cat.freePrompt, cat.id).toBeTruthy();
       expect(cat.questions.length, cat.id).toBeGreaterThan(0);
       for (const q of cat.questions) {
         expect(q.hu, `${cat.id}: ${q.hu}`).toBeTruthy();
