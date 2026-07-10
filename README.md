@@ -26,8 +26,9 @@ microphone-based pronunciation checks, and mini games to make it all stick.
 - **💬 Conversation skills** — five real-life dialogues (café, market, directions, restaurant,
   meeting someone). Study mode, then *role-play mode*: the app speaks the other part and you
   say your lines out loud with pronunciation scoring.
-- **🎲 Mini games** — flashcards, matching pairs, word scramble and a listening challenge.
-  Best scores are saved.
+- **🎲 Mini games** — a full-screen *Quick Fire* speed round (a word flashes up, tap its
+  translation before the timer runs out — built for a spare few minutes one-handed),
+  flashcards, matching pairs, word scramble and a listening challenge. Best scores are saved.
 - **📈 Progress tracking** — quiz scores, known words, completed readings/dialogues and
   pronunciation stars, persisted in `localStorage`.
 - **🪪 Citizenship interview prep** — common naturalisation (honosítás) interview questions
@@ -73,7 +74,7 @@ src/
   lib/
     data/               the course content (lessons, grammar, readings, dialogues, citizenship)
     components/         shared UI (AudioButton, PronunciationCheck, Quiz)
-    games/              the four mini games
+    games/              the mini games
     speech.js           text-to-speech + speech recognition + scoring
     quiz.js             quiz generation and grading
     text.js             normalisation, Levenshtein, shuffle/scramble helpers

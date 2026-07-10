@@ -67,8 +67,15 @@ describe('App (smoke test)', () => {
   it('routes to the games hub and a game', () => {
     navigate('#/games');
     expect(target.textContent).toContain('Matching Pairs');
+    expect(target.textContent).toContain('Quick Fire');
     navigate('#/games/scramble');
     expect(target.textContent).toContain('Word Scramble');
+  });
+
+  it('routes to the quick fire game', () => {
+    navigate('#/games/quickfire');
+    expect(target.textContent).toContain('Quick Fire');
+    expect(target.textContent).toContain('Start');
   });
 
   it('shows alphabet practice on the pronunciation page', () => {
