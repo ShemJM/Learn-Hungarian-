@@ -59,6 +59,24 @@ describe('progress store', () => {
     expect(get(store).pronunciationStars['szia']).toBe(0.9);
   });
 
+  it('tracks spaced-repetition reviews per word', () => {
+    const day1 = Date.UTC(2026, 0, 15, 12, 0, 0);
+    store.recordReview('alma', true, day1);
+    const first = get(store).srs.alma;
+    expect(first.box).toBe(2);
+    store.recordReview('alma', true, day1 + 86400000);
+    expect(get(store).srs.alma.box).toBe(3);
+    store.recordReview('alma', false, day1 + 2 * 86400000);
+    expect(get(store).srs.alma.box).toBe(1);
+    expect(get(store).srs.alma.last).toBe(first.last + 2);
+  });
+
+  it('persists srs state to storage', () => {
+    store.recordReview('sör', true, Date.UTC(2026, 0, 15, 12, 0, 0));
+    const reloaded = createProgressStore(storage);
+    expect(get(reloaded).srs['sör'].box).toBe(2);
+  });
+
   it('persists to storage and reloads', () => {
     store.recordQuiz('numbers', 80);
     const reloaded = createProgressStore(storage);

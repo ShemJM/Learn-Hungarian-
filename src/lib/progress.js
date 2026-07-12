@@ -4,6 +4,7 @@
  * completed readings and practised dialogues.
  */
 import { writable } from 'svelte/store';
+import { applyReview, dayStamp } from './srs.js';
 
 const KEY = 'learn-hungarian-progress-v1';
 
@@ -14,7 +15,8 @@ export function defaultProgress() {
     gameBest: {},        // gameId -> best score
     readingsDone: [],    // reading ids
     dialoguesDone: [],   // dialogue ids
-    pronunciationStars: {} // phrase -> best score 0..1
+    pronunciationStars: {}, // phrase -> best score 0..1
+    srs: {} // hungarian word -> { box: 1..5, last: dayStamp } spaced-repetition state
   };
 }
 
@@ -72,6 +74,11 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
     markDialogueDone: (id) =>
       mutate((p) => {
         if (!p.dialoguesDone.includes(id)) p.dialoguesDone.push(id);
+        return p;
+      }),
+    recordReview: (hu, correct, now = Date.now()) =>
+      mutate((p) => {
+        p.srs[hu] = applyReview(p.srs[hu], correct, dayStamp(now));
         return p;
       }),
     recordPronunciation: (phrase, score) =>
