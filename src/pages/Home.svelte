@@ -10,6 +10,7 @@
     { href: '#/lessons', icon: '📚', title: 'Lessons', desc: `${lessons.length} themed vocabulary lessons with audio, pronunciation guides and quizzes.` },
     { href: '#/review', icon: '🔁', title: 'Daily Review', desc: 'Spaced repetition keeps every word fresh — a few cards a day, scheduled just before you would forget them.' },
     { href: '#/grammar', icon: '🧩', title: 'Grammar Guides', desc: `${grammarGuides.length} clear guides: vowel harmony, cases, conjugation and more.` },
+    { href: '#/verbs', icon: '⚙️', title: 'Verb Trainer', desc: 'Full conjugation tables for common verbs, plus drills for the definite vs indefinite forms.' },
     { href: '#/reading', icon: '📖', title: 'Reading', desc: `${readings.length} graded reading texts with tap-to-translate and comprehension questions.` },
     { href: '#/conversation', icon: '💬', title: 'Conversation', desc: `${dialogues.length} real-life dialogues — listen, then play your role out loud.` },
     { href: '#/pronunciation', icon: '🎤', title: 'Pronunciation Lab', desc: 'Listen to native-style audio and get instant feedback on your speech.' },

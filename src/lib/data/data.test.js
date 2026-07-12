@@ -12,6 +12,7 @@ import {
   childCountSentence
 } from './citizenship.js';
 import { alphabet, groups, letterPhrase } from './alphabet.js';
+import { verbs, PRONOUNS } from './verbs.js';
 import { technique, tiers, allRolledRItems } from './rolledR.js';
 
 describe('lessons data', () => {
@@ -212,6 +213,41 @@ describe('alphabet data', () => {
   it('builds a spell-it-out phrase from the letter name and example word', () => {
     const b = alphabet.find((l) => l.letter === 'b');
     expect(letterPhrase(b)).toEqual({ hu: 'Bé, mint bicikli.', en: 'B, as in "bicycle".' });
+  });
+});
+
+describe('verbs data', () => {
+  it('has at least 12 verbs with unique infinitives', () => {
+    expect(verbs.length).toBeGreaterThanOrEqual(12);
+    expect(new Set(verbs.map((v) => v.inf)).size).toBe(verbs.length);
+  });
+
+  it('every verb is fully defined with a valid harmony class', () => {
+    for (const v of verbs) {
+      expect(v.en, v.inf).toBeTruthy();
+      expect(v.pron, v.inf).toBeTruthy();
+      expect(typeof v.ik, v.inf).toBe('boolean');
+      expect(['back', 'front', 'front-rounded'], v.inf).toContain(v.harmony);
+    }
+  });
+
+  it('conjugation tables have one non-empty form per pronoun (or null definite)', () => {
+    for (const v of verbs) {
+      expect(v.indefinite.length, v.inf).toBe(PRONOUNS.length);
+      const tables = v.definite ? [v.indefinite, v.definite] : [v.indefinite];
+      if (v.definite) expect(v.definite.length, v.inf).toBe(PRONOUNS.length);
+      for (const table of tables) {
+        for (const cell of table) {
+          const variants = Array.isArray(cell) ? cell : [cell];
+          expect(variants.length, v.inf).toBeGreaterThan(0);
+          for (const form of variants) expect(form, v.inf).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('includes intransitive verbs without a definite conjugation', () => {
+    expect(verbs.some((v) => v.definite === null)).toBe(true);
   });
 });
 
