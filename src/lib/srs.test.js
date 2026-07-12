@@ -1,0 +1,97 @@
+import { describe, it, expect } from 'vitest';
+import { BOX_COUNT, INTERVALS, dayStamp, isDue, dueWords, applyReview, buildSession } from './srs.js';
+
+const words = [
+  { hu: 'alma', en: 'apple' },
+  { hu: 'kenyér', en: 'bread' },
+  { hu: 'sör', en: 'beer' },
+  { hu: 'víz', en: 'water' }
+];
+
+describe('dayStamp', () => {
+  it('increments by one per 24 hours', () => {
+    const noon = Date.UTC(2026, 0, 15, 12, 0, 0);
+    expect(dayStamp(noon + 86400000)).toBe(dayStamp(noon) + 1);
+  });
+
+  it('is stable within the same day', () => {
+    const noon = Date.UTC(2026, 0, 15, 12, 0, 0);
+    expect(dayStamp(noon + 60000)).toBe(dayStamp(noon));
+  });
+});
+
+describe('isDue', () => {
+  it('treats unseen words (no entry) as due', () => {
+    expect(isDue(undefined, 100)).toBe(true);
+  });
+
+  it('box 1 (interval 0) is due the same day', () => {
+    expect(isDue({ box: 1, last: 100 }, 100)).toBe(true);
+  });
+
+  it('box 2 is due exactly one day later, not before', () => {
+    expect(isDue({ box: 2, last: 100 }, 100)).toBe(false);
+    expect(isDue({ box: 2, last: 100 }, 101)).toBe(true);
+  });
+
+  it('box 5 waits the longest interval', () => {
+    const entry = { box: BOX_COUNT, last: 100 };
+    expect(isDue(entry, 100 + INTERVALS[BOX_COUNT - 1] - 1)).toBe(false);
+    expect(isDue(entry, 100 + INTERVALS[BOX_COUNT - 1])).toBe(true);
+  });
+});
+
+describe('applyReview', () => {
+  it('promotes a correct answer one box and stamps today', () => {
+    expect(applyReview({ box: 2, last: 90 }, true, 100)).toEqual({ box: 3, last: 100 });
+  });
+
+  it('starts new words in box 1 on a miss and box 2 on a hit', () => {
+    expect(applyReview(undefined, false, 100)).toEqual({ box: 1, last: 100 });
+    expect(applyReview(undefined, true, 100)).toEqual({ box: 2, last: 100 });
+  });
+
+  it('caps at the top box', () => {
+    expect(applyReview({ box: BOX_COUNT, last: 90 }, true, 100).box).toBe(BOX_COUNT);
+  });
+
+  it('demotes to box 1 on a miss', () => {
+    expect(applyReview({ box: 4, last: 90 }, false, 100)).toEqual({ box: 1, last: 100 });
+  });
+});
+
+describe('dueWords', () => {
+  it('mixes new words with due seen words and skips not-yet-due ones', () => {
+    const state = {
+      alma: { box: 2, last: 99 }, // due (1 day passed)
+      kenyér: { box: 3, last: 99 } // not due (needs 2 days)
+    };
+    expect(dueWords(words, state, 100).map((w) => w.hu)).toEqual(['alma', 'sör', 'víz']);
+  });
+});
+
+describe('buildSession', () => {
+  const identityRng = () => 0; // shuffle with rng()=0 keeps rotating deterministically
+
+  it('caps unseen words at maxNew', () => {
+    const session = buildSession(words, {}, 100, { maxNew: 2, rng: identityRng });
+    expect(session.length).toBe(2);
+  });
+
+  it('includes due seen words before applying maxCards', () => {
+    const state = { alma: { box: 1, last: 100 } };
+    const session = buildSession(words, state, 100, { maxNew: 1, rng: identityRng });
+    expect(session.map((w) => w.hu)).toContain('alma');
+    expect(session.length).toBe(2); // alma + 1 new
+  });
+
+  it('caps the whole session at maxCards', () => {
+    const session = buildSession(words, {}, 100, { maxCards: 3, maxNew: 10, rng: identityRng });
+    expect(session.length).toBe(3);
+  });
+
+  it('returns empty when nothing is due', () => {
+    const state = Object.fromEntries(words.map((w) => [w.hu, { box: 5, last: 100 }]));
+    expect(buildSession(words, state, 101, { rng: identityRng })).toEqual([]);
+  });
+});

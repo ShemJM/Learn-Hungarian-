@@ -10,11 +10,15 @@
   import Pronunciation from './pages/Pronunciation.svelte';
   import RolledR from './pages/RolledR.svelte';
   import Citizenship from './pages/Citizenship.svelte';
+  import Review from './pages/Review.svelte';
+  import Verbs from './pages/Verbs.svelte';
 
   const nav = [
     { path: 'home', label: 'Home', icon: '🏠' },
     { path: 'lessons', label: 'Lessons', icon: '📚' },
+    { path: 'review', label: 'Review', icon: '🔁' },
     { path: 'grammar', label: 'Grammar', icon: '🧩' },
+    { path: 'verbs', label: 'Verbs', icon: '⚙️' },
     { path: 'reading', label: 'Reading', icon: '📖' },
     { path: 'conversation', label: 'Conversation', icon: '💬' },
     { path: 'pronunciation', label: 'Pronunciation', icon: '🎤' },
@@ -59,6 +63,10 @@
     <RolledR />
   {:else if $route.page === 'games'}
     <Games game={$route.param} />
+  {:else if $route.page === 'review'}
+    <Review />
+  {:else if $route.page === 'verbs'}
+    <Verbs />
   {:else if $route.page === 'citizenship'}
     <Citizenship />
   {:else}

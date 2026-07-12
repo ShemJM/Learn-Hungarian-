@@ -4,10 +4,13 @@
   import { readings } from '../lib/data/readings.js';
   import { dialogues } from '../lib/data/dialogues.js';
   import { progress } from '../lib/progress.js';
+  import { dayStamp, dueWords } from '../lib/srs.js';
 
   const features = [
     { href: '#/lessons', icon: '📚', title: 'Lessons', desc: `${lessons.length} themed vocabulary lessons with audio, pronunciation guides and quizzes.` },
+    { href: '#/review', icon: '🔁', title: 'Daily Review', desc: 'Spaced repetition keeps every word fresh — a few cards a day, scheduled just before you would forget them.' },
     { href: '#/grammar', icon: '🧩', title: 'Grammar Guides', desc: `${grammarGuides.length} clear guides: vowel harmony, cases, conjugation and more.` },
+    { href: '#/verbs', icon: '⚙️', title: 'Verb Trainer', desc: 'Full conjugation tables for common verbs, plus drills for the definite vs indefinite forms.' },
     { href: '#/reading', icon: '📖', title: 'Reading', desc: `${readings.length} graded reading texts with tap-to-translate and comprehension questions.` },
     { href: '#/conversation', icon: '💬', title: 'Conversation', desc: `${dialogues.length} real-life dialogues — listen, then play your role out loud.` },
     { href: '#/pronunciation', icon: '🎤', title: 'Pronunciation Lab', desc: 'Listen to native-style audio and get instant feedback on your speech.' },
@@ -15,6 +18,7 @@
     { href: '#/citizenship', icon: '🪪', title: 'Citizenship Interview Prep', desc: 'Common naturalisation interview questions, model answers and tips, plus builders for your own job, home and family sentences.' }
   ];
 
+  let dueToday = $derived(dueWords(allWords(), $progress.srs, dayStamp()).length);
   let quizzesDone = $derived(Object.keys($progress.quizScores).length);
   let avgScore = $derived(
     quizzesDone ? Math.round(Object.values($progress.quizScores).reduce((a, b) => a + b, 0) / quizzesDone) : 0
@@ -35,6 +39,7 @@
   <div><strong>{lessons.length}</strong><span class="muted">lessons</span></div>
   <div><strong>{allWords().length}</strong><span class="muted">words</span></div>
   <div><strong>{$progress.knownWords.length}</strong><span class="muted">words known</span></div>
+  <div><strong>{dueToday}</strong><span class="muted">due for review</span></div>
   <div><strong>{quizzesDone}</strong><span class="muted">quizzes passed</span></div>
   {#if quizzesDone}
     <div><strong>{avgScore}%</strong><span class="muted">avg score</span></div>
