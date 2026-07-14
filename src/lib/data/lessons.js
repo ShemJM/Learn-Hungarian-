@@ -37,7 +37,7 @@ export const lessons = [
     title: 'Numbers',
     icon: '🔢',
     intro:
-      'Hungarian numbers are wonderfully regular: 23 is huszonhárom (twenty-three), 35 is harmincöt. Note: after numbers, nouns stay SINGULAR — két sör (two beer), never két sörök!',
+      'Hungarian numbers are wonderfully regular: 23 is huszonhárom (twenty-three), 35 is harmincöt. Note: after numbers, nouns stay SINGULAR — két sör (two beer), never két sörök! Ordinals (1st, 2nd, 3rd…) just add -dik with vowel harmony: hat → hatodik. The only oddball is első (first) — nobody says "egyedik".',
     words: [
       { hu: 'egy', en: 'one', pron: 'edj' },
       { hu: 'kettő', en: 'two', pron: 'KET-tuh' },
@@ -52,12 +52,29 @@ export const lessons = [
       { hu: 'húsz', en: 'twenty', pron: 'hooss' },
       { hu: 'harminc', en: 'thirty', pron: 'HAWR-mints' },
       { hu: 'száz', en: 'one hundred', pron: 'sahz' },
-      { hu: 'ezer', en: 'one thousand', pron: 'EH-zer' }
+      { hu: 'ezer', en: 'one thousand', pron: 'EH-zer' },
+      { hu: 'első', en: 'first (1st)', pron: 'EL-shuh' },
+      { hu: 'második', en: 'second (2nd)', pron: 'MAH-sho-deek' },
+      { hu: 'harmadik', en: 'third (3rd)', pron: 'HAWR-maw-deek' },
+      { hu: 'negyedik', en: 'fourth (4th)', pron: 'NEH-djeh-deek' },
+      { hu: 'ötödik', en: 'fifth (5th)', pron: 'UH-tuh-deek' },
+      { hu: 'hatodik', en: 'sixth (6th)', pron: 'HAW-to-deek' },
+      { hu: 'hetedik', en: 'seventh (7th)', pron: 'HEH-teh-deek' },
+      { hu: 'nyolcadik', en: 'eighth (8th)', pron: 'NYOL-tsaw-deek' },
+      { hu: 'kilencedik', en: 'ninth (9th)', pron: 'KEE-len-tseh-deek' },
+      { hu: 'tizedik', en: 'tenth (10th)', pron: 'TEE-zeh-deek' },
+      { hu: 'huszadik', en: 'twentieth (20th)', pron: 'HOO-saw-deek' },
+      { hu: 'utolsó', en: 'last', pron: 'OO-tol-shoh' },
+      { hu: 'hányadik?', en: 'which one (in order)?', pron: 'HAH-nyaw-deek' }
     ],
     phrases: [
       { hu: 'Két kávét kérek.', en: 'Two coffees, please.' },
       { hu: 'Mennyibe kerül?', en: 'How much does it cost?' },
-      { hu: 'Ezer forint.', en: 'One thousand forints.' }
+      { hu: 'Ezer forint.', en: 'One thousand forints.' },
+      { hu: 'A második emeleten lakom.', en: 'I live on the second floor.' },
+      { hu: 'Hányadika van ma?', en: 'What is the date today?' },
+      { hu: 'Ma huszadika van.', en: 'Today is the 20th.' },
+      { hu: 'Ez az első alkalom.', en: 'This is the first time.' }
     ]
   },
   {
@@ -181,7 +198,7 @@ export const lessons = [
     title: 'Essential Verbs',
     icon: '⚡',
     intro:
-      'Dictionary forms end in -ni. Hungarian verbs conjugate richly — see the Grammar section. The forms below in brackets are the "I" form: beszélni → beszélek (I speak).',
+      'Dictionary forms end in -ni. Hungarian verbs conjugate richly — see the Grammar section. The forms below in brackets are the "I" form: beszélni → beszélek (I speak). Note the marriage verbs: a woman "goes to a husband" (férjhez megy) while a man "takes a wife" (megnősül) — the verb depends on who is marrying.',
     words: [
       { hu: 'lenni', en: 'to be', pron: 'LEN-nee' },
       { hu: 'menni', en: 'to go', pron: 'MEN-nee' },
@@ -196,13 +213,70 @@ export const lessons = [
       { hu: 'látni', en: 'to see', pron: 'LAHT-nee' },
       { hu: 'tanulni', en: 'to learn / study', pron: 'TAW-nool-nee' },
       { hu: 'dolgozni', en: 'to work', pron: 'DOL-goz-nee' },
-      { hu: 'lakni', en: 'to live (reside)', pron: 'LAWK-nee' }
+      { hu: 'lakni', en: 'to live (reside)', pron: 'LAWK-nee' },
+      { hu: 'randevúzni', en: 'to date / go on a date', pron: 'RAWN-deh-vooz-nee' },
+      { hu: 'eljegyezni', en: 'to get engaged to / betroth', pron: 'EL-yeh-djez-nee' },
+      { hu: 'megkérni a kezét', en: 'to propose (ask for her hand)', pron: 'MEG-kayr-nee aw KEH-zayt' },
+      { hu: 'összeházasodni', en: 'to get married (to each other)', pron: 'UHS-seh-hah-zaw-shod-nee' },
+      { hu: 'férjhez menni', en: 'to get married (of a woman)', pron: 'FAYRY-hez MEN-nee' },
+      { hu: 'megnősülni', en: 'to get married (of a man)', pron: 'MEG-nuh-shewl-nee' },
+      { hu: 'esküdni', en: 'to vow / swear (esküvő = wedding)', pron: 'ESH-kewd-nee' },
+      { hu: 'elválni', en: 'to divorce / separate', pron: 'EL-vahl-nee' }
     ],
     phrases: [
       { hu: 'Magyarul tanulok.', en: 'I am learning Hungarian.' },
       { hu: 'Beszélsz angolul?', en: 'Do you speak English?' },
       { hu: 'Budapesten lakom.', en: 'I live in Budapest.' },
-      { hu: 'Szeretem a magyar nyelvet.', en: 'I love the Hungarian language.' }
+      { hu: 'Szeretem a magyar nyelvet.', en: 'I love the Hungarian language.' },
+      { hu: 'Megkérte a kezét.', en: 'He proposed to her.' },
+      { hu: 'Nyáron összeházasodunk.', en: 'We are getting married in the summer.' },
+      { hu: '2021. június 12-én házasodtunk össze.', en: 'We got married on 12 June 2021.' },
+      { hu: 'Anna férjhez megy, Péter megnősül.', en: 'Anna is getting married, Péter is getting married.' },
+      { hu: 'Mikor van az esküvő?', en: 'When is the wedding?' }
+    ]
+  },
+  {
+    id: 'interview',
+    title: 'Interviews & Personal Details',
+    icon: '🛂',
+    intro:
+      'The vocabulary of official conversations: registry offices, citizenship interviews, forms. Officials use the formal Ön form, so questions come in the third person: Hol lakik? (Where do you live?), not Hol laksz? See the Formal Register guide. Answers below are patterns — swap the bracketed part for your own details.',
+    words: [
+      { hu: 'állampolgárság', en: 'citizenship', pron: 'AHL-lawm-pol-gahr-shahg' },
+      { hu: 'nemzetiség', en: 'nationality', pron: 'NEM-zeh-tee-shayg' },
+      { hu: 'foglalkozás', en: 'occupation', pron: 'FOG-lawl-ko-zahsh' },
+      { hu: 'munkahely', en: 'workplace', pron: 'MOON-kaw-hey' },
+      { hu: 'munkaidő', en: 'working hours', pron: 'MOON-kaw-ee-duh' },
+      { hu: 'távmunka', en: 'remote work', pron: 'TAHV-moon-kaw' },
+      { hu: 'cég', en: 'company', pron: 'tsayg' },
+      { hu: 'alkalmazott', en: 'employee', pron: 'AWL-kawl-maw-zott' },
+      { hu: 'házas', en: 'married', pron: 'HAH-zawsh' },
+      { hu: 'házastárs', en: 'spouse', pron: 'HAH-zawsh-tahrsh' },
+      { hu: 'feleség', en: 'wife', pron: 'FEH-leh-shayg' },
+      { hu: 'férj', en: 'husband', pron: 'fayry' },
+      { hu: 'gyermek', en: 'child (formal)', pron: 'DJER-mek' },
+      { hu: 'születni', en: 'to be born', pron: 'SEW-let-nee' },
+      { hu: 'lakcím', en: 'address', pron: 'LAWK-tseem' },
+      { hu: 'jelenleg', en: 'currently', pron: 'YEH-len-leg' },
+      { hu: 'körülbelül', en: 'approximately (kb.)', pron: 'KUH-rewl-beh-lewl' },
+      { hu: 'lebetűzni', en: 'to spell out', pron: 'LEH-beh-tewz-nee' },
+      { hu: 'kiejtés', en: 'pronunciation', pron: 'KEE-ey-taysh' },
+      { hu: 'aláírni', en: 'to sign', pron: 'AW-lah-eer-nee' }
+    ],
+    phrases: [
+      { hu: 'Elnézést, megismételné?', en: 'Sorry, could you repeat that?' },
+      { hu: 'Nem hallottam tisztán.', en: 'I did not hear it clearly.' },
+      { hu: 'Lassabban, kérem.', en: 'More slowly, please.' },
+      { hu: 'Elnézést az akcentusomért.', en: 'Sorry about my accent.' },
+      { hu: 'Néhány magyar szó kiejtése bonyolult nekem.', en: 'The pronunciation of some Hungarian words is difficult for me.' },
+      { hu: 'Igen, házas vagyok.', en: 'Yes, I am married.' },
+      { hu: '[Nyolc] éve vagyok házas.', en: 'I have been married for [eight] years.' },
+      { hu: '[2010]-ben házasodtunk össze.', en: 'We got married in [2010].' },
+      { hu: '[2010] óta vagyunk házasok.', en: 'We have been married since [2010].' },
+      { hu: '[Két] gyermekem van.', en: 'I have [two] children.' },
+      { hu: '[Szoftverfejlesztő] vagyok.', en: 'I am a [software developer].' },
+      { hu: 'Jelenleg [Angliában] lakunk.', en: 'We currently live in [England].' },
+      { hu: 'Leginkább távmunkában dolgozom.', en: 'I mostly work remotely.' }
     ]
   },
   {

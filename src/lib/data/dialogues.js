@@ -69,6 +69,48 @@ export const dialogues = [
     ]
   },
   {
+    id: 'interview-personal',
+    title: 'Official Interview: Personal Details',
+    icon: '🛂',
+    scene:
+      'You (B) sit a formal interview. The official uses the polite Ön form. The answers are a fictional applicant — swap in your own facts.',
+    lines: [
+      { speaker: 'A', name: 'Official', hu: 'Jó napot kívánok! Foglaljon helyet.', en: 'Good day! Please take a seat.' },
+      { speaker: 'B', name: 'You', hu: 'Jó napot kívánok! Köszönöm.', en: 'Good day! Thank you.' },
+      { speaker: 'A', name: 'Official', hu: 'Lebetűzné a nevét, kérem?', en: 'Could you spell your name, please?' },
+      { speaker: 'B', name: 'You', hu: 'Természetesen. Elnézést az akcentusomért.', en: 'Of course. Sorry about my accent.' },
+      { speaker: 'A', name: 'Official', hu: 'Ön házas? Mióta?', en: 'Are you married? Since when?' },
+      { speaker: 'B', name: 'You', hu: 'Igen, házas vagyok. Öt éve vagyunk házasok.', en: 'Yes, I am married. We have been married for five years.' },
+      { speaker: 'A', name: 'Official', hu: 'Milyen nemzetiségű a házastársa?', en: "What is your spouse's nationality?" },
+      { speaker: 'B', name: 'You', hu: 'A házastársam magyar.', en: 'My spouse is Hungarian.' },
+      { speaker: 'A', name: 'Official', hu: 'Mikor születtek a gyermekei?', en: 'When were your children born?' },
+      { speaker: 'B', name: 'You', hu: 'Elnézést, megismételné? Nem hallottam tisztán.', en: 'Sorry, could you repeat that? I did not hear it clearly.' },
+      { speaker: 'A', name: 'Official', hu: 'Mikor születtek a gyermekei?', en: 'When were your children born?' },
+      { speaker: 'B', name: 'You', hu: 'Az egyik gyermekem 2019-ben, a másik 2022-ben született.', en: 'One of my children was born in 2019, the other in 2022.' }
+    ]
+  },
+  {
+    id: 'interview-work',
+    title: 'Official Interview: Work & Plans',
+    icon: '💼',
+    scene:
+      'The second half of the interview (B is you): work, home and why you are applying. Again, the answers are patterns to adapt.',
+    lines: [
+      { speaker: 'A', name: 'Official', hu: 'Mi a foglalkozása?', en: 'What is your occupation?' },
+      { speaker: 'B', name: 'You', hu: 'Szoftverfejlesztő vagyok. Egy körülbelül kétszáz fős cégnél dolgozom.', en: 'I am a software developer. I work at a company of about two hundred people.' },
+      { speaker: 'A', name: 'Official', hu: 'Szereti a munkáját?', en: 'Do you like your job?' },
+      { speaker: 'B', name: 'You', hu: 'Igen. A munkaidő rugalmas, és kedves emberekkel dolgozom.', en: 'Yes. The working hours are flexible, and I work with kind people.' },
+      { speaker: 'A', name: 'Official', hu: 'Az irodában dolgozik?', en: 'Do you work in the office?' },
+      { speaker: 'B', name: 'You', hu: 'Leginkább távmunkában dolgozom, otthonról.', en: 'I mostly work remotely, from home.' },
+      { speaker: 'A', name: 'Official', hu: 'Hol laknak jelenleg?', en: 'Where do you currently live?' },
+      { speaker: 'B', name: 'You', hu: 'Jelenleg Angliában lakunk, de gyakran járunk Magyarországra.', en: 'We currently live in England, but we often travel to Hungary.' },
+      { speaker: 'A', name: 'Official', hu: 'Miért szeretne magyar állampolgár lenni?', en: 'Why do you want to become a Hungarian citizen?' },
+      { speaker: 'B', name: 'You', hu: 'A házastársam magyar, és közel állok a családjához. Szeretem az országot és a nyelvet.', en: 'My spouse is Hungarian, and I am close to their family. I love the country and the language.' },
+      { speaker: 'A', name: 'Official', hu: 'Köszönöm. Kérem, írja alá itt.', en: 'Thank you. Please sign here.' },
+      { speaker: 'B', name: 'You', hu: 'Köszönöm szépen. Viszontlátásra!', en: 'Thank you very much. Goodbye!' }
+    ]
+  },
+  {
     id: 'restaurant',
     title: 'At the Restaurant',
     icon: '🍽️',

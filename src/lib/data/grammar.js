@@ -308,6 +308,237 @@ export const grammarGuides = [
         ]
       }
     ]
+  },
+  {
+    id: 'formal-register',
+    title: 'Formal Register (magázás)',
+    icon: '🎩',
+    summary: 'How officials, doctors and strangers speak to you — Ön, third-person verbs, and the polite -né/-na endings.',
+    sections: [
+      {
+        heading: 'Ön takes third-person verbs',
+        body: 'Hungarian has two "you". With friends you use te and second-person verbs; with officials and strangers you use Ön (or magázás with no pronoun at all) and the verb goes into the THIRD person — grammatically you are talking about the person, not to them. This is why interview questions sound like statements about someone else.',
+        table: {
+          headers: ['Informal (te)', 'Formal (Ön)', 'English'],
+          rows: [
+            ['Hogy vagy?', 'Hogy van?', 'How are you?'],
+            ['Hol laksz?', 'Hol lakik?', 'Where do you live?'],
+            ['Mit csinálsz?', 'Mit csinál?', 'What do you do?'],
+            ['Beszélsz magyarul?', 'Beszél magyarul?', 'Do you speak Hungarian?'],
+            ['Házas vagy?', 'Ön házas?', 'Are you married?'],
+            ['Vannak gyerekeid?', 'Vannak gyermekei?', 'Do you have children?'],
+            ['Mikor születtél?', 'Mikor született?', 'When were you born?']
+          ]
+        }
+      },
+      {
+        heading: 'Polite requests: the conditional -na / -ne / -ná / -né',
+        body: 'A request becomes polite by putting the verb in the conditional — literally "would you repeat it?" rather than "repeat it". This is the single most useful pattern in an official conversation.',
+        examples: [
+          { hu: 'Megismételné?', en: 'Could you repeat it?' },
+          { hu: 'Lebetűzné a nevét?', en: 'Could you spell your name?' },
+          { hu: 'Segítene?', en: 'Could you help?' },
+          { hu: 'Beszélne lassabban?', en: 'Could you speak more slowly?' },
+          { hu: 'Megmondaná, hol van a mosdó?', en: 'Could you tell me where the toilet is?' }
+        ]
+      },
+      {
+        heading: 'Instructions come as formal imperatives',
+        body: 'Officials give instructions with the third-person imperative, which usually ends in -on / -en / -jon / -jen. You mostly need to RECOGNISE these, not produce them.',
+        examples: [
+          { hu: 'Foglaljon helyet!', en: 'Please take a seat.' },
+          { hu: 'Jöjjön be, kérem!', en: 'Come in, please.' },
+          { hu: 'Írja alá itt!', en: 'Sign here.' },
+          { hu: 'Várjon egy pillanatot!', en: 'Wait a moment.' },
+          { hu: 'Mondja el újra!', en: 'Say it again.' }
+        ]
+      },
+      {
+        heading: 'When you did not understand',
+        body: 'Have these ready — asking for a repeat in Hungarian is far better than switching to English.',
+        examples: [
+          { hu: 'Elnézést, megismételné?', en: 'Sorry, could you repeat that?' },
+          { hu: 'Nem hallottam tisztán.', en: 'I did not hear it clearly.' },
+          { hu: 'Lassabban, kérem.', en: 'More slowly, please.' },
+          { hu: 'Ezt nem értem. Mit jelent?', en: 'I do not understand this. What does it mean?' },
+          { hu: 'Elnézést az akcentusomért.', en: 'Sorry about my accent.' }
+        ]
+      },
+      {
+        heading: 'Questions you will hear in an interview',
+        body: 'Learn to recognise the question, then answer with a short pattern.',
+        table: {
+          headers: ['Question', 'English'],
+          rows: [
+            ['Ön házas?', 'Are you married?'],
+            ['Mióta házas?', 'How long have you been married?'],
+            ['Mikor házasodtak össze?', 'When did you get married?'],
+            ['Milyen nemzetiségű a házastársa?', "What is your spouse's nationality?"],
+            ['Vannak gyermekei? Hány évesek?', 'Do you have children? How old are they?'],
+            ['Mikor születtek a gyermekei?', 'When were your children born?'],
+            ['Hol laknak jelenleg?', 'Where do you currently live?'],
+            ['Mi a foglalkozása?', 'What is your occupation?'],
+            ['Szereti a munkáját?', 'Do you like your job?'],
+            ['Miért szeretne magyar állampolgár lenni?', 'Why do you want to become a Hungarian citizen?']
+          ]
+        }
+      },
+      {
+        heading: 'Answer patterns',
+        body: 'Short and correct beats long and broken. Swap the bracketed part.',
+        examples: [
+          { hu: '[Nyolc] éve vagyok házas.', en: 'I have been married for [eight] years.' },
+          { hu: '[2018] óta vagyunk házasok.', en: 'We have been married since [2018].' },
+          { hu: '[Két] gyermekem van: egy fiam és egy lányom.', en: 'I have [two] children: a son and a daughter.' },
+          { hu: '[Szoftverfejlesztő] vagyok, egy [gyártó] cégnél dolgozom.', en: 'I am a [software developer], I work at a [manufacturing] company.' },
+          { hu: 'Jelenleg [Angliában] lakunk.', en: 'We currently live in [England].' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'dates-life-events',
+    title: 'Dates & Life Events',
+    icon: '💍',
+    summary: 'How to say when something happened — "We got married on 12 June 2021" — with dates, the past tense and marriage verbs.',
+    sections: [
+      {
+        heading: 'The sentence pattern',
+        body: 'Dates run big to small: year, month, day. The day takes the "on" ending -án / -én, and the verb goes into the past tense. Swap the bracketed parts for your own date.',
+        examples: [
+          { hu: '[2021]. [június] [12]-én házasodtunk össze.', en: 'We got married on [12] [June] [2021].' },
+          { hu: '2021. június 12-én házasodtunk össze.', en: 'We got married on 12 June 2021.' },
+          { hu: '1998. augusztus 8-án született.', en: 'She/He was born on 8 August 1998.' },
+          { hu: 'Jövő nyáron lesz az esküvőnk.', en: 'Our wedding will be next summer.' }
+        ]
+      },
+      {
+        heading: 'Ordinals: cardinal + -dik',
+        body: 'Ordinals are built by adding -dik to the cardinal number, with a linking vowel chosen by vowel harmony (-adik / -edik / -odik / -ödik). Only első (first) is irregular. In writing, use a full stop after the digit: 3. emelet = 3rd floor. To ask, use hányadik? (which one in order?).',
+        table: {
+          headers: ['Number', 'Cardinal', 'Ordinal'],
+          rows: [
+            ['1', 'egy', 'első (irregular!)'],
+            ['2', 'kettő / két', 'második (irregular!)'],
+            ['3', 'három', 'harmadik'],
+            ['4', 'négy', 'negyedik'],
+            ['5', 'öt', 'ötödik'],
+            ['6', 'hat', 'hatodik'],
+            ['10', 'tíz', 'tizedik'],
+            ['20', 'húsz', 'huszadik'],
+            ['21', 'huszonegy', 'huszonegyedik'],
+            ['100', 'száz', 'századik']
+          ]
+        },
+        examples: [
+          { hu: 'A harmadik emeleten lakunk.', en: 'We live on the third floor.' },
+          { hu: 'Ez a második esküvőnk.', en: 'This is our second wedding.' },
+          { hu: 'Hányadik vagy a sorban?', en: 'Which place are you in the queue?' }
+        ]
+      },
+      {
+        heading: 'The day: -án or -én',
+        body: 'The day is an ordinal number and the ending follows vowel harmony: back-vowel ordinals take -án, front-vowel ones -én. The 1st is irregular: elsején. In writing you can leave the ordinal unspelled and just attach the ending to the digits (12-én).',
+        table: {
+          headers: ['Written', 'Spoken', 'English'],
+          rows: [
+            ['1-jén', 'elsején', 'on the 1st'],
+            ['2-án', 'másodikán', 'on the 2nd'],
+            ['3-án', 'harmadikán', 'on the 3rd'],
+            ['4-én', 'negyedikén', 'on the 4th'],
+            ['5-én', 'ötödikén', 'on the 5th'],
+            ['12-én', 'tizenkettedikén', 'on the 12th'],
+            ['20-án', 'huszadikán', 'on the 20th'],
+            ['31-én', 'harmincegyedikén', 'on the 31st']
+          ]
+        }
+      },
+      {
+        heading: 'The months',
+        body: 'Months are not capitalised in Hungarian, and most are recognisable from English.',
+        table: {
+          headers: ['Hungarian', 'English'],
+          rows: [
+            ['január / február / március', 'January / February / March'],
+            ['április / május / június', 'April / May / June'],
+            ['július / augusztus / szeptember', 'July / August / September'],
+            ['október / november / december', 'October / November / December']
+          ]
+        }
+      },
+      {
+        heading: 'Years: -ban / -ben',
+        body: 'For a bare year, use the "in" ending: 2021-ben (kétezer-huszonegyben). If you give the full date, the year takes no ending — only the day does.',
+        examples: [
+          { hu: '2010-ben házasodtunk össze.', en: 'We got married in 2010.' },
+          { hu: '2010 nyarán házasodtunk össze.', en: 'We got married in the summer of 2010.' },
+          { hu: '2010 májusában született.', en: 'She/He was born in May 2010.' }
+        ]
+      },
+      {
+        heading: 'How long? éve, óta and a "still true" present tense',
+        body: 'For a state that started in the past and is STILL true, Hungarian uses the present tense — "I am married for twelve years", not "I have been". Two ways to say it: éve (for a length of time) or óta (since a point in time). After a number, év stays singular: tizenkét éve, never tizenkét évek. Ask with Mióta? (Since when? / How long?).',
+        table: {
+          headers: ['Hungarian', 'English', 'Built from'],
+          rows: [
+            ['Tizenkét éve vagyok házas.', 'I have been married for twelve years.', 'number + éve'],
+            ['Két éve vagyunk házasok.', 'We have been married for two years.', 'plural subject → házasok'],
+            ['2010 óta vagyunk házasok.', 'We have been married since 2010.', 'year + óta'],
+            ['Egy éve élünk itt.', 'We have lived here for a year.', 'number + éve'],
+            ['Hat hónapja tanulok magyarul.', 'I have been learning Hungarian for six months.', 'number + hónapja'],
+            ['Mióta házas?', 'How long have you been married? (formal)', 'question word']
+          ]
+        },
+        examples: [
+          { hu: 'Mióta házas? — Tizenkét éve.', en: 'How long have you been married? — Twelve years.' },
+          { hu: 'Mikor házasodtak össze? — 2010-ben.', en: 'When did you get married? — In 2010.' },
+          { hu: 'Tizenkét éve házasodtunk össze.', en: 'We got married twelve years ago.' }
+        ]
+      },
+      {
+        heading: 'Careful: éve means both "for" and "ago"',
+        body: 'With a present-tense verb, éve means "for" (a state that continues). With a past-tense verb, the same word means "ago" (a finished event). The verb tense carries the difference.',
+        examples: [
+          { hu: 'Tizenkét éve vagyok házas.', en: 'I have been married for twelve years. (still married)' },
+          { hu: 'Tizenkét éve megnősültem.', en: 'Twelve years ago I got married. (the event)' }
+        ]
+      },
+      {
+        heading: 'The past tense: add -t- + endings',
+        body: 'Past tense inserts -t- (or -ott/-ett/-ött) before the personal ending: házasodunk (we marry) → házasodtunk (we married).',
+        table: {
+          headers: ['Person', 'Present', 'Past'],
+          rows: [
+            ['I', 'megnősülök', 'megnősültem'],
+            ['you (sg.)', 'megnősülsz', 'megnősültél'],
+            ['he/she', 'megnősül', 'megnősült'],
+            ['we', 'összeházasodunk', 'összeházasodtunk'],
+            ['you (pl.)', 'összeházasodtok', 'összeházasodtatok'],
+            ['they', 'összeházasodnak', 'összeházasodtak']
+          ]
+        }
+      },
+      {
+        heading: 'Who is marrying changes the verb',
+        body: 'A woman "goes to a husband" (férjhez megy), a man "takes a wife" (megnősül), and a couple together "marry each other" (összeházasodnak).',
+        examples: [
+          { hu: '2021. június 12-én mentem férjhez.', en: 'I got married on 12 June 2021. (woman speaking)' },
+          { hu: '2021. június 12-én nősültem meg.', en: 'I got married on 12 June 2021. (man speaking)' },
+          { hu: 'Tavaly eljegyeztük egymást.', en: 'We got engaged last year.' },
+          { hu: 'Két éve elváltak.', en: 'They divorced two years ago.' }
+        ]
+      },
+      {
+        heading: 'Why "házasodtunk össze" and not "összeházasodtunk"?',
+        body: 'When something else is in focus — here the date — the verb prefix (össze, meg, férjhez) jumps behind the verb. Same verb, different spotlight.',
+        examples: [
+          { hu: 'Összeházasodtunk.', en: 'We got married. (neutral)' },
+          { hu: 'Június 12-én házasodtunk össze.', en: 'It was on 12 June that we got married.' },
+          { hu: 'Megnősültem.', en: 'I got married. (neutral, man speaking)' },
+          { hu: 'Tavaly nősültem meg.', en: 'It was last year that I got married.' }
+        ]
+      }
+    ]
   }
 ];
 
