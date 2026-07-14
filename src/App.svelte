@@ -219,6 +219,7 @@
   }
   .menu {
     display: none;
+    flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
@@ -231,9 +232,24 @@
     border-radius: 10px;
     box-shadow: var(--shadow);
   }
+  /* Invisible bridge across the gap, so the menu does not close mid-reach. */
+  .menu::before {
+    content: '';
+    position: absolute;
+    top: -0.35rem;
+    left: 0;
+    right: 0;
+    height: 0.35rem;
+  }
   .menu.open {
     display: flex;
-    flex-direction: column;
+  }
+  /* Hover only where hovering is real — a tap on a phone should not fire this. */
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .menu,
+    .group:focus-within .menu {
+      display: flex;
+    }
   }
   .menu a {
     padding: 0.45rem 0.6rem;
