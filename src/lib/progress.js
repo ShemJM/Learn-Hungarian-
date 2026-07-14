@@ -1,23 +1,46 @@
 /**
  * Learner progress, persisted to localStorage as a Svelte store.
  * Tracks quiz scores per lesson, known flashcard words, game best scores,
- * completed readings and practised dialogues.
+ * completed readings and practised dialogues, plus the visit history the
+ * dashboard needs (streak, "what you did last time", recent activity).
  */
 import { writable } from 'svelte/store';
 import { applyReview, dayStamp } from './srs.js';
 
 const KEY = 'learn-hungarian-progress-v1';
 
+/** Reloads within this window count as the same visit, not a new one. */
+export const SESSION_GAP_MS = 30 * 60 * 1000;
+
+/** How many recent activity entries to keep. */
+export const ACTIVITY_LIMIT = 30;
+
 export function defaultProgress() {
   return {
     quizScores: {},      // lessonId -> best percent
-    knownWords: [],      // hungarian words marked as known
+    knownWords: [],      // target-language words marked as known
     gameBest: {},        // gameId -> best score
     readingsDone: [],    // reading ids
     dialoguesDone: [],   // dialogue ids
+    guidesRead: [],      // grammar guide ids opened
     pronunciationStars: {}, // phrase -> best score 0..1
-    srs: {} // hungarian word -> { box: 1..5, last: dayStamp } spaced-repetition state
+    srs: {},             // word -> { box: 1..5, last: dayStamp } spaced-repetition state
+    activity: [],        // newest first: { t, type, id, label }
+    daysActive: [],      // dayStamps on which the learner did something (ascending)
+    visit: { current: null, previous: null } // epoch ms of this visit and the one before
   };
+}
+
+/** Record that the learner was active on the day of `now` (idempotent per day). */
+function touchDay(p, now) {
+  const day = dayStamp(now);
+  if (!p.daysActive.includes(day)) p.daysActive = [...p.daysActive, day].sort((a, b) => a - b);
+}
+
+/** Push an activity entry, newest first, capped. */
+function appendActivity(p, entry, now) {
+  p.activity = [{ t: now, ...entry }, ...p.activity].slice(0, ACTIVITY_LIMIT);
+  touchDay(p, now);
 }
 
 function load(storage) {
@@ -51,9 +74,24 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
 
   return {
     subscribe,
-    recordQuiz: (lessonId, percent) =>
+    /**
+     * Call once when the app loads. Rotates visit.current into visit.previous
+     * so the dashboard can show "what you did last time", unless this is just
+     * a reload within SESSION_GAP_MS.
+     */
+    startVisit: (now = Date.now()) =>
+      mutate((p) => {
+        const sameSession = p.visit.current && now - p.visit.current < SESSION_GAP_MS;
+        if (!sameSession) {
+          p.visit = { current: now, previous: p.visit.current ?? null };
+        }
+        touchDay(p, now);
+        return p;
+      }),
+    recordQuiz: (lessonId, percent, now = Date.now()) =>
       mutate((p) => {
         p.quizScores[lessonId] = Math.max(p.quizScores[lessonId] || 0, percent);
+        appendActivity(p, { type: 'quiz', id: lessonId, label: `Quiz: ${lessonId} — ${percent}%` }, now);
         return p;
       }),
     toggleKnownWord: (hu) =>
@@ -61,29 +99,51 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
         p.knownWords = p.knownWords.includes(hu) ? p.knownWords.filter((w) => w !== hu) : [...p.knownWords, hu];
         return p;
       }),
-    recordGame: (gameId, score) =>
+    recordGame: (gameId, score, now = Date.now()) =>
       mutate((p) => {
         p.gameBest[gameId] = Math.max(p.gameBest[gameId] || 0, score);
+        appendActivity(p, { type: 'game', id: gameId, label: `Game: ${gameId} — ${score} points` }, now);
         return p;
       }),
-    markReadingDone: (id) =>
+    markReadingDone: (id, now = Date.now()) =>
       mutate((p) => {
         if (!p.readingsDone.includes(id)) p.readingsDone.push(id);
+        appendActivity(p, { type: 'reading', id, label: `Read: ${id}` }, now);
         return p;
       }),
-    markDialogueDone: (id) =>
+    markDialogueDone: (id, now = Date.now()) =>
       mutate((p) => {
         if (!p.dialoguesDone.includes(id)) p.dialoguesDone.push(id);
+        appendActivity(p, { type: 'dialogue', id, label: `Dialogue: ${id}` }, now);
+        return p;
+      }),
+    markGuideRead: (id, now = Date.now()) =>
+      mutate((p) => {
+        if (p.guidesRead.includes(id)) return p; // don't spam the log on re-reads
+        p.guidesRead.push(id);
+        appendActivity(p, { type: 'guide', id, label: `Grammar guide: ${id}` }, now);
         return p;
       }),
     recordReview: (hu, correct, now = Date.now()) =>
       mutate((p) => {
         p.srs[hu] = applyReview(p.srs[hu], correct, dayStamp(now));
+        touchDay(p, now); // individual cards are too noisy for the activity log
         return p;
       }),
-    recordPronunciation: (phrase, score) =>
+    /** Called once when a review session ends, so the log gets one entry, not twenty. */
+    logReviewSession: (cardCount, correctCount, now = Date.now()) =>
+      mutate((p) => {
+        appendActivity(
+          p,
+          { type: 'review', id: 'review', label: `Review: ${correctCount}/${cardCount} correct` },
+          now
+        );
+        return p;
+      }),
+    recordPronunciation: (phrase, score, now = Date.now()) =>
       mutate((p) => {
         p.pronunciationStars[phrase] = Math.max(p.pronunciationStars[phrase] || 0, score);
+        touchDay(p, now);
         return p;
       }),
     reset: () => {

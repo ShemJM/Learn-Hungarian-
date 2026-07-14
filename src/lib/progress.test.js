@@ -100,4 +100,57 @@ describe('progress store', () => {
     noStore.recordQuiz('food', 50);
     expect(get(noStore).quizScores.food).toBe(50);
   });
+
+  describe('visits and activity', () => {
+    const t0 = Date.UTC(2026, 6, 10, 9, 0, 0);
+    const HOUR = 3600000;
+
+    it('rotates the previous visit forward on a new session', () => {
+      store.startVisit(t0);
+      expect(get(store).visit).toEqual({ current: t0, previous: null });
+      store.startVisit(t0 + 24 * HOUR);
+      expect(get(store).visit).toEqual({ current: t0 + 24 * HOUR, previous: t0 });
+    });
+
+    it('treats a quick reload as the same visit', () => {
+      store.startVisit(t0);
+      store.startVisit(t0 + 60_000); // one minute later — a refresh, not a new visit
+      expect(get(store).visit).toEqual({ current: t0, previous: null });
+    });
+
+    it('logs activity newest first, with a cap', () => {
+      store.recordQuiz('food', 80, t0);
+      store.markGuideRead('cases', t0 + 1);
+      const { activity } = get(store);
+      expect(activity[0].type).toBe('guide');
+      expect(activity[1].label).toBe('Quiz: food — 80%');
+      expect(activity).toHaveLength(2);
+    });
+
+    it('does not re-log a guide that was already read', () => {
+      store.markGuideRead('cases', t0);
+      store.markGuideRead('cases', t0 + HOUR);
+      expect(get(store).guidesRead).toEqual(['cases']);
+      expect(get(store).activity).toHaveLength(1);
+    });
+
+    it('logs one entry per review session, not per card', () => {
+      store.recordReview('alma', true, t0);
+      store.recordReview('bor', false, t0);
+      expect(get(store).activity).toHaveLength(0);
+      store.logReviewSession(2, 1, t0);
+      expect(get(store).activity).toEqual([
+        { t: t0, type: 'review', id: 'review', label: 'Review: 1/2 correct' }
+      ]);
+    });
+
+    it('records active days once each, for streaks', () => {
+      store.startVisit(t0);
+      store.recordQuiz('food', 80, t0 + HOUR); // same day
+      store.recordQuiz('food', 90, t0 + 26 * HOUR); // next day
+      const { daysActive } = get(store);
+      expect(daysActive).toHaveLength(2);
+      expect(daysActive[1] - daysActive[0]).toBe(1);
+    });
+  });
 });

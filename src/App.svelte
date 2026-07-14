@@ -13,20 +13,57 @@
   import Review from './pages/Review.svelte';
   import Verbs from './pages/Verbs.svelte';
 
-  const nav = [
-    { path: 'home', label: 'Home', icon: '🏠' },
-    { path: 'lessons', label: 'Lessons', icon: '📚' },
-    { path: 'review', label: 'Review', icon: '🔁' },
-    { path: 'grammar', label: 'Grammar', icon: '🧩' },
-    { path: 'verbs', label: 'Verbs', icon: '⚙️' },
-    { path: 'reading', label: 'Reading', icon: '📖' },
-    { path: 'conversation', label: 'Conversation', icon: '💬' },
-    { path: 'pronunciation', label: 'Pronunciation', icon: '🎤' },
-    { path: 'rolled-r', label: "Roll your R's", icon: '👅' },
-    { path: 'games', label: 'Games', icon: '🎲' },
-    { path: 'citizenship', label: 'Citizenship', icon: '🪪' }
+  import { progress } from './lib/progress.js';
+
+  // Eleven flat links forced a decision on every visit. Four groups + Home keeps
+  // the top level small; the dashboard tells the learner what to do next.
+  const groups = [
+    {
+      label: 'Learn',
+      items: [
+        { path: 'lessons', label: 'Lessons', icon: '📚' },
+        { path: 'grammar', label: 'Grammar', icon: '🧩' },
+        { path: 'verbs', label: 'Verbs', icon: '⚙️' }
+      ]
+    },
+    {
+      label: 'Practice',
+      items: [
+        { path: 'review', label: 'Daily Review', icon: '🔁' },
+        { path: 'games', label: 'Games', icon: '🎲' },
+        { path: 'pronunciation', label: 'Pronunciation', icon: '🎤' },
+        { path: 'rolled-r', label: "Roll your R's", icon: '👅' }
+      ]
+    },
+    {
+      label: 'Immerse',
+      items: [
+        { path: 'reading', label: 'Reading', icon: '📖' },
+        { path: 'conversation', label: 'Conversation', icon: '💬' }
+      ]
+    },
+    {
+      label: 'Exam',
+      items: [{ path: 'citizenship', label: 'Citizenship', icon: '🪪' }]
+    }
   ];
+
+  let openGroup = $state(null);
+
+  progress.startVisit();
+
+  // Any navigation closes the menu.
+  $effect(() => {
+    $route.page;
+    openGroup = null;
+  });
+
+  function groupIsActive(group) {
+    return group.items.some((i) => i.path === $route.page);
+  }
 </script>
+
+<svelte:window onkeydown={(e) => e.key === 'Escape' && (openGroup = null)} />
 
 <header>
   <a class="brand" href="#/home">
@@ -34,10 +71,24 @@
     <span>Learn Hungarian <span class="sub">· Tanulj magyarul!</span></span>
   </a>
   <nav>
-    {#each nav as item}
-      <a href={'#/' + item.path} class:active={$route.page === item.path || ($route.page === 'home' && item.path === 'home')}>
-        <span class="icon">{item.icon}</span>{item.label}
-      </a>
+    <a href="#/home" class:active={$route.page === 'home'}><span class="icon">🏠</span>Home</a>
+    {#each groups as group}
+      <div class="group">
+        <button
+          class:active={groupIsActive(group)}
+          aria-expanded={openGroup === group.label}
+          onclick={() => (openGroup = openGroup === group.label ? null : group.label)}
+        >
+          {group.label} <span class="caret">▾</span>
+        </button>
+        <div class="menu" class:open={openGroup === group.label}>
+          {#each group.items as item}
+            <a href={'#/' + item.path} class:active={$route.page === item.path}>
+              <span class="icon">{item.icon}</span>{item.label}
+            </a>
+          {/each}
+        </div>
+      </div>
     {/each}
   </nav>
 </header>
@@ -141,6 +192,52 @@
   nav a.active {
     background: var(--accent);
     color: var(--white);
+  }
+  .group {
+    position: relative;
+  }
+  .group > button {
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem 0.7rem;
+    border-radius: 8px;
+  }
+  .group > button:hover {
+    background: var(--accent-soft);
+  }
+  .group > button.active {
+    background: var(--accent);
+    color: var(--white);
+  }
+  .caret {
+    font-size: 0.7rem;
+  }
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 20;
+    min-width: 12rem;
+    margin-top: 0.25rem;
+    padding: 0.3rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .menu.open {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu a {
+    padding: 0.45rem 0.6rem;
+    white-space: nowrap;
   }
   .icon {
     margin-right: 0.25rem;

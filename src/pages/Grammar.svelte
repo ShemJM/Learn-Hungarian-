@@ -1,9 +1,15 @@
 <script>
   import { grammarGuides, getGuide } from '../lib/data/grammar.js';
+  import { progress } from '../lib/progress.js';
   import AudioButton from '../lib/components/AudioButton.svelte';
 
   let { id = null } = $props();
   let guide = $derived(id ? getGuide(id) : null);
+
+  // Opening a guide counts as reading it — it feeds the dashboard's readiness breakdown.
+  $effect(() => {
+    if (guide) progress.markGuideRead(guide.id);
+  });
 </script>
 
 {#if !guide}

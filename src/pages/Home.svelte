@@ -2,9 +2,23 @@
   import { lessons, allWords } from '../lib/data/lessons.js';
   import { grammarGuides } from '../lib/data/grammar.js';
   import { readings } from '../lib/data/readings.js';
-  import { dialogues } from '../lib/data/dialogues.js';
+  import { dialogues, getDialogue } from '../lib/data/dialogues.js';
+  import { getLesson } from '../lib/data/lessons.js';
   import { progress } from '../lib/progress.js';
-  import { dayStamp, dueWords } from '../lib/srs.js';
+  import { dayStamp } from '../lib/srs.js';
+  import { streak, vocabMastery, lastVisitActivity, relativeDay, examReadiness, nextAction, reviewDue } from '../lib/stats.js';
+
+  /**
+   * What the citizenship interview actually asks of a learner. Kept here (not in
+   * stats.js) so the scoring stays course-agnostic and this is the only place
+   * that names Hungarian content.
+   */
+  const EXAM_PLAN = {
+    words: getLesson('interview')?.words ?? [],
+    dialogueIds: ['interview-personal', 'interview-work'],
+    guideIds: ['formal-register', 'dates-life-events'],
+    phrases: (getLesson('interview')?.phrases ?? []).map((p) => p.hu)
+  };
 
   const features = [
     { href: '#/lessons', icon: '📚', title: 'Lessons', desc: `${lessons.length} themed vocabulary lessons with audio, pronunciation guides and quizzes.` },
@@ -18,34 +32,114 @@
     { href: '#/citizenship', icon: '🪪', title: 'Citizenship Interview Prep', desc: 'Common naturalisation interview questions, model answers and tips, plus builders for your own job, home and family sentences.' }
   ];
 
-  let dueToday = $derived(dueWords(allWords(), $progress.srs, dayStamp()).length);
-  let quizzesDone = $derived(Object.keys($progress.quizScores).length);
-  let avgScore = $derived(
-    quizzesDone ? Math.round(Object.values($progress.quizScores).reduce((a, b) => a + b, 0) / quizzesDone) : 0
+  const words = allWords();
+
+  // Only words already met count as "due" — an unseen word is new, not forgotten.
+  let dueToday = $derived(reviewDue(words, $progress.srs, dayStamp()));
+  let mastery = $derived(vocabMastery(words, $progress.srs));
+  let days = $derived(streak($progress.daysActive, dayStamp()));
+  let readiness = $derived(examReadiness($progress, EXAM_PLAN));
+  let lastVisit = $derived(lastVisitActivity($progress.activity, $progress.visit));
+  let lastVisitWhen = $derived(relativeDay($progress.visit.previous));
+  let returning = $derived(Boolean($progress.visit.previous));
+  let hasStarted = $derived(Object.keys($progress.srs).length > 0 || Object.keys($progress.quizScores).length > 0);
+
+  let nextLesson = $derived(lessons.find((l) => !($progress.quizScores[l.id] >= 60))?.id ?? null);
+  let nextGuide = $derived(grammarGuides.find((g) => !$progress.guidesRead.includes(g.id))?.id ?? null);
+  let nextDialogue = $derived(dialogues.find((d) => !$progress.dialoguesDone.includes(d.id))?.id ?? null);
+  let action = $derived(
+    nextAction({
+      dueCount: dueToday,
+      hasStarted,
+      nextLessonId: nextLesson,
+      readiness,
+      unreadGuideId: nextGuide,
+      unrehearsedDialogueId: nextDialogue
+    })
   );
+
+  /** Turn a logged activity id into something a human recognises. */
+  function pretty(entry) {
+    if (entry.type === 'quiz') return `Quiz — ${getLesson(entry.id)?.title ?? entry.id}`;
+    if (entry.type === 'dialogue') return `Dialogue — ${getDialogue(entry.id)?.title ?? entry.id}`;
+    if (entry.type === 'guide') return `Grammar — ${grammarGuides.find((g) => g.id === entry.id)?.title ?? entry.id}`;
+    return entry.label;
+  }
 </script>
 
 <div class="hero card">
-  <h1>Üdvözöllek! 👋</h1>
-  <p>
-    Welcome to your complete Hungarian course. Hungarian (<span class="hu">magyar</span>) is famous for its
-    vowel harmony, its suffixes and its beauty — and it is far more learnable than its reputation suggests.
-    Start with the lessons, check the grammar guides when curious, and use the games and the microphone to
-    make it stick.
-  </p>
-</div>
-
-<div class="card stats">
-  <div><strong>{lessons.length}</strong><span class="muted">lessons</span></div>
-  <div><strong>{allWords().length}</strong><span class="muted">words</span></div>
-  <div><strong>{$progress.knownWords.length}</strong><span class="muted">words known</span></div>
-  <div><strong>{dueToday}</strong><span class="muted">due for review</span></div>
-  <div><strong>{quizzesDone}</strong><span class="muted">quizzes passed</span></div>
-  {#if quizzesDone}
-    <div><strong>{avgScore}%</strong><span class="muted">avg score</span></div>
+  {#if returning}
+    <h1>Üdv újra! 👋 <span class="sub">Welcome back</span></h1>
+    <p class="muted">
+      {#if days > 1}
+        You are on a <strong>{days}-day streak</strong>. Last visit was {lastVisitWhen}.
+      {:else}
+        Last visit was {lastVisitWhen}. Do something small today and the streak starts again.
+      {/if}
+    </p>
+    {#if lastVisit.length}
+      <div class="lastvisit">
+        <h3>Last time you…</h3>
+        <ul>
+          {#each lastVisit.slice(0, 4) as entry}
+            <li>{pretty(entry)}</li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
+  {:else}
+    <h1>Üdvözöllek! 👋</h1>
+    <p>
+      Welcome to your complete Hungarian course. Hungarian (<span class="hu">magyar</span>) is famous for its
+      vowel harmony, its suffixes and its beauty — and it is far more learnable than its reputation suggests.
+      Start with a lesson below; the app will remember where you got to and schedule your reviews.
+    </p>
   {/if}
 </div>
 
+<a class="card action" href={action.href}>
+  <div class="icon">▶️</div>
+  <div>
+    <h2>{action.label}</h2>
+    <p class="muted">{action.why}</p>
+  </div>
+</a>
+
+<div class="grid two">
+  <div class="card">
+    <h3>📈 Vocabulary</h3>
+    <div class="bar" role="img" aria-label={`${mastery.percent}% of words mastered`}>
+      <span class="fill mastered" style={`width:${mastery.percent}%`}></span>
+      <span class="fill learning" style={`width:${(mastery.total ? (mastery.learning / mastery.total) * 100 : 0)}%`}></span>
+    </div>
+    <p class="big">{mastery.percent}%<span class="muted"> of {mastery.total} words mastered</span></p>
+    <p class="muted small">
+      <strong>{mastery.mastered}</strong> mastered · <strong>{mastery.learning}</strong> still learning ·
+      <strong>{mastery.unseen}</strong> not started · <strong>{dueToday}</strong> due today
+    </p>
+    <p class="muted small">A word counts as mastered once it survives four spaced reviews.</p>
+  </div>
+
+  <div class="card">
+    <h3>🪪 Exam readiness <span class="muted small">— {readiness.overall}%</span></h3>
+    {#each readiness.components as c}
+      <div class="row">
+        <div class="rowhead">
+          <span>{c.label}</span>
+          <strong>{c.percent}%</strong>
+        </div>
+        <div class="bar thin"><span class="fill mastered" style={`width:${c.percent}%`}></span></div>
+        <p class="muted small">{c.detail}</p>
+      </div>
+    {/each}
+    <p class="muted small caveat">
+      This counts what you have <em>practised</em> — it cannot predict what an examiner will ask. Treat it as a
+      checklist, not a forecast.
+    </p>
+  </div>
+</div>
+
+<h2 class="section">Everything else</h2>
 <div class="grid two">
   {#each features as f}
     <a class="card feature" href={f.href}>
@@ -69,20 +163,86 @@
   .hero h1 {
     margin-top: 0;
   }
-  .stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-    text-align: center;
+  .hero h1 .sub {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted);
   }
-  .stats div {
-    display: flex;
-    flex-direction: column;
+  .lastvisit h3 {
+    margin: 0.8rem 0 0.3rem;
+    font-size: 0.95rem;
   }
-  .stats strong {
-    font-size: 1.5rem;
-    color: var(--accent);
+  .lastvisit ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--muted);
+  }
+  .action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    border-left: 5px solid var(--accent);
+  }
+  .action h2 {
+    margin: 0 0 0.2rem;
+  }
+  .action p {
+    margin: 0;
+  }
+  .action .icon {
+    font-size: 1.8rem;
+  }
+  .action:hover {
+    background: var(--accent-soft);
+  }
+  .bar {
+    display: flex;
+    height: 12px;
+    border-radius: 99px;
+    overflow: hidden;
+    background: var(--border);
+  }
+  .bar.thin {
+    height: 8px;
+  }
+  .fill.mastered {
+    background: var(--accent);
+  }
+  .fill.learning {
+    background: var(--accent-soft);
+  }
+  .big {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0.6rem 0 0.2rem;
+  }
+  .big .muted {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+  .small {
+    font-size: 0.85rem;
+  }
+  .row {
+    margin-bottom: 0.7rem;
+  }
+  .rowhead {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  .row p {
+    margin: 0.2rem 0 0;
+  }
+  .caveat {
+    border-top: 1px solid var(--border);
+    padding-top: 0.6rem;
+  }
+  .section {
+    margin: 1.5rem 0 0.75rem;
   }
   .feature {
     text-decoration: none;

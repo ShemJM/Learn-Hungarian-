@@ -59,6 +59,7 @@
   function next() {
     if (index + 1 >= session.length) {
       status = 'done';
+      progress.logReviewSession(session.length, correctCount); // one log entry per session, not per card
       totalDue = dueWords(allWords(), $progress.srs, dayStamp()).length;
     } else {
       index += 1;
