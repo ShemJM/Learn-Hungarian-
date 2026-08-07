@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BOX_COUNT, INTERVALS, dayStamp, isDue, dueWords, applyReview, buildSession } from './srs.js';
+import { BOX_COUNT, INTERVALS, dayStamp, isDue, dueWords, applyReview, buildSession, srsKey } from './srs.js';
 
 const words = [
   { hu: 'alma', en: 'apple' },
@@ -93,5 +93,51 @@ describe('buildSession', () => {
   it('returns empty when nothing is due', () => {
     const state = Object.fromEntries(words.map((w) => [w.hu, { box: 5, last: 100 }]));
     expect(buildSession(words, state, 101, { rng: identityRng })).toEqual([]);
+  });
+
+  it('caps unseen phrase cards at maxNewPhrases, independent of maxNew', () => {
+    const phrases = [
+      { key: 'p:Jó napot!', hu: 'Jó napot!', en: 'Good day!', isPhrase: true },
+      { key: 'p:Szia!', hu: 'Szia!', en: 'Hi!', isPhrase: true },
+      { key: 'p:Nem értem.', hu: 'Nem értem.', en: "I don't understand.", isPhrase: true }
+    ];
+    const session = buildSession([...words, ...phrases], {}, 100, {
+      maxNew: 10,
+      maxNewPhrases: 1,
+      rng: identityRng
+    });
+    expect(session.filter((c) => c.isPhrase).length).toBe(1);
+    expect(session.filter((c) => !c.isPhrase).length).toBe(words.length);
+  });
+
+  it('already-seen phrases count as seen, not against maxNewPhrases', () => {
+    const phrases = [
+      { key: 'p:Jó napot!', hu: 'Jó napot!', en: 'Good day!', isPhrase: true },
+      { key: 'p:Szia!', hu: 'Szia!', en: 'Hi!', isPhrase: true }
+    ];
+    const state = { 'p:Jó napot!': { box: 1, last: 100 } };
+    const session = buildSession(phrases, state, 100, { maxNewPhrases: 0, rng: identityRng });
+    expect(session.map((c) => c.key)).toEqual(['p:Jó napot!']);
+  });
+});
+
+describe('srsKey', () => {
+  it('uses the raw hu string for words (legacy-compatible)', () => {
+    expect(srsKey({ hu: 'alma', en: 'apple' })).toBe('alma');
+  });
+
+  it('prefers an explicit key for phrase cards', () => {
+    expect(srsKey({ key: 'p:alma', hu: 'alma', isPhrase: true })).toBe('p:alma');
+  });
+
+  it('keeps a word and a phrase with identical hu in independent boxes', () => {
+    const word = { hu: 'Szia' };
+    const phrase = { key: 'p:Szia', hu: 'Szia', isPhrase: true };
+    let state = {};
+    state[srsKey(word)] = applyReview(state[srsKey(word)], true, 100); // word promoted
+    state[srsKey(phrase)] = applyReview(state[srsKey(phrase)], false, 100); // phrase missed
+    expect(state['Szia'].box).toBe(2);
+    expect(state['p:Szia'].box).toBe(1);
+    expect(dueWords([word, phrase], state, 100).map(srsKey)).toEqual(['p:Szia']);
   });
 });

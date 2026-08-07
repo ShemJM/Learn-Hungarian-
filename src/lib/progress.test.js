@@ -83,6 +83,49 @@ describe('progress store', () => {
     expect(get(reloaded).quizScores.numbers).toBe(80);
   });
 
+  it('records the best exercise score per set', () => {
+    store.recordExercises('lesson:food', 60);
+    store.recordExercises('lesson:food', 85);
+    store.recordExercises('lesson:food', 70); // lower than best — ignored
+    expect(get(store).exerciseScores['lesson:food']).toBe(85);
+    expect(get(store).activity[0].type).toBe('exercises');
+  });
+
+  it('marks lessons started exactly once', () => {
+    store.markLessonStarted('greetings');
+    store.markLessonStarted('greetings');
+    expect(get(store).lessonsStarted).toEqual(['greetings']);
+    expect(get(store).activity).toHaveLength(0); // starting a lesson is not log-worthy on its own
+  });
+
+  it('backfills new top-level keys when loading a pre-exercise-era blob', () => {
+    // A realistic payload saved by the previous version of the app: raw-hu SRS
+    // keys, no exerciseScores / lessonsStarted at all.
+    storage.setItem(
+      'learn-hungarian-progress-v1',
+      JSON.stringify({
+        quizScores: { greetings: 80 },
+        knownWords: ['Szia'],
+        gameBest: { matching: 400 },
+        readingsDone: ['anna'],
+        dialoguesDone: ['cafe'],
+        guidesRead: ['alphabet'],
+        pronunciationStars: { Szia: 0.9 },
+        srs: { Köszönöm: { box: 3, last: 20600 } },
+        activity: [],
+        daysActive: [20600],
+        visit: { current: 1780000000000, previous: null }
+      })
+    );
+    const migrated = createProgressStore(storage);
+    const p = get(migrated);
+    expect(p.srs['Köszönöm']).toEqual({ box: 3, last: 20600 }); // old SRS state intact
+    expect(p.exerciseScores).toEqual({});
+    expect(p.lessonsStarted).toEqual([]);
+    migrated.recordExercises('grammar:cases', 75); // and the new methods work on it
+    expect(get(migrated).exerciseScores['grammar:cases']).toBe(75);
+  });
+
   it('survives corrupted storage', () => {
     storage.setItem('learn-hungarian-progress-v1', '{not json');
     const fresh = createProgressStore(storage);

@@ -12,6 +12,7 @@
   import Citizenship from './pages/Citizenship.svelte';
   import Review from './pages/Review.svelte';
   import Verbs from './pages/Verbs.svelte';
+  import Practice from './pages/Practice.svelte';
 
   import { progress } from './lib/progress.js';
 
@@ -114,6 +115,8 @@
     <RolledR />
   {:else if $route.page === 'games'}
     <Games game={$route.param} />
+  {:else if $route.page === 'practice'}
+    <Practice setId={$route.param} />
   {:else if $route.page === 'review'}
     <Review />
   {:else if $route.page === 'verbs'}

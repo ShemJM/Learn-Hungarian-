@@ -24,7 +24,9 @@ export function defaultProgress() {
     dialoguesDone: [],   // dialogue ids
     guidesRead: [],      // grammar guide ids opened
     pronunciationStars: {}, // phrase -> best score 0..1
-    srs: {},             // word -> { box: 1..5, last: dayStamp } spaced-repetition state
+    srs: {},             // srsKey -> { box: 1..5, last: dayStamp } spaced-repetition state
+    exerciseScores: {},  // exercise set id ('lesson:food', 'grammar:cases', 'checkpoint:u3', 'verbs:past') -> best percent
+    lessonsStarted: [],  // lesson ids whose vocabulary has been released into the review pool
     activity: [],        // newest first: { t, type, id, label }
     daysActive: [],      // dayStamps on which the learner did something (ascending)
     visit: { current: null, previous: null } // epoch ms of this visit and the one before
@@ -138,6 +140,19 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
           { type: 'review', id: 'review', label: `Review: ${correctCount}/${cardCount} correct` },
           now
         );
+        return p;
+      }),
+    recordExercises: (setId, percent, now = Date.now()) =>
+      mutate((p) => {
+        p.exerciseScores[setId] = Math.max(p.exerciseScores[setId] || 0, percent);
+        appendActivity(p, { type: 'exercises', id: setId, label: `Practice: ${setId} — ${percent}%` }, now);
+        return p;
+      }),
+    /** Releases the lesson's words and phrases into the SRS review pool (idempotent). */
+    markLessonStarted: (lessonId, now = Date.now()) =>
+      mutate((p) => {
+        if (!p.lessonsStarted.includes(lessonId)) p.lessonsStarted.push(lessonId);
+        touchDay(p, now);
         return p;
       }),
     recordPronunciation: (phrase, score, now = Date.now()) =>

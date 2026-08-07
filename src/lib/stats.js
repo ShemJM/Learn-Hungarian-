@@ -5,7 +5,7 @@
  *
  * All functions take `now`/`today` explicitly so tests stay deterministic.
  */
-import { dayStamp } from './srs.js';
+import { dayStamp, srsKey, INTERVALS } from './srs.js';
 
 /** An SRS box at or above this counts as "mastered" (survived ~4+ days of spacing). */
 export const MASTERY_BOX = 4;
@@ -35,7 +35,7 @@ export function vocabMastery(words, srs = {}) {
   let mastered = 0;
   let learning = 0;
   for (const w of words) {
-    const entry = srs[w.hu];
+    const entry = srs[srsKey(w)];
     if (!entry) continue;
     if (entry.box >= MASTERY_BOX) mastered++;
     else learning++;
@@ -123,11 +123,11 @@ export function examReadiness(progress, plan) {
   return { overall, components };
 }
 
-/** Words the learner has actually met before and that are due again today. */
+/** Cards the learner has actually met before and that are due again today. */
 export function reviewDue(words, srs = {}, today = dayStamp()) {
   return words.filter((w) => {
-    const entry = srs[w.hu];
-    return entry && today >= entry.last + [0, 1, 2, 4, 8][entry.box - 1];
+    const entry = srs[srsKey(w)];
+    return entry && today >= entry.last + INTERVALS[entry.box - 1];
   }).length;
 }
 
