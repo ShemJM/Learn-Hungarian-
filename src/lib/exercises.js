@@ -18,6 +18,7 @@
  */
 import { getLesson } from './data/lessons.js';
 import { getGuide } from './data/grammar.js';
+import { getUnit } from './data/course.js';
 import { buildQuiz } from './quiz.js';
 import { buildRound, isSolved, tokenize } from './games/sentencebuilder.js';
 import { checkAnswer, sample, shuffle } from './text.js';
@@ -142,6 +143,24 @@ export function buildGrammarSession(guide, { rng = Math.random } = {}) {
   });
 }
 
+/**
+ * The unit's "boss level": a mix drawn from every lesson and grammar guide
+ * the unit teaches, so passing it means the whole unit stuck.
+ */
+export function buildCheckpointSession(unit, { count = 15, rng = Math.random } = {}) {
+  const items = [];
+  for (const step of unit.steps) {
+    if (step.type === 'lesson') {
+      const lesson = getLesson(step.ref);
+      if (lesson) items.push(...buildLessonSession(lesson, { count: 6, rng }));
+    } else if (step.type === 'guide') {
+      const guide = getGuide(step.ref);
+      if (guide) items.push(...sample(buildGrammarSession(guide, { rng }), 4, rng));
+    }
+  }
+  return shuffle(items, rng).slice(0, count);
+}
+
 /** Grade a learner response against an item. quality is null for non-typed kinds. */
 export function gradeItem(item, response) {
   if (item.kind === 'mcq') return { correct: response === item.answer, quality: null };
@@ -152,7 +171,7 @@ export function gradeItem(item, response) {
 
 /**
  * Resolve an exercise-set id to { id, title, icon, build(rng) }, or null.
- * Ids: 'lesson:<lessonId>' | 'grammar:<guideId>'.
+ * Ids: 'lesson:<lessonId>' | 'grammar:<guideId>' | 'checkpoint:<unitId>'.
  */
 export function getExerciseSet(setId) {
   const sep = (setId || '').indexOf(':');
@@ -177,6 +196,16 @@ export function getExerciseSet(setId) {
       title: `Practise: ${guide.title}`,
       icon: guide.icon,
       build: (rng = Math.random) => buildGrammarSession(guide, { rng })
+    };
+  }
+  if (kind === 'checkpoint') {
+    const unit = getUnit(ref);
+    if (!unit) return null;
+    return {
+      id: setId,
+      title: `Checkpoint: ${unit.title}`,
+      icon: '🏁',
+      build: (rng = Math.random) => buildCheckpointSession(unit, { rng })
     };
   }
   return null;
