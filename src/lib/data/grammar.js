@@ -1,6 +1,10 @@
 /**
- * Grammar guides. Each guide: id, title, icon, summary, sections.
+ * Grammar guides. Each guide: id, title, icon, summary, sections, exercises.
  * Sections: { heading, body (plain text, may contain \n for paragraphs), examples: [{hu, en}], table? }.
+ * Exercises: { prompt, answer, hint? } — hand-authored typed drills, because
+ * Hungarian morphology (harmony variants, assimilation, irregulars) is not
+ * safely generatable. `answer` is a string or an array of accepted variants
+ * (first one is the display form). Answers are graded accent-leniently.
  */
 export const grammarGuides = [
   {
@@ -8,6 +12,17 @@ export const grammarGuides = [
     title: 'Alphabet & Pronunciation',
     icon: '🔤',
     summary: 'Hungarian spelling is wonderfully phonetic — once you know the rules, you can pronounce anything.',
+    exercises: [
+      { prompt: 'Spell the word for "hi", pronounced SEE-yaw', answer: 'szia', hint: 'the English s sound is written sz' },
+      { prompt: 'Spell the word for "good", pronounced YOH', answer: 'jó', hint: 'the y sound is written j' },
+      { prompt: 'Spell the word for "beer", pronounced SHUHR', answer: 'sör', hint: 'the sh sound is written with a single s' },
+      { prompt: 'Spell the word for "beautiful", pronounced SAYP', answer: 'szép', hint: 'sz for the s sound, é for the long ay' },
+      { prompt: 'Spell the word for "street", pronounced OOT-tsaw', answer: 'utca', hint: 'the ts sound is written c' },
+      { prompt: 'Spell the word for "Hungarian", pronounced MAW-djar', answer: 'magyar', hint: 'the soft dy sound is written gy' },
+      { prompt: 'Spell the word for "summer", pronounced NYAHR', answer: 'nyár', hint: 'the canyon-n sound is written ny' },
+      { prompt: 'Spell the word for "only", pronounced CHAWK', answer: 'csak', hint: 'the ch sound is written cs' },
+      { prompt: 'Spell the word for "and", pronounced AYSH', answer: 'és', hint: 'a single s says sh — even at the end' }
+    ],
     sections: [
       {
         heading: 'The golden rule: stress the FIRST syllable',
@@ -56,6 +71,18 @@ export const grammarGuides = [
     title: 'Vowel Harmony',
     icon: '🎵',
     summary: 'The melody of Hungarian: suffixes change their vowels to match the word they attach to.',
+    exercises: [
+      { prompt: 'in the house (ház + -ban/-ben)', answer: 'házban', hint: 'á is a back vowel' },
+      { prompt: 'in the garden (kert + -ban/-ben)', answer: 'kertben', hint: 'e is a front vowel' },
+      { prompt: 'in London (London + -ban/-ben)', answer: 'Londonban', hint: 'foreign names harmonise too' },
+      { prompt: 'in the water (víz + -ban/-ben)', answer: 'vízben', hint: 'í is a front vowel' },
+      { prompt: 'in the city (város + -ban/-ben)', answer: 'városban', hint: 'follow the last vowel: o is back' },
+      { prompt: 'in the kitchen (konyha + -ban/-ben)', answer: 'konyhában', hint: 'a final short a lengthens to á before a suffix' },
+      { prompt: 'I know (tud + -ok/-ek/-ök)', answer: 'tudok', hint: 'u is a back vowel' },
+      { prompt: 'I speak (beszél + -ok/-ek/-ök)', answer: 'beszélek', hint: 'front, unrounded' },
+      { prompt: 'I sit (ül + -ok/-ek/-ök)', answer: 'ülök', hint: 'ü is front AND rounded' },
+      { prompt: 'I cook (főz + -ok/-ek/-ök)', answer: 'főzök', hint: 'ő is front and rounded' }
+    ],
     sections: [
       {
         heading: 'Front vs back vowels',
@@ -84,6 +111,18 @@ export const grammarGuides = [
     title: 'The Verb "to be" (lenni)',
     icon: '🧍',
     summary: 'Vagyok, vagy, van... and the famous rule about dropping "van".',
+    exercises: [
+      { prompt: 'I am tired. → Fáradt ___.', answer: 'vagyok' },
+      { prompt: 'You are kind. (informal) → Kedves ___.', answer: 'vagy' },
+      { prompt: 'We are at home. → Otthon ___.', answer: 'vagyunk' },
+      { prompt: 'You are here. (plural) → Itt ___.', answer: 'vagytok' },
+      { prompt: '"Anna is a teacher." — type the whole sentence', answer: 'Anna tanár', hint: 'describing WHAT someone is: no van!' },
+      { prompt: '"The house is big." — type the whole sentence', answer: 'A ház nagy', hint: 'adjective in 3rd person: drop van' },
+      { prompt: 'Anna is in the garden. → Anna a kertben ___.', answer: 'van', hint: 'location keeps van' },
+      { prompt: 'They are in Budapest. → Budapesten ___.', answer: 'vannak', hint: 'location, plural' },
+      { prompt: 'Is there beer? → ___ sör?', answer: 'Van', hint: 'existence keeps van' },
+      { prompt: 'I am Hungarian. → Magyar ___.', answer: 'vagyok', hint: 'no pronoun needed — the ending says who' }
+    ],
     sections: [
       {
         heading: 'Present tense of lenni',
@@ -124,6 +163,18 @@ export const grammarGuides = [
     title: 'Present Tense Verbs',
     icon: '⚙️',
     summary: 'One verb, two conjugations: indefinite vs definite — the heart of Hungarian grammar.',
+    exercises: [
+      { prompt: 'I learn (tanulni)', answer: 'tanulok' },
+      { prompt: 'you speak (beszélni, informal singular)', answer: 'beszélsz' },
+      { prompt: 'we ask for (kérni)', answer: 'kérünk' },
+      { prompt: 'they know (tudni)', answer: 'tudnak' },
+      { prompt: 'you learn (tanulni, plural ti)', answer: 'tanultok' },
+      { prompt: 'he/she reads (olvasni)', answer: 'olvas' },
+      { prompt: 'I would like A coffee: ___ egy kávét.', answer: 'Kérek', hint: 'egy = indefinite conjugation' },
+      { prompt: 'I would like THE bill: ___ a számlát.', answer: 'Kérem', hint: 'a definite object takes the definite conjugation' },
+      { prompt: 'I go (menni — irregular!)', answer: 'megyek' },
+      { prompt: 'I eat (enni — irregular -ik verb)', answer: ['eszem', 'eszek'] }
+    ],
     sections: [
       {
         heading: 'Indefinite conjugation (no specific object)',
@@ -168,6 +219,18 @@ export const grammarGuides = [
     title: 'Cases & Suffixes',
     icon: '🧩',
     summary: 'Hungarian has no prepositions — it glues suffixes onto nouns instead. Here are the essential ones.',
+    exercises: [
+      { prompt: 'a beer, as a direct object (sör + -t)', answer: 'sört' },
+      { prompt: 'in the house (ház)', answer: 'házban' },
+      { prompt: 'into the house (ház)', answer: 'házba', hint: '-ba/-be = movement into' },
+      { prompt: 'out of the house (ház)', answer: 'házból' },
+      { prompt: 'on the table (asztal + linking vowel + -n)', answer: 'asztalon' },
+      { prompt: 'onto the table (asztal)', answer: 'asztalra' },
+      { prompt: 'in Budapest (careful — Hungarian cities!)', answer: 'Budapesten', hint: 'Hungarian cities take -n/-on/-en' },
+      { prompt: 'in London', answer: 'Londonban', hint: 'foreign cities take -ban/-ben' },
+      { prompt: 'to the doctor (orvos + -hoz/-hez/-höz)', answer: 'orvoshoz' },
+      { prompt: "at five o'clock (öt + -kor)", answer: 'ötkor' }
+    ],
     sections: [
       {
         heading: 'The accusative: -t (direct object)',
@@ -220,6 +283,18 @@ export const grammarGuides = [
     title: 'Articles, Plurals & Possession',
     icon: '📦',
     summary: 'A / az / egy, the -k plural, and how "my, your, his" become endings too.',
+    exercises: [
+      { prompt: 'the apple (a or az + alma?)', answer: 'az alma', hint: 'az before a vowel' },
+      { prompt: 'the house (a or az + ház?)', answer: 'a ház' },
+      { prompt: 'houses (ház + plural)', answer: 'házak' },
+      { prompt: 'gardens (kert + plural)', answer: 'kertek' },
+      { prompt: 'three houses (három + ...)', answer: 'három ház', hint: 'nouns stay SINGULAR after numbers' },
+      { prompt: 'my friend (barát + possessive)', answer: 'barátom' },
+      { prompt: 'your friend (informal)', answer: 'barátod' },
+      { prompt: 'his/her friend', answer: 'barátja' },
+      { prompt: 'I have a dog. → ___ egy kutyám.', answer: 'Van', hint: '"there is my dog"' },
+      { prompt: 'I have no time. → ___ időm.', answer: 'Nincs' }
+    ],
     sections: [
       {
         heading: 'Articles',
@@ -266,6 +341,18 @@ export const grammarGuides = [
     title: 'Word Order & Questions',
     icon: '🔀',
     summary: 'Word order is flexible but not random: the position right before the verb is the spotlight.',
+    exercises: [
+      { prompt: '"I do not understand." — type the whole sentence', answer: 'Nem értem', hint: 'nem goes right before the verb' },
+      { prompt: '"Anna is not a teacher." — type the whole sentence', answer: 'Anna nem tanár' },
+      { prompt: '"I do not want coffee." — type the whole sentence', answer: 'Nem kérek kávét' },
+      { prompt: 'Question word: What?', answer: 'Mi' },
+      { prompt: 'Question word: Who?', answer: 'Ki' },
+      { prompt: 'Question word: Where?', answer: 'Hol' },
+      { prompt: 'Question word: Where to?', answer: ['Hova', 'Hová'] },
+      { prompt: 'Question word: When?', answer: 'Mikor' },
+      { prompt: 'Question word: Why?', answer: 'Miért' },
+      { prompt: 'Emphasise BUDAPEST: Anna ___ lakik.', answer: 'Budapesten', hint: 'the focus slot is right before the verb' }
+    ],
     sections: [
       {
         heading: 'Focus position',
@@ -314,6 +401,18 @@ export const grammarGuides = [
     title: 'Formal Register (magázás)',
     icon: '🎩',
     summary: 'How officials, doctors and strangers speak to you — Ön, third-person verbs, and the polite -né/-na endings.',
+    exercises: [
+      { prompt: 'The formal "you" pronoun', answer: 'Ön' },
+      { prompt: 'How are you? (formal) → Hogy ___?', answer: 'van', hint: 'Ön takes third-person verbs' },
+      { prompt: 'Where do you live? (formal) → Hol ___?', answer: 'lakik' },
+      { prompt: 'Do you speak Hungarian? (formal) → ___ magyarul?', answer: 'Beszél' },
+      { prompt: 'Could you repeat it? (one word, conditional)', answer: 'Megismételné' },
+      { prompt: 'Could you help? (one word, conditional)', answer: 'Segítene' },
+      { prompt: 'Could you speak more slowly? → ___ lassabban?', answer: 'Beszélne' },
+      { prompt: 'More slowly, please. (two words)', answer: 'Lassabban, kérem' },
+      { prompt: 'What is your occupation? → Mi a ___?', answer: 'foglalkozása' },
+      { prompt: 'I have been married for eight years. → Nyolc ___ vagyok házas.', answer: 'éve' }
+    ],
     sections: [
       {
         heading: 'Ön takes third-person verbs',
@@ -401,6 +500,18 @@ export const grammarGuides = [
     title: 'Dates & Life Events',
     icon: '💍',
     summary: 'How to say when something happened — "We got married on 12 June 2021" — with dates, the past tense and marriage verbs.',
+    exercises: [
+      { prompt: 'third (3 → ordinal)', answer: 'harmadik' },
+      { prompt: 'fifth (5 → ordinal)', answer: 'ötödik' },
+      { prompt: 'first (the irregular one!)', answer: 'első' },
+      { prompt: 'on the 2nd (spoken form)', answer: 'másodikán' },
+      { prompt: 'on the 1st (irregular spoken form)', answer: 'elsején' },
+      { prompt: 'in 2010 (digits + ending)', answer: '2010-ben' },
+      { prompt: 'June (watch the capitalisation!)', answer: 'június', hint: 'months are not capitalised' },
+      { prompt: 'We have been married since 2010. → 2010 ___ vagyunk házasok.', answer: 'óta' },
+      { prompt: 'I have been learning Hungarian for six months. → Hat ___ tanulok magyarul.', answer: 'hónapja' },
+      { prompt: 'We got married. (couple, neutral — össze + házasodik, past)', answer: 'Összeházasodtunk' }
+    ],
     sections: [
       {
         heading: 'The sentence pattern',

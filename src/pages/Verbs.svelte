@@ -5,6 +5,7 @@
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
   import AudioButton from '../lib/components/AudioButton.svelte';
+  import AccentBar from '../lib/components/AccentBar.svelte';
 
   const ROUNDS = 10;
   const harmonyLabel = { back: 'back vowels', front: 'front vowels', 'front-rounded': 'front rounded' };
@@ -17,6 +18,7 @@
   let status = $state('playing'); // playing | revealed | done
   let lastResult = $state(null); // 'exact' | 'accents' | 'wrong' | 'gaveup'
   let score = $state(0);
+  let inputEl = $state(null);
 
   function newDrill() {
     drill = buildDrill(verbs, { count: ROUNDS });
@@ -146,11 +148,13 @@
         <input
           type="text"
           bind:value={guess}
+          bind:this={inputEl}
           placeholder="Type the conjugated form…"
           autocomplete="off"
           autocapitalize="off"
           autofocus
         />
+        <AccentBar input={inputEl} />
         <div class="actions">
           <button class="btn primary" type="submit">Check</button>
           <button class="btn" type="button" onclick={giveUp}>Reveal</button>

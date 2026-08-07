@@ -5,6 +5,7 @@
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
   import AudioButton from '../lib/components/AudioButton.svelte';
+  import AccentBar from '../lib/components/AccentBar.svelte';
 
   // Snapshot the session once — deriving it from $progress would reshuffle
   // the deck after every recordReview call.
@@ -15,6 +16,7 @@
   let lastResult = $state(null); // 'exact' | 'accents' | 'wrong' | 'gaveup'
   let correctCount = $state(0);
   let totalDue = $state(0);
+  let inputEl = $state(null);
 
   function refresh() {
     totalDue = dueWords(allWords(), $progress.srs, dayStamp()).length;
@@ -117,11 +119,13 @@
         <input
           type="text"
           bind:value={guess}
+          bind:this={inputEl}
           placeholder="Type it in Hungarian…"
           autocomplete="off"
           autocapitalize="off"
           autofocus
         />
+        <AccentBar input={inputEl} />
         <div class="actions">
           <button class="btn primary" type="submit">Check</button>
           <button class="btn" type="button" onclick={giveUp}>Reveal</button>

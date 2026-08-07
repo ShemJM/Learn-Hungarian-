@@ -14,6 +14,7 @@ import {
 import { alphabet, groups, letterPhrase } from './alphabet.js';
 import { verbs, PRONOUNS } from './verbs.js';
 import { technique, tiers, allRolledRItems } from './rolledR.js';
+import { checkAnswer } from '../text.js';
 
 describe('lessons data', () => {
   it('has at least 8 lessons with unique ids', () => {
@@ -81,6 +82,22 @@ describe('grammar data', () => {
   it('getGuide works', () => {
     expect(getGuide('vowel-harmony')?.title).toBe('Vowel Harmony');
     expect(getGuide('nope')).toBeNull();
+  });
+
+  it('every guide has practice exercises that self-grade as exact', () => {
+    for (const g of grammarGuides) {
+      expect(g.exercises.length, g.id).toBeGreaterThanOrEqual(6);
+      for (const e of g.exercises) {
+        expect(e.prompt, g.id).toBeTruthy();
+        const answers = Array.isArray(e.answer) ? e.answer : [e.answer];
+        expect(answers.length, `${g.id}: ${e.prompt}`).toBeGreaterThan(0);
+        for (const a of answers) {
+          // Catches stray whitespace/empty variants mechanically.
+          expect(checkAnswer(a, answers), `${g.id}: ${e.prompt}`).toBe('exact');
+        }
+        if ('hint' in e) expect(e.hint, `${g.id}: ${e.prompt}`).toBeTruthy();
+      }
+    }
   });
 });
 
