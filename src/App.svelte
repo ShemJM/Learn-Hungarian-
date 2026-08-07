@@ -13,6 +13,7 @@
   import Review from './pages/Review.svelte';
   import Verbs from './pages/Verbs.svelte';
   import Practice from './pages/Practice.svelte';
+  import Course from './pages/Course.svelte';
 
   import { progress } from './lib/progress.js';
 
@@ -73,6 +74,9 @@
   </a>
   <nav>
     <a href="#/home" class:active={$route.page === 'home'}><span class="icon">🏠</span>Home</a>
+    <a href="#/course" class:active={$route.page === 'course' || $route.page === 'practice'}>
+      <span class="icon">🧭</span>Course
+    </a>
     {#each groups as group}
       <div class="group">
         <button
@@ -97,6 +101,8 @@
 <main class="container">
   {#if $route.page === 'home'}
     <Home />
+  {:else if $route.page === 'course'}
+    <Course />
   {:else if $route.page === 'lessons'}
     {#if $route.param}
       <Lesson id={$route.param} />

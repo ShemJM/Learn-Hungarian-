@@ -1,5 +1,7 @@
 <script>
   import { getExerciseSet } from '../lib/exercises.js';
+  import { course } from '../lib/data/course.js';
+  import { nextCourseStep } from '../lib/course.js';
   import ExerciseRunner from '../lib/components/ExerciseRunner.svelte';
   import { progress } from '../lib/progress.js';
 
@@ -7,14 +9,28 @@
   let { setId } = $props();
 
   let attempt = $state(0);
+  let finished = $state(false);
   let set = $derived(getExerciseSet(setId));
   let items = $derived.by(() => {
     attempt; // a restart bumps this to deal a fresh session
     return set ? set.build() : [];
   });
+  let nextStep = $derived(nextCourseStep(course, $progress));
+
+  // Navigating to a different set resets the session.
+  $effect(() => {
+    setId;
+    finished = false;
+  });
 
   function finish(percent) {
     progress.recordExercises(setId, percent);
+    finished = true;
+  }
+
+  function restart() {
+    attempt += 1;
+    finished = false;
   }
 </script>
 
@@ -29,7 +45,26 @@
   </p>
   <div class="card">
     {#key attempt}
-      <ExerciseRunner {items} onFinish={finish} onRestart={() => (attempt += 1)} />
+      <ExerciseRunner {items} onFinish={finish} onRestart={restart} />
     {/key}
   </div>
+  {#if finished && nextStep}
+    <div class="card onward">
+      🧭 Next on the course: <strong>{nextStep.unit.title}</strong>
+      <a class="btn green" href={nextStep.href}>{nextStep.icon} {nextStep.title} →</a>
+    </div>
+  {/if}
 {/if}
+
+<style>
+  .onward {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .onward .btn {
+    text-decoration: none;
+  }
+</style>

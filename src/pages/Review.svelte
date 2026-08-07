@@ -1,6 +1,7 @@
 <script>
-  import { allWords } from '../lib/data/lessons.js';
-  import { dayStamp, dueWords, buildSession, BOX_COUNT } from '../lib/srs.js';
+  import { lessons } from '../lib/data/lessons.js';
+  import { eligibleReviewPool } from '../lib/course.js';
+  import { dayStamp, dueWords, buildSession, srsKey, BOX_COUNT } from '../lib/srs.js';
   import { checkAnswer } from '../lib/text.js';
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
@@ -18,13 +19,19 @@
   let totalDue = $state(0);
   let inputEl = $state(null);
 
+  // The deck is course-gated: words AND phrases of lessons you have started,
+  // plus anything you have reviewed before.
+  function pool() {
+    return eligibleReviewPool(lessons, $progress);
+  }
+
   function refresh() {
-    totalDue = dueWords(allWords(), $progress.srs, dayStamp()).length;
+    totalDue = dueWords(pool(), $progress.srs, dayStamp()).length;
     status = 'idle';
   }
 
   function start() {
-    session = buildSession(allWords(), $progress.srs, dayStamp());
+    session = buildSession(pool(), $progress.srs, dayStamp());
     index = 0;
     guess = '';
     lastResult = null;
@@ -35,17 +42,17 @@
   refresh();
 
   let current = $derived(session[index]);
-  let boxOf = $derived((hu) => $progress.srs[hu]?.box || null);
+  let boxOf = $derived((card) => $progress.srs[srsKey(card)]?.box || null);
 
   function submit() {
     if (!guess.trim()) return;
     const result = checkAnswer(guess, current.hu);
     lastResult = result;
     if (result === 'wrong') {
-      progress.recordReview(current.hu, false);
+      progress.recordReview(srsKey(current), false);
     } else {
       correctCount += 1;
-      progress.recordReview(current.hu, true);
+      progress.recordReview(srsKey(current), true);
     }
     speak(current.hu);
     status = 'revealed';
@@ -53,7 +60,7 @@
 
   function giveUp() {
     lastResult = 'gaveup';
-    progress.recordReview(current.hu, false);
+    progress.recordReview(srsKey(current), false);
     speak(current.hu);
     status = 'revealed';
   }
@@ -62,7 +69,7 @@
     if (index + 1 >= session.length) {
       status = 'done';
       progress.logReviewSession(session.length, correctCount); // one log entry per session, not per card
-      totalDue = dueWords(allWords(), $progress.srs, dayStamp()).length;
+      totalDue = dueWords(pool(), $progress.srs, dayStamp()).length;
     } else {
       index += 1;
       guess = '';
@@ -81,13 +88,18 @@
 {#if status === 'idle'}
   <div class="card center">
     {#if totalDue}
-      <h2>{totalDue} word{totalDue === 1 ? '' : 's'} due today</h2>
-      <p class="muted">Sessions are capped at 20 cards, with at most 10 brand-new words.</p>
+      <h2>{totalDue} card{totalDue === 1 ? '' : 's'} due today</h2>
+      <p class="muted">
+        Words and phrases from the lessons you have started. Sessions are capped at 20 cards, with
+        at most 10 brand-new words.
+      </p>
       <button class="btn primary" onclick={start}>▶️ Start review</button>
     {:else}
       <h2>🎉 All caught up!</h2>
-      <p class="muted">Nothing is due right now. Come back tomorrow — or learn new words in the lessons.</p>
-      <a class="btn primary" href="#/lessons">📚 Go to lessons</a>
+      <p class="muted">
+        Nothing is due right now. New cards arrive as you start lessons in the course.
+      </p>
+      <a class="btn primary" href="#/course">🧭 Continue the course</a>
     {/if}
   </div>
 {:else if status === 'done'}
@@ -104,10 +116,13 @@
   <div class="card center">
     <div class="meta">
       <span class="pill">Card {index + 1} / {session.length}</span>
-      {#if boxOf(current.hu)}
-        <span class="pill green">Box {boxOf(current.hu)} / {BOX_COUNT}</span>
+      {#if boxOf(current)}
+        <span class="pill green">Box {boxOf(current)} / {BOX_COUNT}</span>
       {:else}
-        <span class="pill">✨ New word</span>
+        <span class="pill">✨ New {current.isPhrase ? 'phrase' : 'word'}</span>
+      {/if}
+      {#if current.isPhrase}
+        <span class="pill">🗣️ Phrase</span>
       {/if}
     </div>
     <p class="clue muted">How do you say…</p>
@@ -118,6 +133,7 @@
         <!-- svelte-ignore a11y_autofocus -->
         <input
           type="text"
+          class:wide={current.isPhrase}
           bind:value={guess}
           bind:this={inputEl}
           placeholder="Type it in Hungarian…"
@@ -184,6 +200,9 @@
   input:focus {
     outline: none;
     border-color: var(--accent);
+  }
+  input.wide {
+    width: min(480px, 100%);
   }
   .actions {
     display: flex;

@@ -133,24 +133,19 @@ export function reviewDue(words, srs = {}, today = dayStamp()) {
 
 /**
  * The single thing the learner should do next. A tutor gives one instruction,
- * not a menu — due reviews always win, because forgetting is the enemy.
+ * not a menu — due reviews always win, because forgetting is the enemy; after
+ * that, the course decides.
  *
- * `dueCount` must count only words already seen: telling a brand-new learner to
- * "review 157 cards" is both wrong and demoralising.
+ * `dueCount` must count only cards already seen: telling a brand-new learner to
+ * "review 157 cards" is both wrong and demoralising. `nextStep` is the course's
+ * next step (from nextCourseStep + stepMeta): { unit, title, href, index, total }.
  */
-export function nextAction({
-  dueCount = 0,
-  hasStarted = true,
-  nextLessonId = null,
-  readiness,
-  unreadGuideId = null,
-  unrehearsedDialogueId = null
-}) {
+export function nextAction({ dueCount = 0, hasStarted = true, nextStep = null, readiness }) {
   if (!hasStarted) {
     return {
-      label: 'Start your first lesson',
-      href: nextLessonId ? `#/lessons/${nextLessonId}` : '#/lessons',
-      why: 'Fifteen words, with audio. Reviews will schedule themselves from there.'
+      label: 'Start the course',
+      href: '#/course',
+      why: 'A guided path from first words to real conversations — one step at a time.'
     };
   }
   if (dueCount > 0) {
@@ -160,25 +155,11 @@ export function nextAction({
       why: 'These words are scheduled for today — do them before they fade.'
     };
   }
-  if (nextLessonId) {
+  if (nextStep) {
     return {
-      label: 'Start the next lesson',
-      href: `#/lessons/${nextLessonId}`,
-      why: 'Nothing is due for review, so this is the best use of today.'
-    };
-  }
-  if (unreadGuideId) {
-    return {
-      label: 'Read the next grammar guide',
-      href: `#/grammar/${unreadGuideId}`,
-      why: 'Vocabulary is under control — grammar is what turns words into sentences.'
-    };
-  }
-  if (unrehearsedDialogueId) {
-    return {
-      label: 'Role-play a dialogue',
-      href: `#/conversation/${unrehearsedDialogueId}`,
-      why: 'Speaking is the weakest link for most learners — practise out loud.'
+      label: `Continue the course — ${nextStep.unit.title}: ${nextStep.title}`,
+      href: nextStep.href,
+      why: `Step ${nextStep.index + 1} of ${nextStep.total} in this unit. Nothing is due for review, so this is the best use of today.`
     };
   }
   const weakest = readiness?.components?.slice().sort((a, b) => a.percent - b.percent)[0];

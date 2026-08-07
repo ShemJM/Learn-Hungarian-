@@ -7,6 +7,8 @@
   import { progress } from '../lib/progress.js';
   import { dayStamp } from '../lib/srs.js';
   import { streak, vocabMastery, lastVisitActivity, relativeDay, examReadiness, nextAction, reviewDue } from '../lib/stats.js';
+  import { course } from '../lib/data/course.js';
+  import { nextCourseStep, courseCompletion, eligibleReviewPool } from '../lib/course.js';
 
   /**
    * What the citizenship interview actually asks of a learner. Kept here (not in
@@ -21,6 +23,7 @@
   };
 
   const features = [
+    { href: '#/course', icon: '🧭', title: 'The Course', desc: 'The guided path: every lesson, guide and practice session in the order that builds.' },
     { href: '#/lessons', icon: '📚', title: 'Lessons', desc: `${lessons.length} themed vocabulary lessons with audio, pronunciation guides and quizzes.` },
     { href: '#/review', icon: '🔁', title: 'Daily Review', desc: 'Spaced repetition keeps every word fresh — a few cards a day, scheduled just before you would forget them.' },
     { href: '#/grammar', icon: '🧩', title: 'Grammar Guides', desc: `${grammarGuides.length} clear guides: vowel harmony, cases, conjugation and more.` },
@@ -34,8 +37,9 @@
 
   const words = allWords();
 
-  // Only words already met count as "due" — an unseen word is new, not forgotten.
-  let dueToday = $derived(reviewDue(words, $progress.srs, dayStamp()));
+  // Only cards already met count as "due" — an unseen word is new, not forgotten.
+  // The pool is course-gated: words and phrases of started lessons only.
+  let dueToday = $derived(reviewDue(eligibleReviewPool(lessons, $progress), $progress.srs, dayStamp()));
   let mastery = $derived(vocabMastery(words, $progress.srs));
   let days = $derived(streak($progress.daysActive, dayStamp()));
   let readiness = $derived(examReadiness($progress, EXAM_PLAN));
@@ -44,19 +48,9 @@
   let returning = $derived(Boolean($progress.visit.previous));
   let hasStarted = $derived(Object.keys($progress.srs).length > 0 || Object.keys($progress.quizScores).length > 0);
 
-  let nextLesson = $derived(lessons.find((l) => !($progress.quizScores[l.id] >= 60))?.id ?? null);
-  let nextGuide = $derived(grammarGuides.find((g) => !$progress.guidesRead.includes(g.id))?.id ?? null);
-  let nextDialogue = $derived(dialogues.find((d) => !$progress.dialoguesDone.includes(d.id))?.id ?? null);
-  let action = $derived(
-    nextAction({
-      dueCount: dueToday,
-      hasStarted,
-      nextLessonId: nextLesson,
-      readiness,
-      unreadGuideId: nextGuide,
-      unrehearsedDialogueId: nextDialogue
-    })
-  );
+  let nextStep = $derived(nextCourseStep(course, $progress));
+  let completion = $derived(courseCompletion(course, $progress));
+  let action = $derived(nextAction({ dueCount: dueToday, hasStarted, nextStep, readiness }));
 
   /** Turn a logged activity id into something a human recognises. */
   function pretty(entry) {
@@ -104,6 +98,14 @@
     <p class="muted">{action.why}</p>
   </div>
 </a>
+
+{#if completion.doneSteps > 0}
+  <a class="card course-strip" href="#/course">
+    <span>🧭 <strong>Course:</strong> {completion.doneSteps} / {completion.totalSteps} steps · {completion.unitsDone} of {completion.totalUnits} units</span>
+    <span class="bar thin course-bar"><span class="fill mastered" style={`width:${completion.percent}%`}></span></span>
+    <strong>{completion.percent}%</strong>
+  </a>
+{/if}
 
 <div class="grid two">
   <div class="card">
@@ -196,6 +198,22 @@
   }
   .action:hover {
     background: var(--accent-soft);
+  }
+  .course-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    text-decoration: none;
+    color: var(--ink);
+    padding: 0.7rem 1.2rem;
+  }
+  .course-strip:hover {
+    background: var(--accent-soft);
+  }
+  .course-bar {
+    flex: 1;
+    min-width: 8rem;
   }
   .bar {
     display: flex;

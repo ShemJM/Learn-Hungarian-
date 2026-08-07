@@ -129,31 +129,35 @@ describe('reviewDue', () => {
 });
 
 describe('nextAction', () => {
-  it('sends a brand-new learner to their first lesson, never to a pile of reviews', () => {
-    const action = nextAction({ dueCount: 157, hasStarted: false, nextLessonId: 'greetings' });
-    expect(action.href).toBe('#/lessons/greetings');
-    expect(action.label).toBe('Start your first lesson');
+  const step = {
+    unit: { id: 'u2', title: 'Numbers & Harmony' },
+    title: 'Vowel Harmony',
+    href: '#/grammar/vowel-harmony',
+    index: 1,
+    total: 6
+  };
+
+  it('sends a brand-new learner to the course, never to a pile of reviews', () => {
+    const action = nextAction({ dueCount: 157, hasStarted: false, nextStep: step });
+    expect(action.href).toBe('#/course');
+    expect(action.label).toBe('Start the course');
   });
 
   it('prioritises due reviews for a learner who has started', () => {
-    const action = nextAction({ dueCount: 7, hasStarted: true, unreadGuideId: 'g1', nextLessonId: 'food' });
+    const action = nextAction({ dueCount: 7, hasStarted: true, nextStep: step });
     expect(action.href).toBe('#/review');
     expect(action.label).toContain('7 cards');
   });
 
-  it('suggests the next lesson when nothing is due', () => {
-    expect(nextAction({ dueCount: 0, nextLessonId: 'food' }).href).toBe('#/lessons/food');
+  it('continues the course when nothing is due', () => {
+    const action = nextAction({ dueCount: 0, nextStep: step });
+    expect(action.href).toBe('#/grammar/vowel-harmony');
+    expect(action.label).toContain('Numbers & Harmony');
+    expect(action.label).toContain('Vowel Harmony');
+    expect(action.why).toContain('Step 2 of 6');
   });
 
-  it('suggests an unread guide once the lessons are done', () => {
-    expect(nextAction({ dueCount: 0, unreadGuideId: 'cases' }).href).toBe('#/grammar/cases');
-  });
-
-  it('suggests a dialogue when the guides are done', () => {
-    expect(nextAction({ dueCount: 0, unrehearsedDialogueId: 'cafe' }).href).toBe('#/conversation/cafe');
-  });
-
-  it('falls back to the weakest readiness component, then to games', () => {
+  it('falls back to the weakest readiness component, then to games, once the course is done', () => {
     const readiness = { components: [{ label: 'Speaking', percent: 20 }, { label: 'Vocab', percent: 90 }] };
     expect(nextAction({ dueCount: 0, readiness }).why).toContain('Speaking');
     const done = { components: [{ label: 'Speaking', percent: 100 }] };
