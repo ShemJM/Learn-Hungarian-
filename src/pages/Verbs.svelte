@@ -11,6 +11,7 @@
   const harmonyLabel = { back: 'back vowels', front: 'front vowels', 'front-rounded': 'front rounded' };
 
   let tab = $state('browse'); // browse | drill
+  let tense = $state('present'); // present | past
 
   let drill = $state([]);
   let index = $state(0);
@@ -21,7 +22,7 @@
   let inputEl = $state(null);
 
   function newDrill() {
-    drill = buildDrill(verbs, { count: ROUNDS });
+    drill = buildDrill(verbs, { count: ROUNDS, tenses: [tense] });
     index = 0;
     guess = '';
     status = 'playing';
@@ -31,7 +32,18 @@
 
   newDrill();
 
+  function setTense(t) {
+    if (tense === t) return;
+    tense = t;
+    newDrill();
+  }
+
   let current = $derived(drill[index]);
+  let drillId = $derived(tense === 'past' ? 'verbdrill-past' : 'verbdrill');
+  /** The table to browse for the selected tense; null when a verb lacks it. */
+  let browseTable = $derived((verb, definiteness) =>
+    tense === 'past' ? verb.past?.[definiteness] || null : verb[definiteness]
+  );
 
   function submit() {
     if (!guess.trim()) return;
@@ -54,7 +66,9 @@
   function next() {
     if (index + 1 >= drill.length) {
       status = 'done';
-      progress.recordGame('verbdrill', score);
+      progress.recordGame(drillId, score);
+      // The course tracks drill mastery per tense as a percent.
+      progress.recordExercises('verbs:' + tense, Math.round((score / (ROUNDS * 10)) * 100));
     } else {
       index += 1;
       guess = '';
@@ -81,10 +95,16 @@
 <div class="tabs">
   <button class="btn" class:primary={tab === 'browse'} onclick={() => (tab = 'browse')}>📖 Browse</button>
   <button class="btn" class:primary={tab === 'drill'} onclick={() => (tab = 'drill')}>🏋️ Drill</button>
+  <span class="tense-toggle">
+    <button class="btn" class:primary={tense === 'present'} onclick={() => setTense('present')}>Present</button>
+    <button class="btn" class:primary={tense === 'past'} onclick={() => setTense('past')}>Past</button>
+  </span>
 </div>
 
 {#if tab === 'browse'}
   {#each verbs as verb}
+    {@const indef = browseTable(verb, 'indefinite')}
+    {@const def = browseTable(verb, 'definite')}
     <div class="card">
       <h3>
         {dictionaryForm(verb)} <span class="muted inf">({verb.inf} — {verb.en})</span>
@@ -101,17 +121,17 @@
           <thead>
             <tr>
               <th></th>
-              <th>Indefinite</th>
-              {#if verb.definite}<th>Definite</th>{/if}
+              <th>Indefinite ({tense})</th>
+              {#if def}<th>Definite ({tense})</th>{/if}
             </tr>
           </thead>
           <tbody>
             {#each PRONOUNS as pronoun, i}
               <tr>
                 <th>{pronoun}</th>
-                <td><span class="hu">{display(verb.indefinite[i])}</span> <AudioButton text={speakable(verb.indefinite[i])} /></td>
-                {#if verb.definite}
-                  <td><span class="hu">{display(verb.definite[i])}</span> <AudioButton text={speakable(verb.definite[i])} /></td>
+                <td><span class="hu">{display(indef[i])}</span> <AudioButton text={speakable(indef[i])} /></td>
+                {#if def}
+                  <td><span class="hu">{display(def[i])}</span> <AudioButton text={speakable(def[i])} /></td>
                 {/if}
               </tr>
             {/each}
@@ -123,8 +143,8 @@
 {:else if status === 'done'}
   <div class="card center">
     <h2>🏁 Final score: {score} / {ROUNDS * 10}</h2>
-    {#if $progress.gameBest['verbdrill']}
-      <p class="muted">🏆 Best: {$progress.gameBest['verbdrill']}</p>
+    {#if $progress.gameBest[drillId]}
+      <p class="muted">🏆 Best ({tense}): {$progress.gameBest[drillId]}</p>
     {/if}
     <button class="btn primary" onclick={newDrill}>🔁 Drill again</button>
   </div>
@@ -138,7 +158,7 @@
       <span class="hu big">{current.dictionary}</span> ({current.verb.inf} — {current.verb.en})
     </p>
     <p class="ask">
-      <strong>{current.pronoun}</strong> · {current.definiteness}
+      <strong>{current.pronoun}</strong> · {current.tense} · {current.definiteness}
       <span class="muted">{current.definiteness === 'definite' ? '(a specific object: THE thing)' : '(no object, or an unspecific one)'}</span>
     </p>
 
@@ -189,6 +209,12 @@
     display: flex;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .tense-toggle {
+    margin-left: auto;
+    display: flex;
+    gap: 0.25rem;
   }
   .inf {
     font-weight: 500;

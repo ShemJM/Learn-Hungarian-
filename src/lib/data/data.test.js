@@ -266,6 +266,30 @@ describe('verbs data', () => {
   it('includes intransitive verbs without a definite conjugation', () => {
     expect(verbs.some((v) => v.definite === null)).toBe(true);
   });
+
+  it('every verb has a full past tense matching its transitivity', () => {
+    for (const v of verbs) {
+      expect(v.past, v.inf).toBeTruthy();
+      expect(v.past.indefinite.length, v.inf).toBe(PRONOUNS.length);
+      // Past definite exists exactly when present definite does.
+      expect(v.past.definite === null, v.inf).toBe(v.definite === null);
+      const tables = v.past.definite ? [v.past.indefinite, v.past.definite] : [v.past.indefinite];
+      if (v.past.definite) expect(v.past.definite.length, v.inf).toBe(PRONOUNS.length);
+      for (const table of tables) {
+        for (const cell of table) {
+          const variants = Array.isArray(cell) ? cell : [cell];
+          expect(variants.length, v.inf).toBeGreaterThan(0);
+          for (const form of variants) expect(form, v.inf).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('includes lenni, the most important verb of all', () => {
+    const lenni = verbs.find((v) => v.inf === 'lenni');
+    expect(lenni.indefinite).toEqual(['vagyok', 'vagy', 'van', 'vagyunk', 'vagytok', 'vannak']);
+    expect(lenni.past.indefinite).toEqual(['voltam', 'voltál', 'volt', 'voltunk', 'voltatok', 'voltak']);
+  });
 });
 
 describe('rolled R practice data', () => {

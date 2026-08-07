@@ -31,6 +31,13 @@ describe('cellAnswers', () => {
   it('returns all accepted variants for -ik first person', () => {
     expect(cellAnswers(getVerb('enni'), 'indefinite', 0)).toEqual(['eszem', 'eszek']);
   });
+
+  it('reads past-tense cells when asked', () => {
+    expect(cellAnswers(getVerb('tanulni'), 'indefinite', 0, 'past')).toEqual(['tanultam']);
+    expect(cellAnswers(getVerb('enni'), 'indefinite', 2, 'past')).toEqual(['evett']);
+    expect(cellAnswers(getVerb('inni'), 'definite', 2, 'past')).toEqual(['itta']);
+    expect(cellAnswers(getVerb('lenni'), 'indefinite', 0, 'past')).toEqual(['voltam']);
+  });
 });
 
 describe('drillableCells', () => {
@@ -42,6 +49,18 @@ describe('drillableCells', () => {
 
   it('yields 12 cells for a transitive verb', () => {
     expect(drillableCells([getVerb('tanulni')]).length).toBe(12);
+  });
+
+  it('doubles the cells when both tenses are requested', () => {
+    const cells = drillableCells([getVerb('tanulni')], { tenses: ['present', 'past'] });
+    expect(cells.length).toBe(24);
+    expect(cells.filter((c) => c.tense === 'past').length).toBe(12);
+  });
+
+  it('past-only cells skip definite tables for intransitives', () => {
+    const cells = drillableCells([getVerb('menni')], { tenses: ['past'] });
+    expect(cells.length).toBe(PRONOUNS.length);
+    expect(cells.every((c) => c.tense === 'past' && c.definiteness === 'indefinite')).toBe(true);
   });
 });
 
@@ -65,6 +84,14 @@ describe('buildDrill', () => {
       expect(new Set(q.choices).size).toBe(q.choices.length);
       const correct = q.choices.filter((c) => q.answers.includes(c));
       expect(correct, `${q.dictionary} ${q.pronoun} ${q.definiteness}`).toEqual([q.display]);
+    }
+  });
+
+  it('builds past-tense questions when asked', () => {
+    const drill = buildDrill(verbs, { count: 15, tenses: ['past'], rng: seededRng(3) });
+    for (const q of drill) {
+      expect(q.tense).toBe('past');
+      expect(q.answers.length).toBeGreaterThan(0);
     }
   });
 

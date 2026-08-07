@@ -194,6 +194,34 @@ export const lessons = [
     ]
   },
   {
+    id: 'past-life',
+    title: 'Talking about the Past',
+    icon: '🕰️',
+    intro:
+      'Where were you born? What did you do yesterday? One past tense covers it all — see the Past Tense grammar guide for the endings. These are the words that set a sentence in the past.',
+    words: [
+      { hu: 'tavaly', en: 'last year', pron: 'TAW-vawy' },
+      { hu: 'tegnapelőtt', en: 'the day before yesterday', pron: 'TEG-nawp-eh-luhtt' },
+      { hu: 'múlt héten', en: 'last week', pron: 'moolt HAY-ten' },
+      { hu: 'régen', en: 'long ago / in the old days', pron: 'RAY-gen' },
+      { hu: 'már', en: 'already', pron: 'mahr' },
+      { hu: 'még nem', en: 'not yet', pron: 'mayg nem' },
+      { hu: 'akkor', en: 'then / at that time', pron: 'AWK-kor' },
+      { hu: 'azelőtt', en: 'before that / previously', pron: 'AWZ-eh-luhtt' },
+      { hu: 'azután', en: 'after that / then', pron: 'AWZ-oo-tahn' },
+      { hu: 'gyerekkor', en: 'childhood', pron: 'DJEH-rek-kor' },
+      { hu: 'emlék', en: 'memory', pron: 'EM-layk' },
+      { hu: 'történet', en: 'story', pron: 'TUHR-tay-net' }
+    ],
+    phrases: [
+      { hu: 'Tegnap sokat dolgoztam.', en: 'Yesterday I worked a lot.' },
+      { hu: 'Angliában születtem.', en: 'I was born in England.' },
+      { hu: 'Tavaly Budapesten voltunk.', en: 'Last year we were in Budapest.' },
+      { hu: 'Régen Londonban laktam.', en: 'I used to live in London.' },
+      { hu: 'Már ettem, köszönöm.', en: 'I have already eaten, thank you.' }
+    ]
+  },
+  {
     id: 'verbs',
     title: 'Essential Verbs',
     icon: '⚡',

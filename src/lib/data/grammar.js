@@ -397,6 +397,100 @@ export const grammarGuides = [
     ]
   },
   {
+    id: 'past-tense',
+    title: 'The Past Tense',
+    icon: '⏪',
+    summary: 'One past tense covers "I went", "I was going" and "I have gone" — add -t- (or -ott/-ett/-ött) and the endings you know.',
+    exercises: [
+      { prompt: 'I learned (tanulni)', answer: 'tanultam' },
+      { prompt: 'you spoke (beszélni, informal singular)', answer: 'beszéltél' },
+      { prompt: 'he/she knew (tudni — linking vowel!)', answer: 'tudott' },
+      { prompt: 'we went (menni)', answer: 'mentünk' },
+      { prompt: 'I was (lenni)', answer: 'voltam' },
+      { prompt: 'they were (lenni)', answer: 'voltak' },
+      { prompt: 'he/she ate (enni — irregular!)', answer: 'evett' },
+      { prompt: 'he/she drank (inni — irregular!)', answer: 'ivott' },
+      { prompt: '"Anna was a teacher." — type the whole sentence', answer: 'Anna tanár volt', hint: 'in the past tense volt is NOT dropped' },
+      { prompt: 'she drank THE coffee → ___ a kávét.', answer: 'Itta', hint: 'definite object, definite past' },
+      { prompt: 'I lived in London (lakni) → Londonban ___.', answer: 'laktam' }
+    ],
+    sections: [
+      {
+        heading: 'One past tense — lucky you',
+        body: 'Modern Hungarian has a single past tense. "I went", "I was going" and "I have gone" are all mentem. The marker is -t- (after vowels and some consonants written -tt-), followed by the same personal endings you already know from the present.',
+        examples: [
+          { hu: 'Tegnap dolgoztam.', en: 'Yesterday I worked.' },
+          { hu: 'Magyarul tanultam.', en: 'I learned / was learning / have learned Hungarian.' }
+        ]
+      },
+      {
+        heading: 'The pattern: stem + t + ending',
+        table: {
+          headers: ['Person', 'tanul (back)', 'kér (front)'],
+          rows: [
+            ['én', 'tanultam', 'kértem'],
+            ['te', 'tanultál', 'kértél'],
+            ['ő', 'tanult', 'kért'],
+            ['mi', 'tanultunk', 'kértünk'],
+            ['ti', 'tanultatok', 'kértetek'],
+            ['ők', 'tanultak', 'kértek']
+          ]
+        }
+      },
+      {
+        heading: 'The linking vowel: -ott / -ett / -ött',
+        body: 'Many verbs take a linking vowel before the -tt in the 3rd person singular (and some in every form). The vowel follows harmony: tudott (back), főzött (front rounded). The irregular pair enni/inni have v-stems here: evett, ivott.',
+        examples: [
+          { hu: 'tudott', en: 'he/she knew' },
+          { hu: 'látott', en: 'he/she saw' },
+          { hu: 'olvasott', en: 'he/she read' },
+          { hu: 'főzött', en: 'he/she cooked' },
+          { hu: 'evett', en: 'he/she ate (irregular)' },
+          { hu: 'ivott', en: 'he/she drank (irregular)' }
+        ]
+      },
+      {
+        heading: 'The past of lenni: volt-',
+        body: 'The past of "to be" is completely regular once you know the stem vol-. And note: the drop-van rule does NOT apply in the past — "Anna is a teacher" is Anna tanár, but "Anna WAS a teacher" is Anna tanár volt.',
+        table: {
+          headers: ['Person', 'Hungarian', 'English'],
+          rows: [
+            ['én', 'voltam', 'I was'],
+            ['te', 'voltál', 'you were'],
+            ['ő', 'volt', 'he/she/it was'],
+            ['mi', 'voltunk', 'we were'],
+            ['ti', 'voltatok', 'you (pl.) were'],
+            ['ők', 'voltak', 'they were']
+          ]
+        },
+        examples: [
+          { hu: 'Anna tanár volt.', en: 'Anna was a teacher. (volt is kept!)' },
+          { hu: 'Tavaly Budapesten voltunk.', en: 'Last year we were in Budapest.' }
+        ]
+      },
+      {
+        heading: 'The definite past',
+        body: 'Just like the present, the past has definite endings for specific objects: -tam/-tad/-ta… The 3rd person is the one you will hear most.',
+        examples: [
+          { hu: 'Ittam egy kávét.', en: 'I drank a coffee. (indefinite)' },
+          { hu: 'Itta a kávét.', en: 'She/He drank the coffee. (definite)' },
+          { hu: 'Olvastad a könyvet?', en: 'Did you read the book?' }
+        ]
+      },
+      {
+        heading: 'Words that put you in the past',
+        body: 'These time adverbs almost always come with a past-tense verb — hear one, expect a -t- on the verb.',
+        examples: [
+          { hu: 'tegnap', en: 'yesterday' },
+          { hu: 'tegnapelőtt', en: 'the day before yesterday' },
+          { hu: 'múlt héten', en: 'last week' },
+          { hu: 'tavaly', en: 'last year' },
+          { hu: 'régen', en: 'long ago / in the old days' }
+        ]
+      }
+    ]
+  },
+  {
     id: 'formal-register',
     title: 'Formal Register (magázás)',
     icon: '🎩',
