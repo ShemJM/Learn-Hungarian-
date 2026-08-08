@@ -57,6 +57,15 @@ export function applyReview(entry, correct, today) {
 }
 
 /**
+ * Annotate a freshly built session: cards with no SRS entry yet get isNew, so
+ * the UI can teach them (show the answer) before testing them. Snapshot at
+ * session start — recording reviews mid-session must not flip the flag.
+ */
+export function annotateNew(cards, srsState) {
+  return cards.map((card) => ({ ...card, isNew: !srsState[srsKey(card)] }));
+}
+
+/**
  * The learner's hardest cards, hardest first: most lapses, then lowest box,
  * then longest-unseen. Cards below minLapses (including all never-missed and
  * legacy-format entries) don't qualify — a weak card is one that keeps

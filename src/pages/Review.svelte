@@ -1,7 +1,7 @@
 <script>
   import { lessons } from '../lib/data/lessons.js';
   import { eligibleReviewPool } from '../lib/course.js';
-  import { dayStamp, dueWords, buildSession, srsKey, weakCards, BOX_COUNT } from '../lib/srs.js';
+  import { dayStamp, dueWords, buildSession, srsKey, weakCards, annotateNew, BOX_COUNT } from '../lib/srs.js';
   import { checkAnswer } from '../lib/text.js';
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
@@ -13,7 +13,7 @@
   let session = $state([]);
   let index = $state(0);
   let guess = $state('');
-  let status = $state('idle'); // idle | playing | revealed | done
+  let status = $state('idle'); // idle | preview | playing | revealed | done
   let lastResult = $state(null); // 'exact' | 'accents' | 'wrong' | 'gaveup'
   let correctCount = $state(0);
   let totalDue = $state(0);
@@ -30,13 +30,22 @@
     status = 'idle';
   }
 
+  /** Brand-new cards are taught before they are tested: preview first. */
+  function enterCard(card) {
+    if (card.isNew) {
+      speak(card.hu);
+      return 'preview';
+    }
+    return 'playing';
+  }
+
   function start() {
-    session = buildSession(pool(), $progress.srs, dayStamp());
+    session = annotateNew(buildSession(pool(), $progress.srs, dayStamp()), $progress.srs);
     index = 0;
     guess = '';
     lastResult = null;
     correctCount = 0;
-    status = session.length ? 'playing' : 'done';
+    status = session.length ? enterCard(session[0]) : 'done';
   }
 
   refresh();
@@ -77,7 +86,7 @@
       index += 1;
       guess = '';
       lastResult = null;
-      status = 'playing';
+      status = enterCard(session[index]);
     }
   }
 </script>
@@ -141,7 +150,16 @@
     <p class="clue muted">How do you say…</p>
     <p class="prompt">{current.en}</p>
 
-    {#if status === 'playing'}
+    {#if status === 'preview'}
+      <div class="preview">
+        <p class="hu solution">{current.hu} <AudioButton text={current.hu} /></p>
+        {#if current.pron}
+          <p class="muted">{current.pron}</p>
+        {/if}
+        <p class="muted">First time seeing this card — read it, hear it, then type it.</p>
+        <button class="btn primary" onclick={() => (status = 'playing')}>Got it — now type it →</button>
+      </div>
+    {:else if status === 'playing'}
       <form onsubmit={(e) => { e.preventDefault(); submit(); }}>
         <!-- svelte-ignore a11y_autofocus -->
         <input

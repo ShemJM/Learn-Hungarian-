@@ -8,7 +8,8 @@ import {
   applyReview,
   buildSession,
   srsKey,
-  weakCards
+  weakCards,
+  annotateNew
 } from './srs.js';
 
 const words = [
@@ -138,6 +139,25 @@ describe('buildSession', () => {
     const state = { 'p:Jó napot!': { box: 1, last: 100 } };
     const session = buildSession(phrases, state, 100, { maxNewPhrases: 0, rng: identityRng });
     expect(session.map((c) => c.key)).toEqual(['p:Jó napot!']);
+  });
+});
+
+describe('annotateNew', () => {
+  it('flags cards without an SRS entry, keying phrases by their p: key', () => {
+    const cards = [
+      { hu: 'alma', en: 'apple' },
+      { key: 'p:Jó napot!', hu: 'Jó napot!', en: 'Good day!', isPhrase: true }
+    ];
+    const out = annotateNew(cards, { alma: { box: 2, last: 100 } });
+    expect(out[0].isNew).toBe(false);
+    expect(out[1].isNew).toBe(true);
+  });
+
+  it('bakes the flag in at annotation time (snapshot semantics)', () => {
+    const state = {};
+    const [card] = annotateNew([{ hu: 'sör', en: 'beer' }], state);
+    state['sör'] = applyReview(undefined, true, 100); // reviewed mid-session
+    expect(card.isNew).toBe(true); // still marked as it was when the session was dealt
   });
 });
 
