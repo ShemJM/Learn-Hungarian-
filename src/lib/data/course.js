@@ -141,7 +141,24 @@ export const course = [
       { id: 'u9-practice', type: 'practice', ref: 'lesson:interview' },
       { id: 'u9-dialogue-personal', type: 'dialogue', ref: 'interview-personal' },
       { id: 'u9-dialogue-work', type: 'dialogue', ref: 'interview-work' },
+      { id: 'u9-reading', type: 'reading', ref: 'az-interju' },
       { id: 'u9-check', type: 'checkpoint', ref: 'checkpoint:u9' }
+    ]
+  },
+  {
+    id: 'u10',
+    title: 'Everyday Life',
+    icon: '🌦️',
+    blurb: 'Bodies, doctors and the weather — the small talk and the emergencies.',
+    steps: [
+      { id: 'u10-health', type: 'lesson', ref: 'health' },
+      { id: 'u10-health-practice', type: 'practice', ref: 'lesson:health' },
+      { id: 'u10-doctor', type: 'dialogue', ref: 'doctor' },
+      { id: 'u10-weather', type: 'lesson', ref: 'weather' },
+      { id: 'u10-weather-practice', type: 'practice', ref: 'lesson:weather' },
+      { id: 'u10-smalltalk', type: 'dialogue', ref: 'weather-smalltalk' },
+      { id: 'u10-reading', type: 'reading', ref: 'egy-napom' },
+      { id: 'u10-check', type: 'checkpoint', ref: 'checkpoint:u10' }
     ]
   }
 ];

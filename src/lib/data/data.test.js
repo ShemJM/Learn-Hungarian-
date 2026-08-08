@@ -54,6 +54,7 @@ describe('lessons data', () => {
 
   it('getLesson finds by id and returns null otherwise', () => {
     expect(getLesson('food')?.title).toBe('Food & Drink');
+    expect(getLesson('weather')?.title).toBe('Weather & Seasons');
     expect(getLesson('nope')).toBeNull();
   });
 });
@@ -292,6 +293,16 @@ describe('verbs data', () => {
     expect(lenni.indefinite).toEqual(['vagyok', 'vagy', 'van', 'vagyunk', 'vagytok', 'vannak']);
     expect(lenni.past.indefinite).toEqual(['voltam', 'voltál', 'volt', 'voltunk', 'voltatok', 'voltak']);
   });
+
+  it('spot-checks the irregular v-stem venni and the -ik verb dolgozni', () => {
+    const venni = verbs.find((v) => v.inf === 'venni');
+    expect(venni.indefinite).toEqual(['veszek', 'veszel', 'vesz', 'veszünk', 'vesztek', 'vesznek']);
+    expect(venni.definite[3]).toBe('vesszük'); // geminate sz
+    expect(venni.past.definite).toEqual(['vettem', 'vetted', 'vette', 'vettük', 'vettétek', 'vették']);
+    const dolgozni = verbs.find((v) => v.inf === 'dolgozni');
+    expect(dolgozni.indefinite[0]).toEqual(['dolgozom', 'dolgozok']); // standard first, colloquial accepted
+    expect(dolgozni.past.indefinite[2]).toBe('dolgozott');
+  });
 });
 
 describe('course data', () => {
@@ -308,6 +319,7 @@ describe('course data', () => {
     }
     expect(new Set(allSteps.map((s) => s.id)).size).toBe(allSteps.length);
     expect(getUnit('u1')?.title).toBe('First Words');
+    expect(getUnit('u10')?.title).toBe('Everyday Life');
     expect(getUnit('nope')).toBeNull();
   });
 

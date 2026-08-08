@@ -125,6 +125,40 @@ export const dialogues = [
       { speaker: 'A', name: 'Waiter', hu: 'Egészségükre! Jó étvágyat!', en: 'Cheers! Enjoy your meal!' },
       { speaker: 'B', name: 'You', hu: 'Köszönjük! Nagyon finom!', en: 'Thank you! It is very delicious!' }
     ]
+  },
+  {
+    id: 'doctor',
+    title: "At the Doctor's",
+    icon: '🩺',
+    scene: 'You (B) feel unwell and visit the doctor (orvos), who uses the formal Ön form.',
+    lines: [
+      { speaker: 'A', name: 'Doctor', hu: 'Jó napot! Mi a panasza?', en: 'Good day! What is your complaint?' },
+      { speaker: 'B', name: 'You', hu: 'Jó napot! Fáj a fejem és a torkom.', en: 'Good day! My head and my throat hurt.' },
+      { speaker: 'A', name: 'Doctor', hu: 'Van láza?', en: 'Do you have a fever?' },
+      { speaker: 'B', name: 'You', hu: 'Igen, tegnap este volt egy kis lázam.', en: 'Yes, I had a slight fever last night.' },
+      { speaker: 'A', name: 'Doctor', hu: 'Értem. Kérem, nyissa ki a száját!', en: 'I see. Please open your mouth.' },
+      { speaker: 'B', name: 'You', hu: 'Komoly a baj, doktor úr?', en: 'Is it serious, doctor?' },
+      { speaker: 'A', name: 'Doctor', hu: 'Nem, csak megfázás. Felírok egy gyógyszert.', en: 'No, just a cold. I will prescribe a medicine.' },
+      { speaker: 'B', name: 'You', hu: 'Köszönöm. Hol van a legközelebbi gyógyszertár?', en: 'Thank you. Where is the nearest pharmacy?' },
+      { speaker: 'A', name: 'Doctor', hu: 'Itt van a sarkon. Jobbulást kívánok!', en: 'It is here on the corner. I wish you a speedy recovery!' },
+      { speaker: 'B', name: 'You', hu: 'Köszönöm szépen. Viszontlátásra!', en: 'Thank you very much. Goodbye!' }
+    ]
+  },
+  {
+    id: 'weather-smalltalk',
+    title: 'Small Talk About the Weather',
+    icon: '🌦️',
+    scene: 'You (B) chat with your neighbour Erzsi néni in the stairwell — the national sport.',
+    lines: [
+      { speaker: 'A', name: 'Erzsi', hu: 'Jó reggelt! Milyen szép napos idő van ma!', en: 'Good morning! What lovely sunny weather today!' },
+      { speaker: 'B', name: 'You', hu: 'Jó reggelt! Igen, végre süt a nap.', en: 'Good morning! Yes, the sun is finally shining.' },
+      { speaker: 'A', name: 'Erzsi', hu: 'Tegnap egész nap esett az eső.', en: 'Yesterday it rained all day.' },
+      { speaker: 'B', name: 'You', hu: 'Igen, és fújt a szél is. Nagyon hideg volt.', en: 'Yes, and the wind was blowing too. It was very cold.' },
+      { speaker: 'A', name: 'Erzsi', hu: 'Holnap állítólag vihar jön.', en: 'Tomorrow a storm is supposedly coming.' },
+      { speaker: 'B', name: 'You', hu: 'Akkor viszek esernyőt.', en: 'Then I will take an umbrella.' },
+      { speaker: 'A', name: 'Erzsi', hu: 'Okos! Az ősz már ilyen.', en: 'Smart! Autumn is like that.' },
+      { speaker: 'B', name: 'You', hu: 'Igen, de én szeretem az őszt. Szép évszak.', en: 'Yes, but I like autumn. It is a beautiful season.' }
+    ]
   }
 ];
 

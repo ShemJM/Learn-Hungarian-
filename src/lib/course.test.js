@@ -90,7 +90,7 @@ describe('nextCourseStep', () => {
     const p = {
       quizScores: Object.fromEntries(lessons.map((l) => [l.id, 100])),
       guidesRead: course.flatMap((u) => u.steps.filter((s) => s.type === 'guide').map((s) => s.ref)),
-      readingsDone: ['anna', 'piac', 'kave'],
+      readingsDone: course.flatMap((u) => u.steps.filter((s) => s.type === 'reading').map((s) => s.ref)),
       dialoguesDone: course.flatMap((u) => u.steps.filter((s) => s.type === 'dialogue').map((s) => s.ref)),
       exerciseScores: Object.fromEntries(
         course.flatMap((u) =>
