@@ -7,7 +7,7 @@ microphone-based pronunciation checks, and mini games to make it all stick.
 
 ## Features
 
-- **🧭 A guided course** — nine ordered units that interleave lessons, grammar, practice
+- **🧭 A guided course** — ten ordered units that interleave lessons, grammar, practice
   sessions, dialogues and readings in an order that builds, each ending in a mixed
   *checkpoint*. The course recommends exactly one next step (soft gating — nothing is ever
   locked), and the Home dashboard's main button always knows where you left off.
@@ -15,13 +15,16 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   session mixing multiple choice, typed translation (EN→HU), cloze gap-fill, word-order
   tiles, and listening dictation. Typed answers are graded accent-leniently, corrections are
   always shown, and production items feed the spaced-repetition deck so practice counts.
-- **📚 10 themed lessons** (greetings, numbers, family, food, around town, time, talking
-  about the past, verbs, interviews, adjectives & colours) — every word with an English
-  translation, a phonetic guide and audio. Each lesson has a *Learn*, *Practise speaking* and
-  *Quiz* tab.
-- **🔁 Spaced repetition** — a Leitner deck of words *and* phrases, released lesson-by-lesson
-  as you progress through the course, with an on-screen accent bar (á é í ó ö ő ú ü ű) for
-  keyboards without Hungarian accents.
+- **📚 12 themed lessons** (greetings, numbers, family, food, around town, time, talking
+  about the past, verbs, interviews, adjectives & colours, health & the body, weather &
+  seasons) — every word with an English translation, a phonetic guide and audio. Each lesson
+  has a *Learn*, *Practise speaking* and *Quiz* tab.
+- **🔁 Spaced repetition that knows your weak spots** — a Leitner deck of words *and*
+  phrases, released lesson-by-lesson as you progress through the course. Brand-new cards are
+  taught (shown with audio) before they are tested; every card tracks its mistake history,
+  practice sessions lean toward the cards you keep missing, and a 🎯 *weak words workout*
+  drills your eight hardest cards on demand. An on-screen accent bar (á é í ó ö ő ú ü ű)
+  helps keyboards without Hungarian accents.
 - **✏️ Quizzes** — multiple-choice in both directions (HU→EN and EN→HU) with instant feedback,
   mistake review and per-lesson best scores.
 - **🔊 Audio everywhere** — Hungarian text-to-speech (Web Speech API, `hu-HU` voice) on every
@@ -35,14 +38,18 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   "to be", present-tense conjugation (indefinite vs definite), cases & suffixes,
   articles/plurals/possession, word order & questions, the past tense, formal register, and
   dates & life events. All with audio examples, tables and a *Practise this* session.
-- **⚙️ Verb trainer with two tenses** — full present *and* past conjugation tables (including
-  lenni: vagyok… / voltam…) with a Present/Past toggle on both the browsable tables and the
-  typing drill.
-- **📖 Reading exercises** — graded texts with tap-to-reveal translations, read-aloud audio
-  and comprehension questions.
-- **💬 Conversation skills** — five real-life dialogues (café, market, directions, restaurant,
-  meeting someone). Study mode, then *role-play mode*: the app speaks the other part and you
-  say your lines out loud with pronunciation scoring.
+- **⚙️ Verb trainer with two tenses** — full present *and* past conjugation tables for 20
+  verbs (including lenni: vagyok… / voltam…, and irregulars like jönni and venni) with a
+  Present/Past toggle on both the browsable tables and the typing drill.
+- **👂 Listening at word and sentence level** — the Listening Challenge has a Words mode
+  (hear it, pick the meaning) and a Phrases mode: true dictation over the phrases you have
+  unlocked in the course. Checkpoints double down on listening too.
+- **📖 Reading exercises** — five graded texts (Beginner to Intermediate) with tap-to-reveal
+  translations, read-aloud audio and comprehension questions.
+- **💬 Conversation skills** — nine real-life dialogues (café, market, directions, restaurant,
+  meeting someone, the doctor's, weather small talk, two interview rehearsals). Study mode,
+  then *role-play mode*: the app speaks the other part and you say your lines out loud with
+  pronunciation scoring.
 - **🎲 Mini games** — a full-screen *Quick Fire* speed round (a word flashes up, tap its
   translation before the timer runs out — built for a spare few minutes one-handed),
   flashcards, matching pairs, word scramble and a listening challenge. Best scores are saved.
