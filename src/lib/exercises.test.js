@@ -85,6 +85,14 @@ describe('buildLessonSession', () => {
     expect(withDefault).toEqual(again);
   });
 
+  it('checkpoint mix doubles the dictation weight over the lesson default', () => {
+    const uncapped = { count: 99, rng: seededRng(4) };
+    const normal = buildLessonSession(lesson, { ...uncapped, mix: LESSON_MIX });
+    const checkpoint = buildLessonSession(lesson, { ...uncapped, mix: CHECKPOINT_MIX, rng: seededRng(4) });
+    expect(normal.filter((i) => i.kind === 'dictation').length).toBe(1);
+    expect(checkpoint.filter((i) => i.kind === 'dictation').length).toBe(2);
+  });
+
   it('marks production items with an srsKey and recognition items without', () => {
     const session = buildLessonSession(lesson, { rng: seededRng(9) });
     for (const item of session) {
