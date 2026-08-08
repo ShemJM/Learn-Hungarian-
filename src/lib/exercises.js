@@ -21,17 +21,32 @@ import { getGuide } from './data/grammar.js';
 import { getUnit } from './data/course.js';
 import { buildQuiz } from './quiz.js';
 import { buildRound, isSolved, tokenize } from './games/sentencebuilder.js';
-import { checkAnswer, sample, shuffle } from './text.js';
+import { srsKey, weakCards, BOX_COUNT } from './srs.js';
+import { checkAnswer, sample, shuffle, weightedSample } from './text.js';
 
 /** How many of each kind go into a standard lesson session. */
 export const LESSON_MIX = { mcq: 4, type: 3, cloze: 2, order: 2, dictation: 1 };
+
+/** Checkpoint draws lean harder on listening than first-pass lesson practice. */
+export const CHECKPOINT_MIX = { mcq: 3, type: 2, cloze: 1, order: 1, dictation: 2 };
 
 function acceptedList(answer) {
   return Array.isArray(answer) ? answer : [answer];
 }
 
-function mcqItems(words, count, rng) {
-  return buildQuiz(words, { count, direction: 'mixed', rng }).map((q) => ({
+/**
+ * Sampling weight for one card: unseen cards stay at 1, struggling cards climb
+ * with every lapse and every box they are below the top. Practice leans toward
+ * what the learner actually gets wrong.
+ */
+function reviewWeight(entry) {
+  if (!entry) return 1;
+  return 1 + 2 * (entry.lapses || 0) + (BOX_COUNT - entry.box);
+}
+
+function mcqItems(words, count, rng, srsState = null) {
+  const focus = srsState ? weightedSample(words, count, (w) => reviewWeight(srsState[srsKey(w)]), rng) : null;
+  return buildQuiz(words, { count, direction: 'mixed', focus, rng }).map((q) => ({
     kind: 'mcq',
     prompt: q.prompt,
     promptLang: q.promptLang,
@@ -43,8 +58,11 @@ function mcqItems(words, count, rng) {
   }));
 }
 
-function typeItems(words, count, rng) {
-  return sample(words, count, rng).map((w) => ({
+function typeItems(words, count, rng, srsState = null) {
+  const picked = srsState
+    ? weightedSample(words, count, (w) => reviewWeight(srsState[srsKey(w)]), rng)
+    : sample(words, count, rng);
+  return picked.map((w) => ({
     kind: 'type',
     prompt: w.en,
     accepted: [w.hu],
@@ -112,14 +130,16 @@ function dictationItems(phrases, words, count, rng) {
 
 /**
  * A mixed session over one lesson's words and phrases. Kinds that need
- * phrases degrade gracefully when the lesson has none.
+ * phrases degrade gracefully when the lesson has none. When srsState is
+ * provided, mcq and typed items are weighted toward the learner's shakiest
+ * cards; without it, sampling is uniform (and deterministic for a given rng).
  */
-export function buildLessonSession(lesson, { count = 12, mix = LESSON_MIX, rng = Math.random } = {}) {
+export function buildLessonSession(lesson, { count = 12, mix = LESSON_MIX, rng = Math.random, srsState = null } = {}) {
   const words = lesson.words || [];
   const phrases = lesson.phrases || [];
   const items = [
-    ...mcqItems(words, mix.mcq, rng),
-    ...typeItems(words, mix.type, rng),
+    ...mcqItems(words, mix.mcq, rng, srsState),
+    ...typeItems(words, mix.type, rng, srsState),
     ...clozeItems(phrases, mix.cloze, rng),
     ...orderItems(phrases, mix.order, rng),
     ...dictationItems(phrases, words, mix.dictation, rng)
@@ -147,18 +167,55 @@ export function buildGrammarSession(guide, { rng = Math.random } = {}) {
  * The unit's "boss level": a mix drawn from every lesson and grammar guide
  * the unit teaches, so passing it means the whole unit stuck.
  */
-export function buildCheckpointSession(unit, { count = 15, rng = Math.random } = {}) {
+export function buildCheckpointSession(unit, { count = 15, rng = Math.random, srsState = null } = {}) {
   const items = [];
   for (const step of unit.steps) {
     if (step.type === 'lesson') {
       const lesson = getLesson(step.ref);
-      if (lesson) items.push(...buildLessonSession(lesson, { count: 6, rng }));
+      if (lesson) items.push(...buildLessonSession(lesson, { count: 6, mix: CHECKPOINT_MIX, rng, srsState }));
     } else if (step.type === 'guide') {
       const guide = getGuide(step.ref);
       if (guide) items.push(...sample(buildGrammarSession(guide, { rng }), 4, rng));
     }
   }
   return shuffle(items, rng).slice(0, count);
+}
+
+/**
+ * A workout over the learner's hardest cards: a recognition warm-up first
+ * (en→hu multiple choice, needs at least two cards for distractors), then a
+ * typed production item for every card. Deliberately unshuffled — see the
+ * answer options before having to produce them from nothing.
+ */
+export function buildWeakSession(cards, { rng = Math.random } = {}) {
+  const mcq =
+    cards.length >= 2
+      ? buildQuiz(cards, {
+          count: Math.min(4, cards.length),
+          direction: 'en-hu',
+          focus: cards.slice(0, 4),
+          rng
+        }).map((q) => ({
+          kind: 'mcq',
+          prompt: q.prompt,
+          promptLang: q.promptLang,
+          choices: q.choices,
+          answer: q.answer,
+          hu: q.word.hu,
+          en: q.word.en,
+          srsKey: srsKey(q.word)
+        }))
+      : [];
+  const typed = cards.map((w) => ({
+    kind: 'type',
+    prompt: w.en,
+    accepted: [w.hu],
+    display: w.hu,
+    audio: w.hu,
+    pron: w.pron,
+    srsKey: srsKey(w)
+  }));
+  return [...mcq, ...typed];
 }
 
 /** Grade a learner response against an item. quality is null for non-typed kinds. */
@@ -171,9 +228,11 @@ export function gradeItem(item, response) {
 
 /**
  * Resolve an exercise-set id to { id, title, icon, build(rng) }, or null.
- * Ids: 'lesson:<lessonId>' | 'grammar:<guideId>' | 'checkpoint:<unitId>'.
+ * Ids: 'lesson:<lessonId>' | 'grammar:<guideId>' | 'checkpoint:<unitId>' | 'weak:all'.
+ * ctx (optional): { srsState, pool } — the learner's SRS state (weights word
+ * selection toward weak cards) and eligible review pool (source for weak sets).
  */
-export function getExerciseSet(setId) {
+export function getExerciseSet(setId, ctx = {}) {
   const sep = (setId || '').indexOf(':');
   if (sep < 0) return null;
   const kind = setId.slice(0, sep);
@@ -185,7 +244,7 @@ export function getExerciseSet(setId) {
       id: setId,
       title: `Practice: ${lesson.title}`,
       icon: lesson.icon,
-      build: (rng = Math.random) => buildLessonSession(lesson, { rng })
+      build: (rng = Math.random) => buildLessonSession(lesson, { rng, srsState: ctx.srsState })
     };
   }
   if (kind === 'grammar') {
@@ -198,6 +257,15 @@ export function getExerciseSet(setId) {
       build: (rng = Math.random) => buildGrammarSession(guide, { rng })
     };
   }
+  if (kind === 'weak') {
+    return {
+      id: setId,
+      title: 'Weak words workout',
+      icon: '🎯',
+      build: (rng = Math.random) =>
+        buildWeakSession(weakCards(ctx.pool || [], ctx.srsState || {}, { minLapses: 2, limit: 8 }), { rng })
+    };
+  }
   if (kind === 'checkpoint') {
     const unit = getUnit(ref);
     if (!unit) return null;
@@ -205,7 +273,7 @@ export function getExerciseSet(setId) {
       id: setId,
       title: `Checkpoint: ${unit.title}`,
       icon: '🏁',
-      build: (rng = Math.random) => buildCheckpointSession(unit, { rng })
+      build: (rng = Math.random) => buildCheckpointSession(unit, { rng, srsState: ctx.srsState })
     };
   }
   return null;

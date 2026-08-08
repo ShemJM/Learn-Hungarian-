@@ -1,5 +1,16 @@
 import { describe, it, expect } from 'vitest';
-import { BOX_COUNT, INTERVALS, dayStamp, isDue, dueWords, applyReview, buildSession, srsKey } from './srs.js';
+import {
+  BOX_COUNT,
+  INTERVALS,
+  dayStamp,
+  isDue,
+  dueWords,
+  applyReview,
+  buildSession,
+  srsKey,
+  weakCards,
+  annotateNew
+} from './srs.js';
 
 const words = [
   { hu: 'alma', en: 'apple' },
@@ -43,12 +54,12 @@ describe('isDue', () => {
 
 describe('applyReview', () => {
   it('promotes a correct answer one box and stamps today', () => {
-    expect(applyReview({ box: 2, last: 90 }, true, 100)).toEqual({ box: 3, last: 100 });
+    expect(applyReview({ box: 2, last: 90 }, true, 100)).toEqual({ box: 3, last: 100, reps: 1, lapses: 0 });
   });
 
   it('starts new words in box 1 on a miss and box 2 on a hit', () => {
-    expect(applyReview(undefined, false, 100)).toEqual({ box: 1, last: 100 });
-    expect(applyReview(undefined, true, 100)).toEqual({ box: 2, last: 100 });
+    expect(applyReview(undefined, false, 100)).toEqual({ box: 1, last: 100, reps: 1, lapses: 1 });
+    expect(applyReview(undefined, true, 100)).toEqual({ box: 2, last: 100, reps: 1, lapses: 0 });
   });
 
   it('caps at the top box', () => {
@@ -56,7 +67,17 @@ describe('applyReview', () => {
   });
 
   it('demotes to box 1 on a miss', () => {
-    expect(applyReview({ box: 4, last: 90 }, false, 100)).toEqual({ box: 1, last: 100 });
+    expect(applyReview({ box: 4, last: 90 }, false, 100)).toEqual({ box: 1, last: 100, reps: 1, lapses: 1 });
+  });
+
+  it('accumulates reps and lapses across reviews, starting from legacy entries', () => {
+    let entry = { box: 3, last: 90 }; // saved before the counters existed
+    entry = applyReview(entry, false, 100);
+    expect(entry).toEqual({ box: 1, last: 100, reps: 1, lapses: 1 });
+    entry = applyReview(entry, true, 101);
+    entry = applyReview(entry, false, 102);
+    expect(entry.reps).toBe(3);
+    expect(entry.lapses).toBe(2);
   });
 });
 
@@ -118,6 +139,63 @@ describe('buildSession', () => {
     const state = { 'p:Jó napot!': { box: 1, last: 100 } };
     const session = buildSession(phrases, state, 100, { maxNewPhrases: 0, rng: identityRng });
     expect(session.map((c) => c.key)).toEqual(['p:Jó napot!']);
+  });
+});
+
+describe('annotateNew', () => {
+  it('flags cards without an SRS entry, keying phrases by their p: key', () => {
+    const cards = [
+      { hu: 'alma', en: 'apple' },
+      { key: 'p:Jó napot!', hu: 'Jó napot!', en: 'Good day!', isPhrase: true }
+    ];
+    const out = annotateNew(cards, { alma: { box: 2, last: 100 } });
+    expect(out[0].isNew).toBe(false);
+    expect(out[1].isNew).toBe(true);
+  });
+
+  it('bakes the flag in at annotation time (snapshot semantics)', () => {
+    const state = {};
+    const [card] = annotateNew([{ hu: 'sör', en: 'beer' }], state);
+    state['sör'] = applyReview(undefined, true, 100); // reviewed mid-session
+    expect(card.isNew).toBe(true); // still marked as it was when the session was dealt
+  });
+});
+
+describe('weakCards', () => {
+  const pool = [
+    { hu: 'alma', en: 'apple' },
+    { hu: 'kenyér', en: 'bread' },
+    { hu: 'sör', en: 'beer' },
+    { key: 'p:Jó napot!', hu: 'Jó napot!', en: 'Good day!', isPhrase: true }
+  ];
+
+  it('ranks by lapses desc, then box asc, then longest-unseen', () => {
+    const state = {
+      alma: { box: 2, last: 100, reps: 5, lapses: 2 },
+      kenyér: { box: 1, last: 100, reps: 8, lapses: 4 },
+      sör: { box: 1, last: 90, reps: 6, lapses: 2 }, // same lapses as alma, lower box → harder
+      'p:Jó napot!': { box: 3, last: 100, reps: 9, lapses: 4 } // same lapses as kenyér, higher box
+    };
+    expect(weakCards(pool, state).map(srsKey)).toEqual(['kenyér', 'p:Jó napot!', 'sör', 'alma']);
+  });
+
+  it('excludes cards below minLapses, never-missed cards, unseen cards and legacy entries', () => {
+    const state = {
+      alma: { box: 2, last: 100, reps: 4, lapses: 1 }, // below threshold
+      kenyér: { box: 5, last: 100, reps: 4, lapses: 0 }, // never missed
+      sör: { box: 3, last: 100 } // legacy entry, no counters
+      // 'p:Jó napot!' unseen
+    };
+    expect(weakCards(pool, state)).toEqual([]);
+  });
+
+  it('respects the limit', () => {
+    const state = Object.fromEntries(pool.map((c) => [srsKey(c), { box: 1, last: 100, reps: 5, lapses: 3 }]));
+    expect(weakCards(pool, state, { limit: 2 }).length).toBe(2);
+  });
+
+  it('returns empty for an empty pool', () => {
+    expect(weakCards([], {})).toEqual([]);
   });
 });
 

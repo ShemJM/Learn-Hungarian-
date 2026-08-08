@@ -335,6 +335,67 @@ export const lessons = [
       { hu: 'Ez túl drága!', en: 'This is too expensive!' },
       { hu: 'A magyar zászló piros, fehér és zöld.', en: 'The Hungarian flag is red, white and green.' }
     ]
+  },
+  {
+    id: 'health',
+    title: 'Health & the Body',
+    icon: '🩺',
+    intro:
+      'The words you hope not to need. Hungarian says "my head hurts" with a possessive: Fáj a fejem (literally "the my-head hurts"). Note that beteg means both "sick" and "a patient".',
+    words: [
+      { hu: 'fej', en: 'head', pron: 'fey' },
+      { hu: 'has', en: 'belly / stomach', pron: 'hawsh' },
+      { hu: 'torok', en: 'throat', pron: 'TO-rok' },
+      { hu: 'kéz', en: 'hand', pron: 'kayz' },
+      { hu: 'láb', en: 'leg / foot', pron: 'lahb' },
+      { hu: 'szív', en: 'heart', pron: 'seev' },
+      { hu: 'orvos', en: 'doctor', pron: 'OR-vosh' },
+      { hu: 'kórház', en: 'hospital', pron: 'KOHR-hahz' },
+      { hu: 'gyógyszer', en: 'medicine', pron: 'DYOHDJ-sair' },
+      { hu: 'beteg', en: 'sick / patient', pron: 'BEH-teg' },
+      { hu: 'egészséges', en: 'healthy', pron: 'EH-gays-shay-gesh' },
+      { hu: 'láz', en: 'fever', pron: 'lahz' },
+      { hu: 'fájni', en: 'to hurt', pron: 'FAHY-nee' },
+      { hu: 'jobbulás', en: 'recovery (Jobbulást! = Get well!)', pron: 'YOB-boo-lahsh' }
+    ],
+    phrases: [
+      { hu: 'Fáj a fejem.', en: 'My head hurts.' },
+      { hu: 'Rosszul érzem magam.', en: 'I feel unwell.' },
+      { hu: 'Orvoshoz kell mennem.', en: 'I need to go to the doctor.' },
+      { hu: 'Van lázam.', en: 'I have a fever.' },
+      { hu: 'Jobbulást!', en: 'Get well soon!' }
+    ]
+  },
+  {
+    id: 'weather',
+    title: 'Weather & Seasons',
+    icon: '🌦️',
+    intro:
+      'Hungarian small talk runs on weather. Watch the double-duty words: nap means both "sun" and "day" (hence vasárnap, Sunday), and idő means both "weather" and "time" (hence munkaidő, working hours).',
+    words: [
+      { hu: 'idő', en: 'weather / time', pron: 'EE-duh' },
+      { hu: 'nap', en: 'sun / day', pron: 'nawp' },
+      { hu: 'eső', en: 'rain', pron: 'EH-shuh' },
+      { hu: 'hó', en: 'snow', pron: 'hoh' },
+      { hu: 'szél', en: 'wind', pron: 'sayl' },
+      { hu: 'felhő', en: 'cloud', pron: 'FEL-huh' },
+      { hu: 'vihar', en: 'storm', pron: 'VEE-hawr' },
+      { hu: 'hideg', en: 'cold', pron: 'HEE-deg' },
+      { hu: 'meleg', en: 'warm / hot', pron: 'MEH-leg' },
+      { hu: 'napos', en: 'sunny', pron: 'NAW-posh' },
+      { hu: 'esernyő', en: 'umbrella', pron: 'EH-shair-nyuh' },
+      { hu: 'tavasz', en: 'spring', pron: 'TAW-vaws' },
+      { hu: 'nyár', en: 'summer', pron: 'nyahr' },
+      { hu: 'ősz', en: 'autumn', pron: 'uhss' },
+      { hu: 'tél', en: 'winter', pron: 'tayl' }
+    ],
+    phrases: [
+      { hu: 'Milyen idő van ma?', en: 'What is the weather like today?' },
+      { hu: 'Esik az eső.', en: 'It is raining.' },
+      { hu: 'Süt a nap.', en: 'The sun is shining.' },
+      { hu: 'Fúj a szél.', en: 'The wind is blowing.' },
+      { hu: 'Hideg van, vigyél esernyőt!', en: 'It is cold — take an umbrella!' }
+    ]
   }
 ];
 

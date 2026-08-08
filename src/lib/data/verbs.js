@@ -224,6 +224,76 @@ export const verbs = [
       indefinite: ['mentem', 'mentél', 'ment', 'mentünk', 'mentetek', 'mentek'],
       definite: null
     }
+  },
+  {
+    inf: 'jönni',
+    en: 'to come',
+    harmony: 'front-rounded',
+    ik: false,
+    pron: 'YUHN-nee',
+    // Fully irregular: jöv-/jön-/jöt- stems (note the double s in jössz). Intransitive.
+    indefinite: ['jövök', 'jössz', 'jön', 'jövünk', 'jöttök', 'jönnek'],
+    definite: null,
+    past: {
+      indefinite: ['jöttem', 'jöttél', 'jött', 'jöttünk', 'jöttetek', 'jöttek'],
+      definite: null
+    }
+  },
+  {
+    inf: 'dolgozni',
+    en: 'to work',
+    harmony: 'back',
+    ik: true,
+    pron: 'DOL-goz-nee',
+    // -ik verb (dolgozik): standard 1sg dolgozom, colloquial dolgozok; sibilant z stem gives te -ol. Intransitive.
+    indefinite: [['dolgozom', 'dolgozok'], 'dolgozol', 'dolgozik', 'dolgozunk', 'dolgoztok', 'dolgoznak'],
+    definite: null,
+    past: {
+      // 3sg linking vowel: dolgozott.
+      indefinite: ['dolgoztam', 'dolgoztál', 'dolgozott', 'dolgoztunk', 'dolgoztatok', 'dolgoztak'],
+      definite: null
+    }
+  },
+  {
+    inf: 'csinálni',
+    en: 'to do / make',
+    harmony: 'back',
+    ik: false,
+    pron: 'CHEE-nahl-nee',
+    indefinite: ['csinálok', 'csinálsz', 'csinál', 'csinálunk', 'csináltok', 'csinálnak'],
+    definite: ['csinálom', 'csinálod', 'csinálja', 'csináljuk', 'csináljátok', 'csinálják'],
+    past: {
+      indefinite: ['csináltam', 'csináltál', 'csinált', 'csináltunk', 'csináltatok', 'csináltak'],
+      definite: ['csináltam', 'csináltad', 'csinálta', 'csináltuk', 'csináltátok', 'csinálták']
+    }
+  },
+  {
+    inf: 'venni',
+    en: 'to buy / take',
+    harmony: 'front',
+    ik: false,
+    pron: 'VEN-nee',
+    // Irregular v-stem: present vesz-, past vett-; definite 1pl doubles the sz: vesszük.
+    indefinite: ['veszek', 'veszel', 'vesz', 'veszünk', 'vesztek', 'vesznek'],
+    definite: ['veszem', 'veszed', 'veszi', 'vesszük', 'veszitek', 'veszik'],
+    past: {
+      indefinite: ['vettem', 'vettél', 'vett', 'vettünk', 'vettetek', 'vettek'],
+      definite: ['vettem', 'vetted', 'vette', 'vettük', 'vettétek', 'vették']
+    }
+  },
+  {
+    inf: 'adni',
+    en: 'to give',
+    harmony: 'back',
+    ik: false,
+    pron: 'AWD-nee',
+    // Definite -j- assimilates in speech but is written (adja); past 3sg takes the linking vowel: adott.
+    indefinite: ['adok', 'adsz', 'ad', 'adunk', 'adtok', 'adnak'],
+    definite: ['adom', 'adod', 'adja', 'adjuk', 'adjátok', 'adják'],
+    past: {
+      indefinite: ['adtam', 'adtál', 'adott', 'adtunk', 'adtatok', 'adtak'],
+      definite: ['adtam', 'adtad', 'adta', 'adtuk', 'adtátok', 'adták']
+    }
   }
 ];
 

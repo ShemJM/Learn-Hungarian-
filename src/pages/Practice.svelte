@@ -1,7 +1,9 @@
 <script>
+  import { get } from 'svelte/store';
   import { getExerciseSet } from '../lib/exercises.js';
   import { course } from '../lib/data/course.js';
-  import { nextCourseStep } from '../lib/course.js';
+  import { lessons } from '../lib/data/lessons.js';
+  import { nextCourseStep, eligibleReviewPool } from '../lib/course.js';
   import ExerciseRunner from '../lib/components/ExerciseRunner.svelte';
   import { progress } from '../lib/progress.js';
 
@@ -11,9 +13,20 @@
   let attempt = $state(0);
   let finished = $state(false);
   let set = $derived(getExerciseSet(setId));
+
+  /**
+   * Non-reactive progress snapshot: recordReview during the session must not
+   * reshuffle the deck, so the builder reads get(progress), never $progress.
+   */
+  function sessionCtx() {
+    const p = get(progress);
+    return { srsState: p.srs, pool: eligibleReviewPool(lessons, p) };
+  }
+
   let items = $derived.by(() => {
     attempt; // a restart bumps this to deal a fresh session
-    return set ? set.build() : [];
+    const built = getExerciseSet(setId, sessionCtx());
+    return built ? built.build() : [];
   });
   let nextStep = $derived(nextCourseStep(course, $progress));
 

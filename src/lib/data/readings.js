@@ -113,6 +113,90 @@ export const readings = [
         answer: 'Gábor'
       }
     ]
+  },
+  {
+    id: 'egy-napom',
+    title: 'Egy napom',
+    level: 'Beginner+',
+    icon: '☀️',
+    intro: 'A day in the past tense — weather, shopping and work all make an appearance.',
+    text: [
+      { hu: 'Tegnap nagyon hosszú napom volt.', en: 'Yesterday I had a very long day.' },
+      { hu: 'Reggel esett az eső, ezért otthon dolgoztam.', en: 'In the morning it was raining, so I worked at home.' },
+      { hu: 'Délben kimentem a boltba, és vettem kenyeret meg tejet.', en: 'At noon I went out to the shop and bought bread and milk.' },
+      { hu: 'Délután végre kisütött a nap.', en: 'In the afternoon the sun finally came out.' },
+      { hu: 'A parkban sétáltam, és találkoztam egy régi barátommal.', en: 'I walked in the park and met an old friend of mine.' },
+      { hu: 'Este vacsorát csináltam: gulyáslevest főztem.', en: 'In the evening I made dinner: I cooked goulash soup.' },
+      { hu: 'A férjem mosogatott, én pedig olvastam.', en: 'My husband did the dishes, and I read.' },
+      { hu: 'Tizenegykor lefeküdtem, mert nagyon fáradt voltam.', en: 'At eleven I went to bed, because I was very tired.' }
+    ],
+    questions: [
+      {
+        q: 'Why did the writer work at home in the morning?',
+        choices: ['It was raining', 'It was snowing', 'The office was closed', 'She was sick'],
+        answer: 'It was raining'
+      },
+      {
+        q: 'What did she buy at the shop?',
+        choices: ['Coffee and cake', 'Bread and milk', 'Fruit and wine', 'Medicine'],
+        answer: 'Bread and milk'
+      },
+      {
+        q: 'Whom did she meet in the park?',
+        choices: ['Her husband', 'A doctor', 'An old friend', 'Her teacher'],
+        answer: 'An old friend'
+      },
+      {
+        q: 'What did she cook for dinner?',
+        choices: ['Goulash soup', 'Stew', 'Strudel', 'Nothing — they ate out'],
+        answer: 'Goulash soup'
+      }
+    ]
+  },
+  {
+    id: 'az-interju',
+    title: 'Az interjú',
+    level: 'Intermediate',
+    icon: '🪪',
+    intro: 'A citizenship interview retold — formal register and past tense, exactly what the exam sounds like.',
+    text: [
+      { hu: 'Kedden reggel Tom a hivatalba ment.', en: 'On Tuesday morning Tom went to the office.' },
+      { hu: 'Kicsit izgult, mert ez volt az állampolgársági interjúja.', en: 'He was a little nervous, because this was his citizenship interview.' },
+      { hu: 'Az ügyintéző kedvesen köszöntötte: „Jó reggelt! Foglaljon helyet!”', en: 'The official greeted him kindly: "Good morning! Take a seat!"' },
+      { hu: 'Először a családjáról kérdezte: „Mióta házas?”', en: 'First she asked about his family: "How long have you been married?"' },
+      { hu: 'Tom válaszolt: „Nyolc éve vagyok házas, a feleségem magyar.”', en: 'Tom answered: "I have been married for eight years; my wife is Hungarian."' },
+      { hu: 'Aztán a munkájáról beszélt: szoftverfejlesztőként dolgozik egy angol cégnél.', en: 'Then he talked about his job: he works as a software developer at an English company.' },
+      { hu: 'Egyszer nem értette a kérdést, ezért azt mondta: „Elnézést, megismételné?”', en: 'Once he did not understand the question, so he said: "Sorry, could you repeat that?"' },
+      { hu: 'Az interjú végén az ügyintéző mosolygott: „Nagyon szépen beszél magyarul.”', en: 'At the end of the interview the official smiled: "You speak Hungarian very nicely."' },
+      { hu: 'Tom boldogan ment haza, és felhívta a feleségét.', en: 'Tom went home happily and called his wife.' }
+    ],
+    questions: [
+      {
+        q: 'Why was Tom nervous?',
+        choices: ['It was his citizenship interview', 'He was late', 'He forgot his documents', 'He lost his job'],
+        answer: 'It was his citizenship interview'
+      },
+      {
+        q: 'How long has Tom been married?',
+        choices: ['Two years', 'Five years', 'Eight years', 'Ten years'],
+        answer: 'Eight years'
+      },
+      {
+        q: 'What did Tom say when he did not understand a question?',
+        choices: ['"Elnézést, megismételné?"', '"Viszontlátásra!"', '"Nem tudom."', '"Jó napot kívánok!"'],
+        answer: '"Elnézést, megismételné?"'
+      },
+      {
+        q: 'What did the official say at the end?',
+        choices: [
+          'That he speaks Hungarian very nicely',
+          'That he must come back next week',
+          'That the interview failed',
+          'That he needs more documents'
+        ],
+        answer: 'That he speaks Hungarian very nicely'
+      }
+    ]
   }
 ];
 
