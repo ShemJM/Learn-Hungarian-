@@ -14,6 +14,9 @@ import {
 import { alphabet, groups, letterPhrase } from './alphabet.js';
 import { verbs, PRONOUNS } from './verbs.js';
 import { technique, tiers, allRolledRItems } from './rolledR.js';
+import { course, getUnit } from './course.js';
+import { getExerciseSet } from '../exercises.js';
+import { checkAnswer } from '../text.js';
 
 describe('lessons data', () => {
   it('has at least 8 lessons with unique ids', () => {
@@ -81,6 +84,22 @@ describe('grammar data', () => {
   it('getGuide works', () => {
     expect(getGuide('vowel-harmony')?.title).toBe('Vowel Harmony');
     expect(getGuide('nope')).toBeNull();
+  });
+
+  it('every guide has practice exercises that self-grade as exact', () => {
+    for (const g of grammarGuides) {
+      expect(g.exercises.length, g.id).toBeGreaterThanOrEqual(6);
+      for (const e of g.exercises) {
+        expect(e.prompt, g.id).toBeTruthy();
+        const answers = Array.isArray(e.answer) ? e.answer : [e.answer];
+        expect(answers.length, `${g.id}: ${e.prompt}`).toBeGreaterThan(0);
+        for (const a of answers) {
+          // Catches stray whitespace/empty variants mechanically.
+          expect(checkAnswer(a, answers), `${g.id}: ${e.prompt}`).toBe('exact');
+        }
+        if ('hint' in e) expect(e.hint, `${g.id}: ${e.prompt}`).toBeTruthy();
+      }
+    }
   });
 });
 
@@ -248,6 +267,118 @@ describe('verbs data', () => {
 
   it('includes intransitive verbs without a definite conjugation', () => {
     expect(verbs.some((v) => v.definite === null)).toBe(true);
+  });
+
+  it('every verb has a full past tense matching its transitivity', () => {
+    for (const v of verbs) {
+      expect(v.past, v.inf).toBeTruthy();
+      expect(v.past.indefinite.length, v.inf).toBe(PRONOUNS.length);
+      // Past definite exists exactly when present definite does.
+      expect(v.past.definite === null, v.inf).toBe(v.definite === null);
+      const tables = v.past.definite ? [v.past.indefinite, v.past.definite] : [v.past.indefinite];
+      if (v.past.definite) expect(v.past.definite.length, v.inf).toBe(PRONOUNS.length);
+      for (const table of tables) {
+        for (const cell of table) {
+          const variants = Array.isArray(cell) ? cell : [cell];
+          expect(variants.length, v.inf).toBeGreaterThan(0);
+          for (const form of variants) expect(form, v.inf).toBeTruthy();
+        }
+      }
+    }
+  });
+
+  it('includes lenni, the most important verb of all', () => {
+    const lenni = verbs.find((v) => v.inf === 'lenni');
+    expect(lenni.indefinite).toEqual(['vagyok', 'vagy', 'van', 'vagyunk', 'vagytok', 'vannak']);
+    expect(lenni.past.indefinite).toEqual(['voltam', 'voltál', 'volt', 'voltunk', 'voltatok', 'voltak']);
+  });
+});
+
+describe('course data', () => {
+  const allSteps = course.flatMap((u) => u.steps);
+
+  it('has units with unique ids, titles and globally unique step ids', () => {
+    expect(course.length).toBeGreaterThanOrEqual(8);
+    expect(new Set(course.map((u) => u.id)).size).toBe(course.length);
+    for (const u of course) {
+      expect(u.title, u.id).toBeTruthy();
+      expect(u.icon, u.id).toBeTruthy();
+      expect(u.blurb, u.id).toBeTruthy();
+      expect(u.steps.length, u.id).toBeGreaterThan(0);
+    }
+    expect(new Set(allSteps.map((s) => s.id)).size).toBe(allSteps.length);
+    expect(getUnit('u1')?.title).toBe('First Words');
+    expect(getUnit('nope')).toBeNull();
+  });
+
+  it('every step reference resolves to real content', () => {
+    for (const step of allSteps) {
+      const label = `${step.id} (${step.type}:${step.ref})`;
+      switch (step.type) {
+        case 'lesson':
+          expect(getLesson(step.ref), label).not.toBeNull();
+          break;
+        case 'guide':
+          expect(getGuide(step.ref), label).not.toBeNull();
+          break;
+        case 'reading':
+          expect(getReading(step.ref), label).not.toBeNull();
+          break;
+        case 'dialogue':
+          expect(getDialogue(step.ref), label).not.toBeNull();
+          break;
+        case 'practice':
+        case 'checkpoint':
+          expect(getExerciseSet(step.ref), label).not.toBeNull();
+          break;
+        case 'verbs':
+          expect(['present', 'past'], label).toContain(step.ref);
+          break;
+        default:
+          throw new Error(`unknown step type: ${label}`);
+      }
+    }
+  });
+
+  it('covers every lesson and every grammar guide exactly once — no orphaned content', () => {
+    const lessonRefs = allSteps.filter((s) => s.type === 'lesson').map((s) => s.ref);
+    expect(lessonRefs.sort()).toEqual(lessons.map((l) => l.id).sort());
+    const guideRefs = allSteps.filter((s) => s.type === 'guide').map((s) => s.ref);
+    expect(guideRefs.sort()).toEqual(grammarGuides.map((g) => g.id).sort());
+  });
+
+  it('references every reading and dialogue at most once', () => {
+    const readingRefs = allSteps.filter((s) => s.type === 'reading').map((s) => s.ref);
+    expect(new Set(readingRefs).size).toBe(readingRefs.length);
+    const dialogueRefs = allSteps.filter((s) => s.type === 'dialogue').map((s) => s.ref);
+    expect(new Set(dialogueRefs).size).toBe(dialogueRefs.length);
+  });
+
+  it('every unit ends with its own checkpoint', () => {
+    for (const u of course) {
+      const last = u.steps[u.steps.length - 1];
+      expect(last.type, u.id).toBe('checkpoint');
+      expect(last.ref, u.id).toBe('checkpoint:' + u.id);
+    }
+  });
+
+  it('checkpoint sessions build non-empty item sets', () => {
+    let s = 5;
+    const rng = () => {
+      s = (s * 1664525 + 1013904223) % 4294967296;
+      return s / 4294967296;
+    };
+    for (const u of course) {
+      const set = getExerciseSet('checkpoint:' + u.id);
+      expect(set.build(rng).length, u.id).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  it('no lesson word or phrase collides with the phrase key prefix', () => {
+    // Documented invariant: phrase SRS keys are 'p:' + hu, so no raw hu may start with 'p:'.
+    for (const w of [...allWords(), ...allPhrases()]) {
+      expect(w.hu.startsWith('p:')).toBe(false);
+    }
   });
 });
 

@@ -1,5 +1,7 @@
 <script>
-  import { getLesson, lessons } from '../lib/data/lessons.js';
+  import { getLesson } from '../lib/data/lessons.js';
+  import { course } from '../lib/data/course.js';
+  import { nextCourseStep } from '../lib/course.js';
   import { progress } from '../lib/progress.js';
   import AudioButton from '../lib/components/AudioButton.svelte';
   import PronunciationCheck from '../lib/components/PronunciationCheck.svelte';
@@ -8,13 +10,14 @@
   let { id } = $props();
 
   let lesson = $derived(getLesson(id));
-  let lessonIndex = $derived(lessons.findIndex((l) => l.id === id));
-  let nextLesson = $derived(lessons[lessonIndex + 1] || null);
+  let nextStep = $derived(nextCourseStep(course, $progress));
   let tab = $state('learn'); // learn | practise | quiz
 
-  // Reset to the learn tab when navigating between lessons.
+  // Reset to the learn tab when navigating between lessons, and release the
+  // lesson's words and phrases into the spaced-repetition pool.
   $effect(() => {
     if (id) tab = 'learn';
+    if (lesson) progress.markLessonStarted(id);
   });
 
   function onQuizFinish(percent) {
@@ -104,10 +107,15 @@
         <Quiz words={lesson.words} onFinish={onQuizFinish} />
       {/key}
     </div>
-    {#if nextLesson && ($progress.quizScores[id] || 0) >= 70}
+    {#if ($progress.quizScores[id] || 0) >= 70}
       <div class="card next">
-        🎉 Nice score! Ready for the next lesson?
-        <a class="btn green" href={'#/lessons/' + nextLesson.id}>{nextLesson.icon} {nextLesson.title} →</a>
+        🎉 Nice score! Now make it stick with mixed exercises.
+        <span class="next-actions">
+          <a class="btn primary" href={'#/practice/lesson:' + id}>✏️ Practise this lesson</a>
+          {#if nextStep}
+            <a class="btn green" href={nextStep.href}>{nextStep.icon} Course: {nextStep.title} →</a>
+          {/if}
+        </span>
       </div>
     {/if}
   {/if}
@@ -168,6 +176,14 @@
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+  .next-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .next-actions .btn {
+    text-decoration: none;
   }
   @media (max-width: 600px) {
     .pron {

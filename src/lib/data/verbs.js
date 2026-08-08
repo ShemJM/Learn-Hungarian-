@@ -1,5 +1,5 @@
 /**
- * Present-tense conjugation tables for common verbs.
+ * Conjugation tables for common verbs, present and past tense.
  * Every form is hand-written — Hungarian morphology (sibilant assimilation,
  * -ik verbs, irregulars) is not safely generatable.
  *
@@ -8,10 +8,26 @@
  * indefinite/definite: arrays of 6 forms in PRONOUNS order. A cell is a
  * string, or an array of accepted variants (first one is the display form).
  * Intransitive verbs have no definite conjugation: definite is null.
+ * past: { indefinite, definite } with the same cell conventions; definite is
+ * null exactly when the present definite is null.
  */
 export const PRONOUNS = ['én', 'te', 'ő', 'mi', 'ti', 'ők'];
 
 export const verbs = [
+  {
+    inf: 'lenni',
+    en: 'to be',
+    harmony: 'back',
+    ik: false,
+    pron: 'LEN-nee',
+    // Fully irregular: present from the vagy- stem, past from vol-.
+    indefinite: ['vagyok', 'vagy', 'van', 'vagyunk', 'vagytok', 'vannak'],
+    definite: null,
+    past: {
+      indefinite: ['voltam', 'voltál', 'volt', 'voltunk', 'voltatok', 'voltak'],
+      definite: null
+    }
+  },
   {
     inf: 'tanulni',
     en: 'to learn',
@@ -19,7 +35,11 @@ export const verbs = [
     ik: false,
     pron: 'TAW-nool-nee',
     indefinite: ['tanulok', 'tanulsz', 'tanul', 'tanulunk', 'tanultok', 'tanulnak'],
-    definite: ['tanulom', 'tanulod', 'tanulja', 'tanuljuk', 'tanuljátok', 'tanulják']
+    definite: ['tanulom', 'tanulod', 'tanulja', 'tanuljuk', 'tanuljátok', 'tanulják'],
+    past: {
+      indefinite: ['tanultam', 'tanultál', 'tanult', 'tanultunk', 'tanultatok', 'tanultak'],
+      definite: ['tanultam', 'tanultad', 'tanulta', 'tanultuk', 'tanultátok', 'tanulták']
+    }
   },
   {
     inf: 'beszélni',
@@ -28,7 +48,11 @@ export const verbs = [
     ik: false,
     pron: 'BE-sayl-nee',
     indefinite: ['beszélek', 'beszélsz', 'beszél', 'beszélünk', 'beszéltek', 'beszélnek'],
-    definite: ['beszélem', 'beszéled', 'beszéli', 'beszéljük', 'beszélitek', 'beszélik']
+    definite: ['beszélem', 'beszéled', 'beszéli', 'beszéljük', 'beszélitek', 'beszélik'],
+    past: {
+      indefinite: ['beszéltem', 'beszéltél', 'beszélt', 'beszéltünk', 'beszéltetek', 'beszéltek'],
+      definite: ['beszéltem', 'beszélted', 'beszélte', 'beszéltük', 'beszéltétek', 'beszélték']
+    }
   },
   {
     inf: 'kérni',
@@ -37,7 +61,11 @@ export const verbs = [
     ik: false,
     pron: 'KAYR-nee',
     indefinite: ['kérek', 'kérsz', 'kér', 'kérünk', 'kértek', 'kérnek'],
-    definite: ['kérem', 'kéred', 'kéri', 'kérjük', 'kéritek', 'kérik']
+    definite: ['kérem', 'kéred', 'kéri', 'kérjük', 'kéritek', 'kérik'],
+    past: {
+      indefinite: ['kértem', 'kértél', 'kért', 'kértünk', 'kértetek', 'kértek'],
+      definite: ['kértem', 'kérted', 'kérte', 'kértük', 'kértétek', 'kérték']
+    }
   },
   {
     inf: 'tudni',
@@ -46,7 +74,12 @@ export const verbs = [
     ik: false,
     pron: 'TOOD-nee',
     indefinite: ['tudok', 'tudsz', 'tud', 'tudunk', 'tudtok', 'tudnak'],
-    definite: ['tudom', 'tudod', 'tudja', 'tudjuk', 'tudjátok', 'tudják']
+    definite: ['tudom', 'tudod', 'tudja', 'tudjuk', 'tudjátok', 'tudják'],
+    past: {
+      // 3sg takes the linking vowel: tudott.
+      indefinite: ['tudtam', 'tudtál', 'tudott', 'tudtunk', 'tudtatok', 'tudtak'],
+      definite: ['tudtam', 'tudtad', 'tudta', 'tudtuk', 'tudtátok', 'tudták']
+    }
   },
   {
     inf: 'látni',
@@ -55,7 +88,12 @@ export const verbs = [
     ik: false,
     pron: 'LAHT-nee',
     indefinite: ['látok', 'látsz', 'lát', 'látunk', 'láttok', 'látnak'],
-    definite: ['látom', 'látod', 'látja', 'látjuk', 'látjátok', 'látják']
+    definite: ['látom', 'látod', 'látja', 'látjuk', 'látjátok', 'látják'],
+    past: {
+      // Stem-final t doubles (lát + t), 3sg takes the linking vowel: látott.
+      indefinite: ['láttam', 'láttál', 'látott', 'láttunk', 'láttatok', 'láttak'],
+      definite: ['láttam', 'láttad', 'látta', 'láttuk', 'láttátok', 'látták']
+    }
   },
   {
     inf: 'szeretni',
@@ -64,7 +102,12 @@ export const verbs = [
     ik: false,
     pron: 'SE-ret-nee',
     indefinite: ['szeretek', 'szeretsz', 'szeret', 'szeretünk', 'szerettek', 'szeretnek'],
-    definite: ['szeretem', 'szereted', 'szereti', 'szeretjük', 'szeretitek', 'szeretik']
+    definite: ['szeretem', 'szereted', 'szereti', 'szeretjük', 'szeretitek', 'szeretik'],
+    past: {
+      // Stem-final t doubles throughout (szeret + t), 3sg linking vowel: szeretett.
+      indefinite: ['szerettem', 'szerettél', 'szeretett', 'szerettünk', 'szerettetek', 'szerettek'],
+      definite: ['szerettem', 'szeretted', 'szerette', 'szerettük', 'szerettétek', 'szerették']
+    }
   },
   {
     inf: 'olvasni',
@@ -74,7 +117,12 @@ export const verbs = [
     pron: 'OL-vawsh-nee',
     // Sibilant stem: te takes -ol (olvasol), and definite -j- assimilates: olvassa.
     indefinite: ['olvasok', 'olvasol', 'olvas', 'olvasunk', 'olvastok', 'olvasnak'],
-    definite: ['olvasom', 'olvasod', 'olvassa', 'olvassuk', 'olvassátok', 'olvassák']
+    definite: ['olvasom', 'olvasod', 'olvassa', 'olvassuk', 'olvassátok', 'olvassák'],
+    past: {
+      // 3sg linking vowel: olvasott.
+      indefinite: ['olvastam', 'olvastál', 'olvasott', 'olvastunk', 'olvastatok', 'olvastak'],
+      definite: ['olvastam', 'olvastad', 'olvasta', 'olvastuk', 'olvastátok', 'olvasták']
+    }
   },
   {
     inf: 'írni',
@@ -83,7 +131,11 @@ export const verbs = [
     ik: false,
     pron: 'EER-nee',
     indefinite: ['írok', 'írsz', 'ír', 'írunk', 'írtok', 'írnak'],
-    definite: ['írom', 'írod', 'írja', 'írjuk', 'írjátok', 'írják']
+    definite: ['írom', 'írod', 'írja', 'írjuk', 'írjátok', 'írják'],
+    past: {
+      indefinite: ['írtam', 'írtál', 'írt', 'írtunk', 'írtatok', 'írtak'],
+      definite: ['írtam', 'írtad', 'írta', 'írtuk', 'írtátok', 'írták']
+    }
   },
   {
     inf: 'várni',
@@ -92,7 +144,11 @@ export const verbs = [
     ik: false,
     pron: 'VAHR-nee',
     indefinite: ['várok', 'vársz', 'vár', 'várunk', 'vártok', 'várnak'],
-    definite: ['várom', 'várod', 'várja', 'várjuk', 'várjátok', 'várják']
+    definite: ['várom', 'várod', 'várja', 'várjuk', 'várjátok', 'várják'],
+    past: {
+      indefinite: ['vártam', 'vártál', 'várt', 'vártunk', 'vártatok', 'vártak'],
+      definite: ['vártam', 'vártad', 'várta', 'vártuk', 'vártátok', 'várták']
+    }
   },
   {
     inf: 'főzni',
@@ -102,7 +158,12 @@ export const verbs = [
     pron: 'FUHZ-nee',
     // Sibilant stem: te takes -öl (főzöl), and definite -j- assimilates: főzzük.
     indefinite: ['főzök', 'főzöl', 'főz', 'főzünk', 'főztök', 'főznek'],
-    definite: ['főzöm', 'főzöd', 'főzi', 'főzzük', 'főzitek', 'főzik']
+    definite: ['főzöm', 'főzöd', 'főzi', 'főzzük', 'főzitek', 'főzik'],
+    past: {
+      // 3sg linking vowel (rounded): főzött.
+      indefinite: ['főztem', 'főztél', 'főzött', 'főztünk', 'főztetek', 'főztek'],
+      definite: ['főztem', 'főzted', 'főzte', 'főztük', 'főztétek', 'főzték']
+    }
   },
   {
     inf: 'enni',
@@ -112,7 +173,12 @@ export const verbs = [
     pron: 'EN-nee',
     // Irregular -ik verb (eszik). Traditional 1sg eszem; colloquial eszek also accepted.
     indefinite: [['eszem', 'eszek'], 'eszel', 'eszik', 'eszünk', 'esztek', 'esznek'],
-    definite: ['eszem', 'eszed', 'eszi', 'esszük', 'eszitek', 'eszik']
+    definite: ['eszem', 'eszed', 'eszi', 'esszük', 'eszitek', 'eszik'],
+    past: {
+      // Irregular past stem ett-, 3sg evett (v-stem).
+      indefinite: ['ettem', 'ettél', 'evett', 'ettünk', 'ettetek', 'ettek'],
+      definite: ['ettem', 'etted', 'ette', 'ettük', 'ettétek', 'ették']
+    }
   },
   {
     inf: 'inni',
@@ -122,7 +188,12 @@ export const verbs = [
     pron: 'IN-nee',
     // Irregular -ik verb (iszik). Traditional 1sg iszom; colloquial iszok also accepted.
     indefinite: [['iszom', 'iszok'], 'iszol', 'iszik', 'iszunk', 'isztok', 'isznak'],
-    definite: ['iszom', 'iszod', 'issza', 'isszuk', 'isszátok', 'isszák']
+    definite: ['iszom', 'iszod', 'issza', 'isszuk', 'isszátok', 'isszák'],
+    past: {
+      // Irregular past stem itt-, 3sg ivott (v-stem).
+      indefinite: ['ittam', 'ittál', 'ivott', 'ittunk', 'ittatok', 'ittak'],
+      definite: ['ittam', 'ittad', 'itta', 'ittuk', 'ittátok', 'itták']
+    }
   },
   {
     inf: 'lakni',
@@ -132,7 +203,12 @@ export const verbs = [
     pron: 'LAWK-nee',
     // -ik verb (lakik), intransitive — no definite conjugation.
     indefinite: [['lakom', 'lakok'], 'laksz', 'lakik', 'lakunk', 'laktok', 'laknak'],
-    definite: null
+    definite: null,
+    past: {
+      // 3sg linking vowel: lakott.
+      indefinite: ['laktam', 'laktál', 'lakott', 'laktunk', 'laktatok', 'laktak'],
+      definite: null
+    }
   },
   {
     inf: 'menni',
@@ -142,7 +218,12 @@ export const verbs = [
     pron: 'MEN-nee',
     // Irregular (megy), intransitive — no definite conjugation.
     indefinite: ['megyek', 'mész', 'megy', 'megyünk', 'mentek', 'mennek'],
-    definite: null
+    definite: null,
+    past: {
+      // Past from the men- stem: mentem.
+      indefinite: ['mentem', 'mentél', 'ment', 'mentünk', 'mentetek', 'mentek'],
+      definite: null
+    }
   }
 ];
 

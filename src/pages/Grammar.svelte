@@ -76,6 +76,19 @@
     </div>
   {/each}
 
+  {#if guide.exercises?.length}
+    <div class="card practise">
+      <div>
+        <h3>Put it into practice</h3>
+        <p class="muted">
+          Reading about grammar is not the same as using it — {guide.exercises.length} quick typed
+          drills will make it stick.
+        </p>
+      </div>
+      <a class="btn primary" href={'#/practice/grammar:' + guide.id}>✏️ Practise this</a>
+    </div>
+  {/if}
+
   {@const idx = grammarGuides.findIndex((g) => g.id === guide.id)}
   <div class="pager">
     {#if grammarGuides[idx - 1]}
@@ -137,6 +150,23 @@
   }
   .example:last-child {
     border-bottom: none;
+  }
+  .practise {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .practise h3 {
+    margin: 0 0 0.25rem;
+  }
+  .practise p {
+    margin: 0;
+  }
+  .practise .btn {
+    text-decoration: none;
+    white-space: nowrap;
   }
   .pager {
     display: flex;
