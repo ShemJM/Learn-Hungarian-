@@ -24,7 +24,7 @@ export function defaultProgress() {
     dialoguesDone: [],   // dialogue ids
     guidesRead: [],      // grammar guide ids opened
     pronunciationStars: {}, // phrase -> best score 0..1
-    srs: {},             // srsKey -> { box: 1..5, last: dayStamp } spaced-repetition state
+    srs: {},             // srsKey -> { box: 1..5, last: dayStamp, reps, lapses } spaced-repetition state
     exerciseScores: {},  // exercise set id ('lesson:food', 'grammar:cases', 'checkpoint:u3', 'verbs:past') -> best percent
     lessonsStarted: [],  // lesson ids whose vocabulary has been released into the review pool
     activity: [],        // newest first: { t, type, id, label }

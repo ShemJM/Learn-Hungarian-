@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { normalize, foldAccents, levenshtein, similarity, checkAnswer, shuffle, scrambleWord, sample } from './text.js';
+import {
+  normalize,
+  foldAccents,
+  levenshtein,
+  similarity,
+  checkAnswer,
+  shuffle,
+  scrambleWord,
+  sample,
+  weightedSample
+} from './text.js';
 
 describe('normalize', () => {
   it('lowercases, trims and strips punctuation', () => {
@@ -116,5 +126,44 @@ describe('sample', () => {
 
   it('caps at array length', () => {
     expect(sample([1, 2], 10)).toHaveLength(2);
+  });
+});
+
+describe('weightedSample', () => {
+  function seededRng(seed = 1) {
+    let s = seed;
+    return () => {
+      s = (s * 1664525 + 1013904223) % 4294967296;
+      return s / 4294967296;
+    };
+  }
+
+  it('returns n distinct items and is deterministic for a seeded rng', () => {
+    const arr = ['a', 'b', 'c', 'd', 'e'];
+    const weight = (x) => (x === 'c' ? 10 : 1);
+    const one = weightedSample(arr, 3, weight, seededRng(5));
+    const two = weightedSample(arr, 3, weight, seededRng(5));
+    expect(one).toEqual(two);
+    expect(new Set(one).size).toBe(3);
+  });
+
+  it('strongly favours heavy items', () => {
+    const arr = ['a', 'b', 'c', 'd', 'e', 'f'];
+    const rng = seededRng(9);
+    let heavyPicked = 0;
+    for (let i = 0; i < 50; i++) {
+      if (weightedSample(arr, 1, (x) => (x === 'd' ? 100 : 1), rng)[0] === 'd') heavyPicked++;
+    }
+    expect(heavyPicked).toBeGreaterThan(40);
+  });
+
+  it('falls back to uniform sampling when all weights are zero', () => {
+    const out = weightedSample([1, 2, 3, 4], 2, () => 0, seededRng(1));
+    expect(out).toHaveLength(2);
+    expect(new Set(out).size).toBe(2);
+  });
+
+  it('caps at array length', () => {
+    expect(weightedSample([1, 2], 10, () => 1, seededRng(1))).toHaveLength(2);
   });
 });

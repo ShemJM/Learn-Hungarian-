@@ -24,6 +24,16 @@ describe('buildQuiz', () => {
     expect(buildQuiz([words[0]], {})).toEqual([]);
   });
 
+  it('asks about exactly the focus words when focus is given, keeping full-pool distractors', () => {
+    const focus = [words[1], words[3]];
+    const quiz = buildQuiz(words, { count: 10, direction: 'en-hu', focus });
+    expect(quiz.map((q) => q.word)).toEqual(focus);
+    for (const q of quiz) {
+      expect(q.choices).toContain(q.answer);
+      expect(q.choices.length).toBe(4); // distractors still drawn from all six words
+    }
+  });
+
   it('always includes the correct answer among the choices', () => {
     for (const q of buildQuiz(words, { count: 6, direction: 'mixed' })) {
       expect(q.choices).toContain(q.answer);

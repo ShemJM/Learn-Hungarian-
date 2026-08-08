@@ -1,7 +1,7 @@
 <script>
   import { lessons } from '../lib/data/lessons.js';
   import { eligibleReviewPool } from '../lib/course.js';
-  import { dayStamp, dueWords, buildSession, srsKey, BOX_COUNT } from '../lib/srs.js';
+  import { dayStamp, dueWords, buildSession, srsKey, weakCards, BOX_COUNT } from '../lib/srs.js';
   import { checkAnswer } from '../lib/text.js';
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
@@ -43,6 +43,9 @@
 
   let current = $derived(session[index]);
   let boxOf = $derived((card) => $progress.srs[srsKey(card)]?.box || null);
+  let weakCount = $derived(
+    weakCards(eligibleReviewPool(lessons, $progress), $progress.srs, { minLapses: 2, limit: 8 }).length
+  );
 
   function submit() {
     if (!guess.trim()) return;
@@ -101,6 +104,11 @@
       </p>
       <a class="btn primary" href="#/course">🧭 Continue the course</a>
     {/if}
+    {#if weakCount >= 3}
+      <p class="weak-link">
+        <a class="btn" href="#/practice/weak:all">🎯 Train your {weakCount} weakest cards</a>
+      </p>
+    {/if}
   </div>
 {:else if status === 'done'}
   <div class="card center">
@@ -110,6 +118,11 @@
       <button class="btn primary" onclick={start}>▶️ Next session</button>
     {:else}
       <p class="muted">That's everything for today. Viszlát holnap! (See you tomorrow!)</p>
+    {/if}
+    {#if weakCount >= 3}
+      <p class="weak-link">
+        <a class="btn" href="#/practice/weak:all">🎯 Train your {weakCount} weakest cards</a>
+      </p>
     {/if}
   </div>
 {:else if current}
@@ -213,5 +226,11 @@
   .solution {
     font-size: 1.6rem;
     margin: 0.5rem 0 0.2rem;
+  }
+  .weak-link {
+    margin: 0.9rem 0 0;
+  }
+  .weak-link .btn {
+    text-decoration: none;
   }
 </style>

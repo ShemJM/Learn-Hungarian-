@@ -85,3 +85,25 @@ export function scrambleWord(word, rng = Math.random) {
 export function sample(arr, n, rng = Math.random) {
   return shuffle(arr, rng).slice(0, n);
 }
+
+/**
+ * Pick n distinct items with probability proportional to weightFn(item).
+ * Non-positive weights count as 0; if all remaining weights are 0, the rest
+ * are drawn uniformly.
+ */
+export function weightedSample(arr, n, weightFn, rng = Math.random) {
+  const pool = arr.slice();
+  const out = [];
+  while (out.length < n && pool.length) {
+    const weights = pool.map((item) => Math.max(0, weightFn(item)));
+    const total = weights.reduce((a, b) => a + b, 0);
+    if (!total) {
+      out.push(...sample(pool, n - out.length, rng));
+      break;
+    }
+    let r = rng() * total;
+    const i = weights.findIndex((w) => (r -= w) < 0);
+    out.push(pool.splice(Math.max(i, 0), 1)[0]);
+  }
+  return out;
+}

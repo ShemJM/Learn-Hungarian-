@@ -4,11 +4,13 @@ import { shuffle, sample } from './text.js';
  * Build a multiple-choice quiz from a list of vocabulary entries ({ hu, en }).
  *
  * direction: 'hu-en' (show Hungarian, choose English), 'en-hu', or 'mixed'.
+ * focus: optional pre-selected question words (already ranked/sampled by the
+ * caller); distractors still draw from the full `words` list.
  * Returns questions: { prompt, promptLang, answer, choices[], word }.
  */
-export function buildQuiz(words, { count = 10, choiceCount = 4, direction = 'mixed', rng = Math.random } = {}) {
+export function buildQuiz(words, { count = 10, choiceCount = 4, direction = 'mixed', focus = null, rng = Math.random } = {}) {
   if (!words || words.length < 2) return [];
-  const pool = sample(words, Math.min(count, words.length), rng);
+  const pool = focus ? focus.slice(0, count) : sample(words, Math.min(count, words.length), rng);
   return pool.map((word) => {
     const dir = direction === 'mixed' ? (rng() < 0.5 ? 'hu-en' : 'en-hu') : direction;
     const askHu = dir === 'hu-en';
