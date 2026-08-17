@@ -21,6 +21,11 @@ export const EXERCISE_PASS = 70;
 
 /** Whether one course step is complete, given the learner's progress. */
 export function stepDone(step, p) {
+  // A step the learner marked as already known counts as done. Skipping a
+  // lesson deliberately does NOT release its vocabulary into the SRS pool —
+  // "I know this" shouldn't flood the review deck; opening the lesson still
+  // calls markLessonStarted for learners who change their mind.
+  if (p.stepsSkipped?.includes(step.id)) return true;
   switch (step.type) {
     case 'lesson':
       return (p.quizScores?.[step.ref] || 0) >= LESSON_PASS;
@@ -67,8 +72,13 @@ export function stepMeta(step) {
       const d = getDialogue(step.ref);
       return { title: d?.title ?? step.ref, icon: '💬', href: '#/conversation/' + step.ref };
     }
-    case 'verbs':
-      return { title: `Verb drill (${step.ref} tense)`, icon: '🏋️', href: '#/verbs' };
+    case 'verbs': {
+      const label =
+        { present: 'present tense', past: 'past tense', conditional: 'conditional mood', imperative: 'imperative mood' }[
+          step.ref
+        ] ?? step.ref;
+      return { title: `Verb drill (${label})`, icon: '🏋️', href: '#/verbs' };
+    }
     default:
       return { title: step.ref, icon: '❓', href: '#/course' };
   }

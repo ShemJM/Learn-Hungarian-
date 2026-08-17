@@ -1,14 +1,18 @@
 /**
  * Pure logic for the verb conjugation drill: enumerating drillable cells of
  * the conjugation tables and building a randomised question set. Cells span
- * tenses ('present' | 'past'); past forms live under verb.past.
+ * tenses AND moods — the `tenses` option accepts any of MOODS; non-present
+ * tables live under verb[tense].
  */
 import { PRONOUNS, dictionaryForm } from './data/verbs.js';
 import { sample, shuffle } from './text.js';
 
+/** Every drillable tense/mood, in pedagogical order. */
+export const MOODS = ['present', 'past', 'conditional', 'imperative'];
+
 /** The conjugation table for one tense/definiteness, or null when it does not exist. */
 function table(verb, tense, definiteness) {
-  return tense === 'past' ? verb.past?.[definiteness] || null : verb[definiteness];
+  return tense === 'present' ? verb[definiteness] : verb[tense]?.[definiteness] || null;
 }
 
 /** Accepted answers for one cell, normalised to an array (first = display form). */

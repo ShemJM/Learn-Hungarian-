@@ -27,6 +27,7 @@ export function defaultProgress() {
     srs: {},             // srsKey -> { box: 1..5, last: dayStamp, reps, lapses } spaced-repetition state
     exerciseScores: {},  // exercise set id ('lesson:food', 'grammar:cases', 'checkpoint:u3', 'verbs:past') -> best percent
     lessonsStarted: [],  // lesson ids whose vocabulary has been released into the review pool
+    stepsSkipped: [],    // course step ids the learner marked as already known
     activity: [],        // newest first: { t, type, id, label }
     daysActive: [],      // dayStamps on which the learner did something (ascending)
     visit: { current: null, previous: null } // epoch ms of this visit and the one before
@@ -146,6 +147,27 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
       mutate((p) => {
         p.exerciseScores[setId] = Math.max(p.exerciseScores[setId] || 0, percent);
         appendActivity(p, { type: 'exercises', id: setId, label: `Practice: ${setId} — ${percent}%` }, now);
+        return p;
+      }),
+    /**
+     * Mark course steps as already known (idempotent union). label names what
+     * was skipped in the activity log, e.g. the unit title. Logs only when
+     * something actually changed.
+     */
+    skipSteps: (stepIds, label, now = Date.now()) =>
+      mutate((p) => {
+        const before = p.stepsSkipped.length;
+        p.stepsSkipped = [...new Set([...p.stepsSkipped, ...stepIds])];
+        if (p.stepsSkipped.length !== before) {
+          appendActivity(p, { type: 'skip', id: label, label: `Marked "${label}" as known` }, now);
+        }
+        return p;
+      }),
+    /** Undo skipSteps. Silent — unmarking is bookkeeping, not an achievement. */
+    unskipSteps: (stepIds, now = Date.now()) =>
+      mutate((p) => {
+        p.stepsSkipped = p.stepsSkipped.filter((id) => !stepIds.includes(id));
+        touchDay(p, now);
         return p;
       }),
     /** Releases the lesson's words and phrases into the SRS review pool (idempotent). */

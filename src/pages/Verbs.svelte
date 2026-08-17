@@ -1,6 +1,6 @@
 <script>
   import { verbs, PRONOUNS, dictionaryForm } from '../lib/data/verbs.js';
-  import { buildDrill } from '../lib/verbdrill.js';
+  import { buildDrill, MOODS } from '../lib/verbdrill.js';
   import { checkAnswer } from '../lib/text.js';
   import { speak } from '../lib/speech.js';
   import { progress } from '../lib/progress.js';
@@ -9,9 +9,10 @@
 
   const ROUNDS = 10;
   const harmonyLabel = { back: 'back vowels', front: 'front vowels', 'front-rounded': 'front rounded' };
+  const moodLabel = { present: 'Present', past: 'Past', conditional: 'Conditional', imperative: 'Imperative' };
 
   let tab = $state('browse'); // browse | drill
-  let tense = $state('present'); // present | past
+  let tense = $state('present'); // one of MOODS
 
   let drill = $state([]);
   let index = $state(0);
@@ -39,10 +40,10 @@
   }
 
   let current = $derived(drill[index]);
-  let drillId = $derived(tense === 'past' ? 'verbdrill-past' : 'verbdrill');
-  /** The table to browse for the selected tense; null when a verb lacks it. */
+  let drillId = $derived(tense === 'present' ? 'verbdrill' : 'verbdrill-' + tense);
+  /** The table to browse for the selected tense/mood; null when a verb lacks it. */
   let browseTable = $derived((verb, definiteness) =>
-    tense === 'past' ? verb.past?.[definiteness] || null : verb[definiteness]
+    tense === 'present' ? verb[definiteness] : verb[tense]?.[definiteness] || null
   );
 
   function submit() {
@@ -88,16 +89,19 @@
 
 <h1>⚙️ Verbs</h1>
 <p class="muted">
-  One verb, two conjugations: <strong>indefinite</strong> (kérek egy kávét — <em>a</em> coffee) and
-  <strong>definite</strong> (kérem a számlát — <em>the</em> bill). Browse the tables, then drill until it sticks.
+  One verb, two conjugations — <strong>indefinite</strong> (kérek egy kávét — <em>a</em> coffee) and
+  <strong>definite</strong> (kérem a számlát — <em>the</em> bill) — in four forms: present, past,
+  conditional (kérnék — I would ask) and imperative (kérj! — ask!). Browse the tables, then drill
+  until it sticks.
 </p>
 
 <div class="tabs">
   <button class="btn" class:primary={tab === 'browse'} onclick={() => (tab = 'browse')}>📖 Browse</button>
   <button class="btn" class:primary={tab === 'drill'} onclick={() => (tab = 'drill')}>🏋️ Drill</button>
   <span class="tense-toggle">
-    <button class="btn" class:primary={tense === 'present'} onclick={() => setTense('present')}>Present</button>
-    <button class="btn" class:primary={tense === 'past'} onclick={() => setTense('past')}>Past</button>
+    {#each MOODS as t}
+      <button class="btn" class:primary={tense === t} onclick={() => setTense(t)}>{moodLabel[t]}</button>
+    {/each}
   </span>
 </div>
 

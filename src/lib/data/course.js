@@ -160,6 +160,45 @@ export const course = [
       { id: 'u10-reading', type: 'reading', ref: 'egy-napom' },
       { id: 'u10-check', type: 'checkpoint', ref: 'checkpoint:u10' }
     ]
+  },
+  {
+    id: 'u11',
+    title: 'Moods & the Future',
+    icon: '🔮',
+    blurb: 'Will, would and do it! — the future, the conditional and real commands.',
+    steps: [
+      { id: 'u11-future', type: 'guide', ref: 'future' },
+      { id: 'u11-future-practice', type: 'practice', ref: 'grammar:future' },
+      { id: 'u11-plans', type: 'lesson', ref: 'plans' },
+      { id: 'u11-plans-practice', type: 'practice', ref: 'lesson:plans' },
+      { id: 'u11-cond', type: 'guide', ref: 'conditional-mood' },
+      { id: 'u11-cond-practice', type: 'practice', ref: 'grammar:conditional-mood' },
+      { id: 'u11-cond-drill', type: 'verbs', ref: 'conditional' },
+      { id: 'u11-imp', type: 'guide', ref: 'imperative-mood' },
+      { id: 'u11-imp-practice', type: 'practice', ref: 'grammar:imperative-mood' },
+      { id: 'u11-imp-drill', type: 'verbs', ref: 'imperative' },
+      { id: 'u11-dialogue', type: 'dialogue', ref: 'holiday-plans' },
+      { id: 'u11-check', type: 'checkpoint', ref: 'checkpoint:u11' }
+    ]
+  },
+  {
+    id: 'u12',
+    title: 'Fluent Sentences',
+    icon: '🧵',
+    blurb: 'Coverbs, postpositions and comparisons — the machinery of natural Hungarian.',
+    steps: [
+      { id: 'u12-coverbs', type: 'guide', ref: 'coverbs' },
+      { id: 'u12-coverbs-practice', type: 'practice', ref: 'grammar:coverbs' },
+      { id: 'u12-postpos', type: 'guide', ref: 'postpositions' },
+      { id: 'u12-postpos-practice', type: 'practice', ref: 'grammar:postpositions' },
+      { id: 'u12-compare', type: 'guide', ref: 'comparison' },
+      { id: 'u12-compare-practice', type: 'practice', ref: 'grammar:comparison' },
+      { id: 'u12-opinions', type: 'lesson', ref: 'opinions' },
+      { id: 'u12-opinions-practice', type: 'practice', ref: 'lesson:opinions' },
+      { id: 'u12-dialogue', type: 'dialogue', ref: 'phone-appointment' },
+      { id: 'u12-reading', type: 'reading', ref: 'budapesti-level' },
+      { id: 'u12-check', type: 'checkpoint', ref: 'checkpoint:u12' }
+    ]
   }
 ];
 

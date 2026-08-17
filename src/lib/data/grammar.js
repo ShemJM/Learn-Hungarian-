@@ -744,6 +744,402 @@ export const grammarGuides = [
         ]
       }
     ]
+  },
+  {
+    id: 'future',
+    title: 'Talking About the Future',
+    icon: '🔭',
+    summary: 'Three ways forward: the present tense with a time word, majd, and fog + infinitive — plus lesz, the future of van.',
+    exercises: [
+      { prompt: 'I will cook tomorrow. → Holnap ___ főzni. (fog, én)', answer: 'fogok' },
+      { prompt: 'What will you do at the weekend? → Mit ___ csinálni hétvégén? (fog, te)', answer: 'fogsz' },
+      { prompt: 'We will learn Hungarian. → Magyarul ___ tanulni. (fog, mi)', answer: 'fogunk' },
+      { prompt: 'She will read THE book. → El ___ olvasni a könyvet. (fog, ő, definite)', answer: 'fogja' },
+      { prompt: 'She will be a doctor next year. → Jövőre orvos ___.', answer: 'lesz', hint: 'lesz is the future of van' },
+      { prompt: 'I will be at home. → Otthon ___.', answer: 'leszek' },
+      { prompt: 'It will be cold tomorrow. → Holnap hideg ___.', answer: 'lesz' },
+      { prompt: 'They will be happy. → Boldogok ___.', answer: 'lesznek' },
+      { prompt: '"See you later / then we will meet" — Akkor ___ találkozunk. (the little future word)', answer: 'majd' }
+    ],
+    sections: [
+      {
+        heading: 'The present tense often IS the future',
+        body: 'With a time word, Hungarian happily uses the present tense for future plans — like English "I am flying tomorrow". This is the most common future in speech.',
+        examples: [
+          { hu: 'Holnap dolgozom.', en: 'I am working tomorrow.' },
+          { hu: 'Jövőre Magyarországra költözünk.', en: 'We are moving to Hungary next year.' }
+        ]
+      },
+      {
+        heading: 'majd — the one-word future',
+        body: 'majd ("later / some time") pushes a sentence into the future all by itself, often with a reassuring flavour.',
+        examples: [
+          { hu: 'Majd megcsinálom.', en: 'I will do it (later, don\'t worry).' },
+          { hu: 'Majd meglátjuk.', en: 'We will see.' }
+        ]
+      },
+      {
+        heading: 'fog + infinitive — the explicit future',
+        body: 'For emphasis or when there is no time word, conjugate fog and add the infinitive. fog takes definite endings when the object is definite, just like any verb.',
+        table: {
+          headers: ['Person', 'Indefinite', 'Definite'],
+          rows: [
+            ['én', 'fogok', 'fogom'],
+            ['te', 'fogsz', 'fogod'],
+            ['ő', 'fog', 'fogja'],
+            ['mi', 'fogunk', 'fogjuk'],
+            ['ti', 'fogtok', 'fogjátok'],
+            ['ők', 'fognak', 'fogják']
+          ]
+        },
+        examples: [
+          { hu: 'Sokat fogok tanulni.', en: 'I will study a lot.' },
+          { hu: 'El fogja olvasni a könyvet.', en: 'She will read the book.' }
+        ]
+      },
+      {
+        heading: 'lesz — the future of van',
+        body: '"To be" has a real future: lesz. Use it wherever the future of van/vannak is needed — including weather and becoming.',
+        examples: [
+          { hu: 'Holnap hideg lesz.', en: 'It will be cold tomorrow.' },
+          { hu: 'Orvos lesz.', en: 'She will be(come) a doctor.' },
+          { hu: 'Ott leszek hatkor.', en: 'I will be there at six.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'conditional-mood',
+    title: 'Would: The Conditional',
+    icon: '🤔',
+    summary: 'Mennék, kérnék, szeretném — wishes, polite requests and if-sentences with the -na/-ne/-ná/-né endings.',
+    exercises: [
+      { prompt: 'I would know (tudni, indefinite)', answer: 'tudnék', hint: '1sg is ALWAYS -nék, even for back verbs' },
+      { prompt: 'I would drink (inni, indefinite)', answer: 'innék' },
+      { prompt: 'you would go (menni, informal singular)', answer: 'mennél' },
+      { prompt: 'we would cook (főzni, indefinite)', answer: 'főznénk' },
+      { prompt: 'they would drink (inni, indefinite)', answer: 'innának' },
+      { prompt: 'I would ask for IT (kérni, definite)', answer: 'kérném' },
+      { prompt: 'I would buy the house: Megvenném / Megvennék? → Meg___ a házat.', answer: 'venném', hint: 'definite object' },
+      { prompt: 'If I were rich… → Ha gazdag ___… (lenni, én)', answer: ['lennék', 'volnék'] },
+      { prompt: 'he/she would eat (enni, indefinite)', answer: 'enne' },
+      { prompt: '"I would like a coffee" (the polite classic): ___ egy kávét.', answer: 'Szeretnék' }
+    ],
+    sections: [
+      {
+        heading: 'The endings',
+        body: 'Insert -na/-ne (or -ná/-né before personal endings) after the stem. Watch the famous exception: the 1sg indefinite is -nék for EVERY verb — back verbs included (tudnék, adnék, innék), never *tudnák.',
+        table: {
+          headers: ['Person', 'tanul (back)', 'kér (front)'],
+          rows: [
+            ['én', 'tanulnék (!)', 'kérnék'],
+            ['te', 'tanulnál', 'kérnél'],
+            ['ő', 'tanulna', 'kérne'],
+            ['mi', 'tanulnánk', 'kérnénk'],
+            ['ti', 'tanulnátok', 'kérnétek'],
+            ['ők', 'tanulnának', 'kérnének']
+          ]
+        }
+      },
+      {
+        heading: 'The definite conditional',
+        body: 'With a definite object the endings are -nám/-nád/-ná… (back) and -ném/-néd/-né… (front). A curiosity: a front verb\'s definite 3pl (szeretnék — they would love it) is spelled exactly like the indefinite 1sg (szeretnék — I would like). Context decides.',
+        table: {
+          headers: ['Person', 'tanul (back)', 'kér (front)'],
+          rows: [
+            ['én', 'tanulnám', 'kérném'],
+            ['te', 'tanulnád', 'kérnéd'],
+            ['ő', 'tanulná', 'kérné'],
+            ['mi', 'tanulnánk', 'kérnénk'],
+            ['ti', 'tanulnátok', 'kérnétek'],
+            ['ők', 'tanulnák', 'kérnék']
+          ]
+        }
+      },
+      {
+        heading: 'szeretnék — your politest tool',
+        body: 'The conditional of szeret is how Hungarians say "I would like": szeretnék + infinitive or noun (indefinite), szeretném (definite). You have been using it since lesson one — now you know why it works.',
+        examples: [
+          { hu: 'Szeretnék egy kávét.', en: 'I would like a coffee.' },
+          { hu: 'Szeretnék időpontot kérni.', en: 'I would like to ask for an appointment.' },
+          { hu: 'Szeretném megköszönni.', en: 'I would like to say thank you (for it).' }
+        ]
+      },
+      {
+        heading: 'If-sentences: ha… (akkor…)',
+        body: 'Unreal conditions put BOTH halves in the conditional — unlike English, which mixes "if I had" with "I would".',
+        examples: [
+          { hu: 'Ha gazdag lennék, házat vennék.', en: 'If I were rich, I would buy a house.' },
+          { hu: 'Ha több időm lenne, többet olvasnék.', en: 'If I had more time, I would read more.' },
+          { hu: 'Mit csinálnál, ha nyernél?', en: 'What would you do if you won?' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'imperative-mood',
+    title: 'Commands & Requests',
+    icon: '📣',
+    summary: 'Menj! Kérj! Legyél jó! — the -j imperative, its assimilation tricks, and the fused forms add, edd, lásd.',
+    exercises: [
+      { prompt: 'Go! (menni, te)', answer: ['menj', 'menjél'] },
+      { prompt: 'Ask! (kérni, te)', answer: ['kérj', 'kérjél'] },
+      { prompt: 'Read! (olvasni, te — the s doubles!)', answer: ['olvass', 'olvassál'] },
+      { prompt: 'Cook! (főzni, te — the z doubles!)', answer: ['főzz', 'főzzél'] },
+      { prompt: 'Eat! (enni, te — irregular)', answer: 'egyél' },
+      { prompt: 'Come! (jönni, te — the everyday word)', answer: ['gyere', 'jöjj', 'jöjjél'] },
+      { prompt: 'Be good! → ___ jó! (lenni, te)', answer: ['legyél', 'légy'] },
+      { prompt: 'Give it here! → ___ ide! (adni, te, definite)', answer: ['add', 'adjad'] },
+      { prompt: 'See it! (látni, te, definite — irregular fused form)', answer: ['lásd', 'lássad'] },
+      { prompt: "Don't go away! → Ne ___ el! (menni, te)", answer: ['menj', 'menjél'], hint: 'ne + imperative; the coverb splits off' }
+    ],
+    sections: [
+      {
+        heading: 'The marker: -j + the usual endings',
+        body: 'The imperative inserts -j- after the stem: menjek (let me go), menj (go!), menjen (let him go / formal go!), menjünk (let\'s go!), menjetek, menjenek. The 2sg has a short form (menj) and a long form (menjél) — both correct; the short one is snappier.',
+        table: {
+          headers: ['Person', 'menni', 'English'],
+          rows: [
+            ['én', 'menjek', 'let me go'],
+            ['te', 'menj / menjél', 'go!'],
+            ['ő / Ön', 'menjen', 'let him go / go! (formal)'],
+            ['mi', 'menjünk', "let's go!"],
+            ['ti', 'menjetek', 'go! (plural)'],
+            ['ők / Önök', 'menjenek', 'let them go / go! (formal pl.)']
+          ]
+        }
+      },
+      {
+        heading: 'The -j assimilates',
+        body: 'After sibilants and t, the -j- changes shape — these are the forms you hear every day:',
+        table: {
+          headers: ['Stem ends in', 'What happens', 'Example'],
+          rows: [
+            ['s', 's doubles', 'olvas → olvass! (read!)'],
+            ['z', 'z doubles', 'főz → főzz! (cook!)'],
+            ['t after long vowel', 't + j → ss', 'lát → láss! (see!)'],
+            ['t after short vowel', 't + j → ss', 'szeret → szeress! (love!)'],
+            ['d', 'written dj, said ggy', 'ad → adj! (give!)']
+          ]
+        }
+      },
+      {
+        heading: 'The famous fused definites',
+        body: 'The 2sg definite imperative fuses into a short punchy form — some of the most common words in the language.',
+        examples: [
+          { hu: 'Add ide!', en: 'Give it here! (adni)' },
+          { hu: 'Edd meg!', en: 'Eat it up! (enni)' },
+          { hu: 'Idd meg!', en: 'Drink it up! (inni)' },
+          { hu: 'Vedd meg!', en: 'Buy it! (venni)' },
+          { hu: 'Lásd!', en: 'See it! (látni — mostly in writing)' },
+          { hu: 'Írd le!', en: 'Write it down! (írni)' }
+        ]
+      },
+      {
+        heading: 'Negative commands: ne + imperative',
+        body: 'Prohibition uses ne (not nem) with the imperative. A coverb splits off and follows the verb.',
+        examples: [
+          { hu: 'Ne menj el!', en: 'Do not go away!' },
+          { hu: 'Ne edd meg!', en: 'Do not eat it!' },
+          { hu: 'Ne legyél szomorú!', en: 'Do not be sad!' }
+        ]
+      },
+      {
+        heading: 'Where else the imperative hides',
+        body: 'Hungarian also uses these forms after "akarom, hogy…" (I want that…) and in polite formal instructions — you met those in the Formal Register guide (Foglaljon helyet!).',
+        examples: [
+          { hu: 'Azt akarom, hogy gyere.', en: 'I want you to come.' },
+          { hu: 'Fontos, hogy sokat gyakoroljunk.', en: 'It is important that we practise a lot.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'coverbs',
+    title: 'Coverbs: meg, el, ki…',
+    icon: '🧲',
+    summary: 'Tiny prefixes with big power: megír vs ír, and the rules for when the prefix jumps off the verb.',
+    exercises: [
+      { prompt: '"I write the letter (and finish it)": ___írom a levelet', answer: 'megírom', hint: 'meg- = completed action' },
+      { prompt: '"She goes out": ___megy', answer: 'kimegy' },
+      { prompt: '"We travel away/off": ___utazunk', answer: 'elutazunk' },
+      { prompt: '"I get up": ___kelek', answer: 'felkelek' },
+      { prompt: '"They come back": ___jönnek', answer: 'visszajönnek' },
+      { prompt: 'Negation splits the coverb: Nem ___ meg a levelet. (írni, én, definite)', answer: 'írom' },
+      { prompt: 'Imperative splits it too — "Write it (down)!": ___ meg! (írni, te, definite)', answer: ['írd', 'írjad'] },
+      { prompt: '"Did you eat it?" — "Yes." The one-word Hungarian yes-answer to Megetted?', answer: 'Meg', hint: 'answer with the bare coverb' },
+      { prompt: '"Don\'t drink it!": Ne ___ meg! (inni, te, definite)', answer: ['idd', 'igyad'] }
+    ],
+    sections: [
+      {
+        heading: 'What a coverb does',
+        body: 'A coverb (igekötő) glues onto the front of a verb and usually makes the action complete or adds direction. ír = writes (is writing); megír = writes (and finishes). Learning verb + coverb pairs is what makes your Hungarian sound native.',
+        examples: [
+          { hu: 'Olvasom a könyvet.', en: 'I am reading the book. (in progress)' },
+          { hu: 'Elolvasom a könyvet.', en: 'I will read the book (to the end).' }
+        ]
+      },
+      {
+        heading: 'The big seven',
+        table: {
+          headers: ['Coverb', 'Core meaning', 'Example'],
+          rows: [
+            ['meg-', 'completion', 'megír — write (fully)'],
+            ['el-', 'away / off', 'elmegy — go away, leave'],
+            ['ki-', 'out', 'kimegy — go out'],
+            ['be-', 'in', 'bejön — come in'],
+            ['fel-', 'up', 'felkel — get up'],
+            ['le-', 'down', 'leül — sit down'],
+            ['vissza-', 'back', 'visszajön — come back']
+          ]
+        }
+      },
+      {
+        heading: 'When the coverb jumps off',
+        body: 'The coverb detaches and moves BEHIND the verb whenever something else takes the focus slot before the verb: negation, question words, focused elements — and in the imperative.',
+        examples: [
+          { hu: 'Megírom a levelet.', en: 'I will write the letter. (neutral)' },
+          { hu: 'Nem írom meg.', en: 'I will not write it.' },
+          { hu: 'Mikor írod meg?', en: 'When will you write it?' },
+          { hu: 'MOST írom meg.', en: 'I am writing it NOW. (focus)' },
+          { hu: 'Írd meg!', en: 'Write it!' }
+        ]
+      },
+      {
+        heading: 'The world\'s shortest answers',
+        body: 'To answer a yes/no question about a coverb verb, Hungarians often reply with just the coverb — a complete, natural answer.',
+        examples: [
+          { hu: 'Megírtad a levelet? — Meg.', en: 'Did you write the letter? — Yes (did).' },
+          { hu: 'Elolvastad? — El.', en: 'Did you read it? — Yes.' },
+          { hu: 'Felkeltél? — Fel.', en: 'Are you up? — Yep.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'postpositions',
+    title: 'Postpositions',
+    icon: '📦',
+    summary: 'Az asztal alatt, a ház mögött — the little words that come AFTER the noun, and how they conjugate for people.',
+    exercises: [
+      { prompt: '"under the table": az asztal ___', answer: 'alatt' },
+      { prompt: '"next to the house": a ház ___', answer: 'mellett' },
+      { prompt: '"behind the door": az ajtó ___', answer: 'mögött' },
+      { prompt: '"in front of the school": az iskola ___', answer: 'előtt' },
+      { prompt: '"after dinner": vacsora ___', answer: 'után' },
+      { prompt: '"between the two houses": a két ház ___', answer: 'között' },
+      { prompt: '"because of the weather": az idő ___', answer: 'miatt' },
+      { prompt: '"without milk": tej ___', answer: 'nélkül' },
+      { prompt: '"next to me" (one word)', answer: 'mellettem' },
+      { prompt: '"without you" (informal singular, one word)', answer: 'nélküled' }
+    ],
+    sections: [
+      {
+        heading: 'After the noun, not before',
+        body: 'Where English uses a preposition, Hungarian puts the word AFTER a bare noun — no suffix on the noun at all: az asztal alatt (under the table).',
+        table: {
+          headers: ['Postposition', 'Meaning', 'Example'],
+          rows: [
+            ['alatt', 'under', 'az asztal alatt'],
+            ['felett / fölött', 'above', 'a város felett'],
+            ['mellett', 'next to', 'a ház mellett'],
+            ['mögött', 'behind', 'az ajtó mögött'],
+            ['előtt', 'in front of / before', 'az iskola előtt'],
+            ['után', 'after', 'vacsora után'],
+            ['között', 'between / among', 'a fák között']
+          ]
+        }
+      },
+      {
+        heading: 'Not just space',
+        body: 'Some postpositions carry abstract meanings — these two you will use constantly:',
+        examples: [
+          { hu: 'az eső miatt', en: 'because of the rain' },
+          { hu: 'cukor nélkül', en: 'without sugar' },
+          { hu: 'munka után', en: 'after work' },
+          { hu: 'az interjú előtt', en: 'before the interview' }
+        ]
+      },
+      {
+        heading: 'Postpositions conjugate for people',
+        body: 'To say "next to ME", add the possessive endings to the postposition itself — the same -m/-d/-e endings you know from barátom.',
+        table: {
+          headers: ['Person', 'mellett (next to)', 'nélkül (without)'],
+          rows: [
+            ['én', 'mellettem', 'nélkülem'],
+            ['te', 'melletted', 'nélküled'],
+            ['ő', 'mellette', 'nélküle'],
+            ['mi', 'mellettünk', 'nélkülünk'],
+            ['ti', 'mellettetek', 'nélkületek'],
+            ['ők', 'mellettük', 'nélkülük']
+          ]
+        },
+        examples: [
+          { hu: 'Ülj mellém!', en: 'Sit next to me! (direction: mellé + m)' },
+          { hu: 'Miattam ne aggódj!', en: 'Do not worry because of me!' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'comparison',
+    title: 'Bigger, Best',
+    icon: '📈',
+    summary: 'nagyobb, a legnagyobb — the -bb comparative, the leg-…-bb superlative, and mint vs -nál/-nél.',
+    exercises: [
+      { prompt: 'big → bigger (nagy)', answer: 'nagyobb' },
+      { prompt: 'beautiful → more beautiful (szép — irregular!)', answer: 'szebb' },
+      { prompt: 'good → better (jó — irregular!)', answer: 'jobb' },
+      { prompt: 'many/much → more (sok — irregular!)', answer: 'több' },
+      { prompt: 'small → smaller (kicsi — irregular!)', answer: 'kisebb' },
+      { prompt: 'cold → colder (hideg)', answer: 'hidegebb' },
+      { prompt: 'expensive → more expensive (drága)', answer: 'drágább' },
+      { prompt: '"the biggest" (nagy, with the article)', answer: ['a legnagyobb', 'legnagyobb'] },
+      { prompt: '"the best" (jó, with the article)', answer: ['a legjobb', 'legjobb'] },
+      { prompt: 'She is taller THAN me: Magasabb, ___ én.', answer: 'mint' }
+    ],
+    sections: [
+      {
+        heading: 'Comparative: -bb',
+        body: 'Add -bb (with a linking vowel after consonants): magas → magasabb, hideg → hidegebb. Adjectives ending in a/e lengthen it: drága → drágább, fekete → feketébb.',
+        examples: [
+          { hu: 'magasabb', en: 'taller' },
+          { hu: 'olcsóbb', en: 'cheaper' },
+          { hu: 'drágább', en: 'more expensive' }
+        ]
+      },
+      {
+        heading: 'Superlative: leg- … -bb',
+        body: 'Wrap the comparative in leg- and add the definite article: a legnagyobb (the biggest), a legszebb (the most beautiful).',
+        examples: [
+          { hu: 'Budapest a legnagyobb magyar város.', en: 'Budapest is the biggest Hungarian city.' },
+          { hu: 'Ez a legjobb étterem.', en: 'This is the best restaurant.' }
+        ]
+      },
+      {
+        heading: 'The irregulars worth memorising',
+        table: {
+          headers: ['Base', 'Comparative', 'Superlative'],
+          rows: [
+            ['jó (good)', 'jobb', 'a legjobb'],
+            ['sok (many)', 'több', 'a legtöbb'],
+            ['szép (beautiful)', 'szebb', 'a legszebb'],
+            ['kicsi (small)', 'kisebb', 'a legkisebb'],
+            ['hosszú (long)', 'hosszabb', 'a leghosszabb'],
+            ['könnyű (easy/light)', 'könnyebb', 'a legkönnyebb']
+          ]
+        }
+      },
+      {
+        heading: 'Than: mint, or -nál/-nél',
+        body: 'Two equally good ways to compare: "mint + nominative" (magasabb, mint én) or the -nál/-nél suffix on the compared noun (magasabb nálam).',
+        examples: [
+          { hu: 'A kávé drágább, mint a tea.', en: 'Coffee is more expensive than tea.' },
+          { hu: 'A kávé drágább a teánál.', en: 'Coffee is more expensive than tea. (suffix version)' },
+          { hu: 'Ő idősebb nálam.', en: 'He is older than me.' }
+        ]
+      }
+    ]
   }
 ];
 

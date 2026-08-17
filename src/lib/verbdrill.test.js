@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { verbs, PRONOUNS, getVerb, dictionaryForm } from './data/verbs.js';
-import { cellAnswers, drillableCells, buildDrill } from './verbdrill.js';
+import { cellAnswers, drillableCells, buildDrill, MOODS } from './verbdrill.js';
 
 // A cheap deterministic rng.
 function seededRng(seed = 42) {
@@ -38,6 +38,14 @@ describe('cellAnswers', () => {
     expect(cellAnswers(getVerb('inni'), 'definite', 2, 'past')).toEqual(['itta']);
     expect(cellAnswers(getVerb('lenni'), 'indefinite', 0, 'past')).toEqual(['voltam']);
   });
+
+  it('reads conditional and imperative cells when asked', () => {
+    expect(cellAnswers(getVerb('tudni'), 'indefinite', 0, 'conditional')).toEqual(['tudnék']);
+    expect(cellAnswers(getVerb('kérni'), 'definite', 0, 'conditional')).toEqual(['kérném']);
+    expect(cellAnswers(getVerb('látni'), 'indefinite', 0, 'imperative')).toEqual(['lássak']);
+    expect(cellAnswers(getVerb('menni'), 'indefinite', 1, 'imperative')).toEqual(['menj', 'menjél']);
+    expect(cellAnswers(getVerb('adni'), 'definite', 1, 'imperative')).toEqual(['add', 'adjad']);
+  });
 });
 
 describe('drillableCells', () => {
@@ -61,6 +69,10 @@ describe('drillableCells', () => {
     const cells = drillableCells([getVerb('menni')], { tenses: ['past'] });
     expect(cells.length).toBe(PRONOUNS.length);
     expect(cells.every((c) => c.tense === 'past' && c.definiteness === 'indefinite')).toBe(true);
+  });
+
+  it('spans all four moods: 15 transitive × 48 + 5 intransitive × 24 = 840 cells', () => {
+    expect(drillableCells(verbs, { tenses: MOODS }).length).toBe(840);
   });
 });
 
@@ -92,6 +104,19 @@ describe('buildDrill', () => {
     for (const q of drill) {
       expect(q.tense).toBe('past');
       expect(q.answers.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('builds imperative questions whose answers come from the imperative tables', () => {
+    const drill = buildDrill(verbs, { count: 20, mode: 'choices', tenses: ['imperative'], rng: seededRng(9) });
+    for (const q of drill) {
+      expect(q.tense).toBe('imperative');
+      const cell = q.verb.imperative[q.definiteness][q.personIdx];
+      const expected = Array.isArray(cell) ? cell : [cell];
+      expect(q.answers).toEqual(expected);
+      // No accepted answer may appear as a distractor.
+      const wrong = q.choices.filter((c) => q.answers.includes(c));
+      expect(wrong).toEqual([q.display]);
     }
   });
 

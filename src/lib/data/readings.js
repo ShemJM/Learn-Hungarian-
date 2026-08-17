@@ -197,6 +197,51 @@ export const readings = [
         answer: 'That he speaks Hungarian very nicely'
       }
     ]
+  },
+  {
+    id: 'budapesti-level',
+    title: 'Levél Budapestről',
+    level: 'Intermediate+',
+    icon: '✉️',
+    intro: 'A letter from a friend — coverbs, comparisons and the future, all in one page.',
+    text: [
+      { hu: 'Kedves Anna!', en: 'Dear Anna,' },
+      { hu: 'Tavaly elköltöztem Budapestre, és nagyon boldog vagyok itt.', en: 'Last year I moved to Budapest, and I am very happy here.' },
+      { hu: 'A város nagyobb és zajosabb, mint a falum, de sokkal érdekesebb.', en: 'The city is bigger and noisier than my village, but much more interesting.' },
+      { hu: 'Minden nap felfedezek valami újat: egy kávézót, egy parkot, egy régi utcát.', en: 'Every day I discover something new: a café, a park, an old street.' },
+      { hu: 'Megismertem néhány kedves embert, és esténként együtt főzünk.', en: 'I have got to know some kind people, and in the evenings we cook together.' },
+      { hu: 'A legjobb dolog a Duna: reggelente a part mellett futok.', en: 'The best thing is the Danube: in the mornings I run along the bank.' },
+      { hu: 'Jövőre el fogunk utazni a Balatonhoz is.', en: 'Next year we will also travel to Lake Balaton.' },
+      { hu: 'Remélem, hamarosan meglátogatsz, és mindent megmutatok neked.', en: 'I hope you will visit me soon, and I will show you everything.' },
+      { hu: 'Ölel: Eszter', en: 'Hugs, Eszter' }
+    ],
+    questions: [
+      {
+        q: 'When did Eszter move to Budapest?',
+        choices: ['Last year', 'Last week', 'Two years ago', 'She has always lived there'],
+        answer: 'Last year'
+      },
+      {
+        q: 'How does the city compare to her village?',
+        choices: [
+          'Bigger, noisier and much more interesting',
+          'Smaller but quieter',
+          'Exactly the same',
+          'Cheaper and sunnier'
+        ],
+        answer: 'Bigger, noisier and much more interesting'
+      },
+      {
+        q: 'What is the best thing about Budapest for her?',
+        choices: ['The Danube', 'The cafés', 'The old streets', 'The parks'],
+        answer: 'The Danube'
+      },
+      {
+        q: 'What will they do next year?',
+        choices: ['Travel to Lake Balaton', 'Move back to the village', 'Open a café', 'Run a marathon'],
+        answer: 'Travel to Lake Balaton'
+      }
+    ]
   }
 ];
 
