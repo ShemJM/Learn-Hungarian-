@@ -46,7 +46,11 @@
   let lastVisit = $derived(lastVisitActivity($progress.activity, $progress.visit));
   let lastVisitWhen = $derived(relativeDay($progress.visit.previous));
   let returning = $derived(Boolean($progress.visit.previous));
-  let hasStarted = $derived(Object.keys($progress.srs).length > 0 || Object.keys($progress.quizScores).length > 0);
+  let hasStarted = $derived(
+    Object.keys($progress.srs).length > 0 ||
+      Object.keys($progress.quizScores).length > 0 ||
+      ($progress.stepsSkipped?.length ?? 0) > 0
+  );
 
   let nextStep = $derived(nextCourseStep(course, $progress));
   let completion = $derived(courseCompletion(course, $progress));

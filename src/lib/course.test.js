@@ -47,6 +47,34 @@ describe('stepDone', () => {
   });
 });
 
+describe('stepsSkipped', () => {
+  it('a skipped step counts as done regardless of type', () => {
+    const types = [
+      { id: 's1', type: 'lesson', ref: 'greetings' },
+      { id: 's2', type: 'guide', ref: 'alphabet' },
+      { id: 's3', type: 'practice', ref: 'lesson:greetings' },
+      { id: 's4', type: 'reading', ref: 'anna' },
+      { id: 's5', type: 'dialogue', ref: 'meeting' },
+      { id: 's6', type: 'verbs', ref: 'past' },
+      { id: 's7', type: 'checkpoint', ref: 'checkpoint:u1' }
+    ];
+    const p = { stepsSkipped: types.map((s) => s.id) };
+    for (const step of types) expect(stepDone(step, p), step.type).toBe(true);
+  });
+
+  it('skipping all of unit 1 moves the next step into unit 2 and counts completion', () => {
+    const p = { ...defaultProgress(), stepsSkipped: course[0].steps.map((s) => s.id) };
+    expect(nextCourseStep(course, p).unit.id).toBe('u2');
+    expect(courseCompletion(course, p).unitsDone).toBe(1);
+    expect(courseCompletion(course, p).doneSteps).toBe(course[0].steps.length);
+  });
+
+  it('legacy blobs without the key behave as before', () => {
+    const legacy = { quizScores: {}, guidesRead: [], readingsDone: [], dialoguesDone: [] };
+    expect(stepDone({ id: 'u1-alphabet', type: 'guide', ref: 'alphabet' }, legacy)).toBe(false);
+  });
+});
+
 describe('nextCourseStep', () => {
   it('starts a fresh learner at the very first step', () => {
     const next = nextCourseStep(course, defaultProgress());

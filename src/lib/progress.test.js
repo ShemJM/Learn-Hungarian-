@@ -98,6 +98,29 @@ describe('progress store', () => {
     expect(get(store).activity).toHaveLength(0); // starting a lesson is not log-worthy on its own
   });
 
+  it('skips steps idempotently with a single activity entry', () => {
+    store.skipSteps(['u1-a', 'u1-b'], 'First Words');
+    store.skipSteps(['u1-a', 'u1-b'], 'First Words'); // no-op: nothing new
+    const p = get(store);
+    expect(p.stepsSkipped).toEqual(['u1-a', 'u1-b']);
+    expect(p.activity).toHaveLength(1);
+    expect(p.activity[0].label).toBe('Marked "First Words" as known');
+  });
+
+  it('unskips exactly the given ids, silently', () => {
+    store.skipSteps(['u1-a', 'u1-b', 'u2-a'], 'Stuff');
+    store.unskipSteps(['u1-a', 'nope']);
+    const p = get(store);
+    expect(p.stepsSkipped).toEqual(['u1-b', 'u2-a']);
+    expect(p.activity).toHaveLength(1); // only the original skip entry
+  });
+
+  it('persists skipped steps through a reload', () => {
+    store.skipSteps(['u1-a'], 'First Words');
+    const reloaded = createProgressStore(storage);
+    expect(get(reloaded).stepsSkipped).toEqual(['u1-a']);
+  });
+
   it('backfills new top-level keys when loading a pre-exercise-era blob', () => {
     // A realistic payload saved by the previous version of the app: raw-hu SRS
     // keys, no exerciseScores / lessonsStarted at all.

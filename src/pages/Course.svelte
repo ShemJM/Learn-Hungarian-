@@ -15,6 +15,18 @@
 
   let state = $derived(courseState(course, $progress));
   let completion = $derived(courseCompletion(course, $progress));
+
+  function allSkipped(unit) {
+    return unit.steps.every((s) => $progress.stepsSkipped?.includes(s.id));
+  }
+
+  function skipUnit(unit) {
+    progress.skipSteps(unit.steps.map((s) => s.id), unit.title);
+  }
+
+  function unskipUnit(unit) {
+    progress.unskipSteps(unit.steps.map((s) => s.id));
+  }
 </script>
 
 <h1>🧭 The Course</h1>
@@ -36,7 +48,14 @@
   <div class="card unit" class:done class:current>
     <div class="unit-head">
       <h2>{unit.icon} {unit.title}</h2>
-      <span class="pill" class:green={done}>{doneCount} / {steps.length}</span>
+      <span class="head-right">
+        {#if allSkipped(unit)}
+          <button class="btn skip" onclick={() => unskipUnit(unit)}>Unmark</button>
+        {:else if !done}
+          <button class="btn skip" onclick={() => skipUnit(unit)}>I know this — mark as done</button>
+        {/if}
+        <span class="pill" class:green={done}>{doneCount} / {steps.length}</span>
+      </span>
     </div>
     <p class="muted blurb">{unit.blurb}</p>
     <ol class="rail">
@@ -94,6 +113,17 @@
   }
   .unit-head h2 {
     margin: 0;
+  }
+  .head-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .btn.skip {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    color: var(--muted);
   }
   .blurb {
     margin: 0.3rem 0 0.8rem;

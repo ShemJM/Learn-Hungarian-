@@ -21,6 +21,11 @@ export const EXERCISE_PASS = 70;
 
 /** Whether one course step is complete, given the learner's progress. */
 export function stepDone(step, p) {
+  // A step the learner marked as already known counts as done. Skipping a
+  // lesson deliberately does NOT release its vocabulary into the SRS pool —
+  // "I know this" shouldn't flood the review deck; opening the lesson still
+  // calls markLessonStarted for learners who change their mind.
+  if (p.stepsSkipped?.includes(step.id)) return true;
   switch (step.type) {
     case 'lesson':
       return (p.quizScores?.[step.ref] || 0) >= LESSON_PASS;
