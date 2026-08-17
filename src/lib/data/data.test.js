@@ -270,22 +270,45 @@ describe('verbs data', () => {
     expect(verbs.some((v) => v.definite === null)).toBe(true);
   });
 
-  it('every verb has a full past tense matching its transitivity', () => {
+  it('every verb has full past, conditional and imperative tables matching its transitivity', () => {
     for (const v of verbs) {
-      expect(v.past, v.inf).toBeTruthy();
-      expect(v.past.indefinite.length, v.inf).toBe(PRONOUNS.length);
-      // Past definite exists exactly when present definite does.
-      expect(v.past.definite === null, v.inf).toBe(v.definite === null);
-      const tables = v.past.definite ? [v.past.indefinite, v.past.definite] : [v.past.indefinite];
-      if (v.past.definite) expect(v.past.definite.length, v.inf).toBe(PRONOUNS.length);
-      for (const table of tables) {
-        for (const cell of table) {
-          const variants = Array.isArray(cell) ? cell : [cell];
-          expect(variants.length, v.inf).toBeGreaterThan(0);
-          for (const form of variants) expect(form, v.inf).toBeTruthy();
+      for (const mood of ['past', 'conditional', 'imperative']) {
+        const t = v[mood];
+        expect(t, `${v.inf} ${mood}`).toBeTruthy();
+        expect(t.indefinite.length, `${v.inf} ${mood}`).toBe(PRONOUNS.length);
+        // Definite tables exist exactly when the present definite does.
+        expect(t.definite === null, `${v.inf} ${mood}`).toBe(v.definite === null);
+        const tables = t.definite ? [t.indefinite, t.definite] : [t.indefinite];
+        if (t.definite) expect(t.definite.length, `${v.inf} ${mood}`).toBe(PRONOUNS.length);
+        for (const table of tables) {
+          for (const cell of table) {
+            const variants = Array.isArray(cell) ? cell : [cell];
+            expect(variants.length, `${v.inf} ${mood}`).toBeGreaterThan(0);
+            for (const form of variants) expect(form, `${v.inf} ${mood}`).toBeTruthy();
+          }
         }
       }
     }
+  });
+
+  it('the conditional 1sg indefinite always ends in -nék, even for back verbs', () => {
+    for (const v of verbs) {
+      const cell = v.conditional.indefinite[0];
+      const display = Array.isArray(cell) ? cell[0] : cell;
+      expect(display.endsWith('nék'), `${v.inf}: ${display}`).toBe(true);
+    }
+  });
+
+  it('spot-checks the trickiest imperative and conditional forms', () => {
+    const byInf = Object.fromEntries(verbs.map((v) => [v.inf, v]));
+    expect(byInf['látni'].imperative.indefinite[0]).toBe('lássak'); // t+j → ss
+    expect(byInf['enni'].imperative.definite[1]).toEqual(['edd', 'egyed']); // fused 2sg
+    expect(byInf['venni'].imperative.indefinite[1][0]).toBe('vegyél'); // vegy- stem
+    expect(byInf['lenni'].imperative.indefinite[1][0]).toBe('legyél');
+    expect(byInf['jönni'].imperative.indefinite[1][0]).toBe('gyere'); // suppletive
+    expect(byInf['dolgozni'].imperative.indefinite[0]).toEqual(['dolgozzak', 'dolgozzam']); // -ik variants
+    expect(byInf['szeretni'].conditional.definite[0]).toBe('szeretném'); // the polite classic
+    expect(byInf['főzni'].imperative.indefinite[2]).toBe('főzzön'); // z doubles, rounded 3sg
   });
 
   it('includes lenni, the most important verb of all', () => {

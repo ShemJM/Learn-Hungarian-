@@ -72,8 +72,13 @@ export function stepMeta(step) {
       const d = getDialogue(step.ref);
       return { title: d?.title ?? step.ref, icon: '💬', href: '#/conversation/' + step.ref };
     }
-    case 'verbs':
-      return { title: `Verb drill (${step.ref} tense)`, icon: '🏋️', href: '#/verbs' };
+    case 'verbs': {
+      const label =
+        { present: 'present tense', past: 'past tense', conditional: 'conditional mood', imperative: 'imperative mood' }[
+          step.ref
+        ] ?? step.ref;
+      return { title: `Verb drill (${label})`, icon: '🏋️', href: '#/verbs' };
+    }
     default:
       return { title: step.ref, icon: '❓', href: '#/course' };
   }
