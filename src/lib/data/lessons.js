@@ -396,6 +396,60 @@ export const lessons = [
       { hu: 'Fúj a szél.', en: 'The wind is blowing.' },
       { hu: 'Hideg van, vigyél esernyőt!', en: 'It is cold — take an umbrella!' }
     ]
+  },
+  {
+    id: 'plans',
+    title: 'Plans & Dreams',
+    icon: '🌠',
+    intro:
+      'Talking about what comes next. Hungarian often uses the plain present for the future (Holnap dolgozom — I work tomorrow), sprinkles in majd (later / some time), or brings out fog + infinitive for emphasis — see the future guide.',
+    words: [
+      { hu: 'terv', en: 'plan', pron: 'tehrv' },
+      { hu: 'jövő', en: 'future', pron: 'YUH-vuh' },
+      { hu: 'cél', en: 'goal / aim', pron: 'tsayl' },
+      { hu: 'álom', en: 'dream', pron: 'AH-lom' },
+      { hu: 'remélni', en: 'to hope', pron: 'REH-mayl-nee' },
+      { hu: 'tervezni', en: 'to plan', pron: 'TEHR-vez-nee' },
+      { hu: 'majd', en: 'later / some time (future word)', pron: 'moyd' },
+      { hu: 'jövőre', en: 'next year', pron: 'YUH-vuh-reh' },
+      { hu: 'hamarosan', en: 'soon', pron: 'HAW-maw-ro-shawn' },
+      { hu: 'biztosan', en: 'certainly / surely', pron: 'BIZ-to-shawn' },
+      { hu: 'talán', en: 'maybe / perhaps', pron: 'TAW-lahn' },
+      { hu: 'valószínűleg', en: 'probably', pron: 'VAW-loh-see-nyoo-leg' }
+    ],
+    phrases: [
+      { hu: 'Jövőre Magyarországra költözünk.', en: 'Next year we are moving to Hungary.' },
+      { hu: 'Mik a terveid?', en: 'What are your plans?' },
+      { hu: 'Remélem, hamarosan találkozunk.', en: 'I hope we meet soon.' },
+      { hu: 'Az a célom, hogy jól beszéljek magyarul.', en: 'My goal is to speak Hungarian well.' }
+    ]
+  },
+  {
+    id: 'opinions',
+    title: 'Opinions & Connectors',
+    icon: '💭',
+    intro:
+      'The glue of real conversation: saying what you think, agreeing, disagreeing, and joining sentences with mert, ha, hogy and friends. Master these and your Hungarian stops sounding like a phrasebook.',
+    words: [
+      { hu: 'szerintem', en: 'in my opinion', pron: 'SEH-rin-tem' },
+      { hu: 'vélemény', en: 'opinion', pron: 'VAY-leh-mayn' },
+      { hu: 'egyetérteni', en: 'to agree', pron: 'EDJ-et-ayr-teh-nee' },
+      { hu: 'igaza van', en: 'he/she is right', pron: 'EE-gaw-zaw vawn' },
+      { hu: 'mert', en: 'because', pron: 'mehrt' },
+      { hu: 'ha', en: 'if', pron: 'haw' },
+      { hu: 'hogy', en: 'that (conjunction)', pron: 'hodj' },
+      { hu: 'bár', en: 'although', pron: 'bahr' },
+      { hu: 'azonban', en: 'however', pron: 'AW-zon-bawn' },
+      { hu: 'tehát', en: 'so / therefore', pron: 'TEH-haht' },
+      { hu: 'például', en: 'for example', pron: 'PAYL-dah-ool' },
+      { hu: 'fontos', en: 'important', pron: 'FON-tosh' }
+    ],
+    phrases: [
+      { hu: 'Szerintem igazad van.', en: 'I think you are right.' },
+      { hu: 'Egyetértek veled.', en: 'I agree with you.' },
+      { hu: 'Fontos, hogy sokat gyakoroljunk.', en: 'It is important that we practise a lot.' },
+      { hu: 'Bár fáradt vagyok, ma is tanulok.', en: 'Although I am tired, I am studying today too.' }
+    ]
   }
 ];
 

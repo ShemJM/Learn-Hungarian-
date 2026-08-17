@@ -367,7 +367,7 @@ describe('course data', () => {
           expect(getExerciseSet(step.ref), label).not.toBeNull();
           break;
         case 'verbs':
-          expect(['present', 'past'], label).toContain(step.ref);
+          expect(['present', 'past', 'conditional', 'imperative'], label).toContain(step.ref);
           break;
         default:
           throw new Error(`unknown step type: ${label}`);

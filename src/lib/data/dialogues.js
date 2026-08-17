@@ -159,6 +159,40 @@ export const dialogues = [
       { speaker: 'A', name: 'Erzsi', hu: 'Okos! Az ősz már ilyen.', en: 'Smart! Autumn is like that.' },
       { speaker: 'B', name: 'You', hu: 'Igen, de én szeretem az őszt. Szép évszak.', en: 'Yes, but I like autumn. It is a beautiful season.' }
     ]
+  },
+  {
+    id: 'phone-appointment',
+    title: 'Booking an Appointment',
+    icon: '📞',
+    scene: "You (B) phone Dr. Nagy's surgery for an appointment. Formal (magázás) throughout — and watch the coverbs at work.",
+    lines: [
+      { speaker: 'A', name: 'Assistant', hu: 'Jó napot kívánok, doktor Nagy rendelője!', en: "Good day, Dr. Nagy's surgery!" },
+      { speaker: 'B', name: 'You', hu: 'Jó napot! Szeretnék időpontot kérni a jövő hétre.', en: 'Good day! I would like to ask for an appointment for next week.' },
+      { speaker: 'A', name: 'Assistant', hu: 'Természetesen. Milyen panasza van?', en: 'Of course. What is your complaint?' },
+      { speaker: 'B', name: 'You', hu: 'Napok óta fáj a torkom. Tegnap felhívtam Önöket, de senki nem vette fel.', en: 'My throat has been hurting for days. I called you yesterday, but nobody picked up.' },
+      { speaker: 'A', name: 'Assistant', hu: 'Elnézést kérünk, nagyon sok betegünk volt. Most megbeszéljük az időpontot.', en: 'We apologise, we had very many patients. We will arrange the appointment now.' },
+      { speaker: 'B', name: 'You', hu: 'Köszönöm. Mikor tudna fogadni a doktor úr?', en: 'Thank you. When could the doctor see me?' },
+      { speaker: 'A', name: 'Assistant', hu: 'Kedden tíz órakor van egy szabad időpont. Megfelel?', en: 'There is a free slot on Tuesday at ten. Does that suit you?' },
+      { speaker: 'B', name: 'You', hu: 'Igen, megfelel. Felírom magamnak.', en: 'Yes, that suits me. I will write it down for myself.' },
+      { speaker: 'A', name: 'Assistant', hu: 'Rendben, kedden tízre várjuk. Viszonthallásra!', en: 'All right, we expect you Tuesday at ten. Goodbye! (on the phone)' },
+      { speaker: 'B', name: 'You', hu: 'Köszönöm szépen, viszonthallásra!', en: 'Thank you very much, goodbye!' }
+    ]
+  },
+  {
+    id: 'holiday-plans',
+    title: 'Holiday Plans',
+    icon: '🏖️',
+    scene: 'You (B) and your friend Bence debate the summer holiday — conditional wishes, future plans. Informal.',
+    lines: [
+      { speaker: 'A', name: 'Bence', hu: 'Hova mennél nyáron, ha lenne pénzed?', en: 'Where would you go in the summer if you had money?' },
+      { speaker: 'B', name: 'You', hu: 'Ha lenne pénzem, a tengerhez utaznék.', en: 'If I had money, I would travel to the sea.' },
+      { speaker: 'A', name: 'Bence', hu: 'Én inkább a Balatonra mennék. Olcsóbb, mint a tenger.', en: 'I would rather go to Lake Balaton. It is cheaper than the sea.' },
+      { speaker: 'B', name: 'You', hu: 'Igazad van, de a tenger szebb, mint a Balaton!', en: 'You are right, but the sea is more beautiful than Balaton!' },
+      { speaker: 'A', name: 'Bence', hu: 'Talán. De a Balatonnál ott a legjobb lángos!', en: 'Maybe. But at Balaton there is the best lángos!' },
+      { speaker: 'B', name: 'You', hu: 'Jó, meggyőztél. Jövőre biztosan elutazunk valahova.', en: 'Fine, you convinced me. Next year we will definitely travel somewhere.' },
+      { speaker: 'A', name: 'Bence', hu: 'Remek! Majd megbeszéljük a részleteket.', en: 'Great! We will discuss the details later.' },
+      { speaker: 'B', name: 'You', hu: 'Rendben. Addig is gyűjtöm a pénzt.', en: 'All right. Until then I am saving up the money.' }
+    ]
   }
 ];
 
