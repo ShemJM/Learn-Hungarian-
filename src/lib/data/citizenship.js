@@ -25,6 +25,7 @@ export const interviewCategories = [
     freePrompt: 'Introduce yourself out loud — your name, age, and where you are from.',
     questions: [
       {
+        id: 'personal-name',
         hu: 'Mi a neve?',
         en: 'What is your name?',
         tip: 'Either "A nevem ..." (My name is...) or simply "... vagyok" (I am ...) works.',
@@ -34,6 +35,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'personal-age',
         hu: 'Hány éves?',
         en: 'How old are you?',
         tip: '[number] + éves + vagyok. The word "éves" never changes, whatever the number.',
@@ -43,6 +45,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'personal-origin',
         hu: 'Honnan jött?',
         en: 'Where are you from?',
         tip: 'Country name + "-ból/-ből jöttem" (I came from...), or nationality + "vagyok".',
@@ -60,6 +63,7 @@ export const interviewCategories = [
     freePrompt: 'Say out loud where you live, how long you have lived there, and which part of the country it is in.',
     questions: [
       {
+        id: 'residence-where',
         hu: 'Hol lakik? / Hol él?',
         en: 'Where do you live?',
         tip: 'Budapest is irregular: "Budapesten" (not Budapestben). Elsewhere, say which part of the country using "az ország ... részén" — the ending on "részén" never changes, only the direction word before it does.',
@@ -70,6 +74,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'residence-since',
         hu: 'Mióta él Magyarországon?',
         en: 'How long have you lived in Hungary?',
         tip: '[number of years] + "éve" (for ... years) + "élek itt / élek Magyarországon".',
@@ -79,6 +84,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'residence-town',
         hu: 'Melyik megyében / melyik városban lakik?',
         en: 'Which county / which town do you live in?',
         tip: 'Safe fallback for any town name: "Lakóhelyem: ___" (My place of residence: ___) sidesteps having to work out the correct vowel-harmony ending.',
@@ -96,6 +102,7 @@ export const interviewCategories = [
     freePrompt: 'Describe your job out loud — what you do, where you work, and roughly how many people work there.',
     questions: [
       {
+        id: 'work-what',
         hu: 'Mivel foglalkozik? / Mi a foglalkozása?',
         en: 'What do you do for work?',
         tip: 'Job title + "-ként dolgozom" (I work as a...). "-ként" is invariant — it never changes for vowel harmony, so it is one of the easiest endings to use safely.',
@@ -106,6 +113,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'work-workplace',
         hu: 'Hol dolgozik?',
         en: 'Where do you work?',
         tip: '"Cég" (company) always takes "-nél": egy [típus] cégnél dolgozom. For a school/hospital/office use "-ban/-ben": iskolában, kórházban, irodában.',
@@ -115,6 +123,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'work-size',
         hu: 'Hány embert foglalkoztat a cég? / Hányan dolgoznak ott?',
         en: 'How many people does the company employ? / How many people work there?',
         tip: '"Körülbelül [szám] embert foglalkoztat" works for any number. For small teams you can also say "[szám]-an dolgozunk" (ketten, hárman, tízen... — the "there are N of us" ending).',
@@ -132,6 +141,7 @@ export const interviewCategories = [
     freePrompt: 'Talk out loud about your family — whether you are married, whether you have children, and their names and ages.',
     questions: [
       {
+        id: 'family-married',
         hu: 'Nős / férjnél van? Van családja?',
         en: 'Are you married? Do you have a family?',
         tip: '"Nős" is used by men, "férjnél van" by women, for "I am married". "Egyedülálló" = single, "elvált" = divorced, "özvegy" = widowed.',
@@ -142,6 +152,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'family-children',
         hu: 'Van gyereke? Hány gyereke van?',
         en: 'Do you have children? How many?',
         tip: 'The child noun stays singular even after a number: "Két gyermekem van" (not gyermekeim). For none, use "Nincs gyermekem".',
@@ -153,6 +164,7 @@ export const interviewCategories = [
         ]
       },
       {
+        id: 'family-kids-names',
         hu: 'Hogy hívják őket? Hány évesek?',
         en: 'What are they called? How old are they?',
         tip: 'Use "A fiam neve ..." (my son\'s name is) / "A lányom neve ..." (my daughter\'s name is) — this avoids putting a vowel-harmony ending directly on the name itself.',
@@ -170,6 +182,7 @@ export const interviewCategories = [
     freePrompt: 'Explain out loud, in your own words, why you want to become a Hungarian citizen.',
     questions: [
       {
+        id: 'citizenship-why',
         hu: 'Miért szeretne magyar állampolgár lenni?',
         en: 'Why do you want to become a Hungarian citizen?',
         tip: 'Keep it honest and simple — a short, true sentence is stronger than a long memorised one.',
@@ -178,10 +191,115 @@ export const interviewCategories = [
           { hu: 'Mert szeretem Magyarországot, és itt szeretnék maradni.', en: 'Because I love Hungary and want to stay here.' },
           { hu: 'Mert magyar felmenőim vannak.', en: 'Because I have Hungarian ancestors.' }
         ]
+      },
+      {
+        id: 'citizenship-likes',
+        hu: 'Mit szeret Magyarországon?',
+        en: 'What do you like about Hungary?',
+        tip: '"Szeretem a ..." (I love the ...) + a noun is the safest frame — the ending sits on the article, not on the word you choose.',
+        answers: [
+          { hu: 'Szeretem a magyar konyhát és a nyugodt életet.', en: 'I love Hungarian cuisine and the calm way of life.' },
+          { hu: 'Szeretem az embereket és a szép városokat.', en: 'I love the people and the beautiful towns.' },
+          { hu: 'Szeretem a Balatont és a magyar borokat.', en: 'I love Lake Balaton and Hungarian wines.' }
+        ]
+      },
+      {
+        id: 'citizenship-relatives',
+        hu: 'Vannak magyar rokonai? Van magyar felmenője?',
+        en: 'Do you have Hungarian relatives? Do you have a Hungarian ancestor?',
+        tip: '"Van" / "Nincs" answers this on its own; add the relative afterwards. Family words take "-m" for "my": nagyapám (my grandfather), nagyanyám (my grandmother), feleségem (my wife), férjem (my husband).',
+        answers: [
+          { hu: 'Igen, a nagyapám magyar volt.', en: 'Yes, my grandfather was Hungarian.' },
+          { hu: 'A feleségem magyar.', en: 'My wife is Hungarian.' },
+          { hu: 'Nincsenek magyar rokonaim, de itt élek nyolc éve.', en: 'I have no Hungarian relatives, but I have lived here for eight years.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'daily',
+    icon: '🕘',
+    title: 'Everyday Life & Free Time',
+    freePrompt: 'Describe an ordinary day out loud — when you get up, what you do, and what you do in the evening.',
+    questions: [
+      {
+        id: 'daily-routine',
+        hu: 'Mit csinál egy átlagos napon?',
+        en: 'What do you do on an ordinary day?',
+        tip: 'Chain simple present-tense verbs with "aztán" (then): felkelek (I get up), dolgozom (I work), hazamegyek (I go home), főzök (I cook), pihenek (I rest).',
+        answers: [
+          { hu: 'Reggel hatkor felkelek, aztán dolgozom. Este otthon vagyok a családommal.', en: 'I get up at six in the morning, then I work. In the evening I am at home with my family.' },
+          { hu: 'Reggel kávézom, aztán bemegyek az irodába. Délután sportolok.', en: 'In the morning I have coffee, then I go into the office. In the afternoon I do sport.' }
+        ]
+      },
+      {
+        id: 'daily-hobbies',
+        hu: 'Mit szeret csinálni a szabadidejében?',
+        en: 'What do you like doing in your free time?',
+        tip: '"Szeretek" + an infinitive ending in -ni: olvasni (to read), főzni (to cook), kertészkedni (to garden), sétálni (to walk), zenét hallgatni (to listen to music).',
+        answers: [
+          { hu: 'Szeretek olvasni és kirándulni.', en: 'I like reading and hiking.' },
+          { hu: 'Szabadidőmben főzök és zenét hallgatok.', en: 'In my free time I cook and listen to music.' }
+        ]
+      },
+      {
+        id: 'daily-shopping',
+        hu: 'Hol szokott vásárolni?',
+        en: 'Where do you usually shop?',
+        tip: 'Places take "-ban/-ben" (in) or "-on/-en/-ön" (at/on): a boltban (in the shop), a piacon (at the market), a bevásárlóközpontban (in the shopping centre).',
+        answers: [
+          { hu: 'A közeli boltban vásárolok.', en: 'I shop at the nearby shop.' },
+          { hu: 'Hétvégén a piacon veszek zöldséget és gyümölcsöt.', en: 'At the weekend I buy vegetables and fruit at the market.' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'language',
+    icon: '📚',
+    title: 'Learning Hungarian',
+    freePrompt: 'Say out loud how long you have been learning Hungarian, where you learn, and what you find hardest.',
+    questions: [
+      {
+        id: 'language-since',
+        hu: 'Mióta tanul magyarul?',
+        en: 'How long have you been learning Hungarian?',
+        tip: 'Same frame as your years in Hungary: [number] + "éve tanulok magyarul". For months: "[number] hónapja".',
+        answers: [
+          { hu: 'Két éve tanulok magyarul.', en: 'I have been learning Hungarian for two years.' },
+          { hu: 'Nyolc hónapja tanulok magyarul.', en: 'I have been learning Hungarian for eight months.' }
+        ]
+      },
+      {
+        id: 'language-where',
+        hu: 'Hol tanul magyarul? Ki tanítja?',
+        en: 'Where do you learn Hungarian? Who teaches you?',
+        tip: '"Tanárral tanulok" (I study with a teacher — "-val/-vel" = with), "egyedül tanulok" (I study alone), "online tanulok" (I study online).',
+        answers: [
+          { hu: 'Tanárral tanulok, hetente egyszer.', en: 'I study with a teacher, once a week.' },
+          { hu: 'Egyedül tanulok, könyvből és online.', en: 'I study alone, from a book and online.' }
+        ]
+      },
+      {
+        id: 'language-hard',
+        hu: 'Nehéz a magyar nyelv? Mi a legnehezebb?',
+        en: 'Is Hungarian difficult? What is the hardest part?',
+        tip: 'A short honest answer is perfect here, and it is a friendly question — the interviewer is making conversation, not testing you.',
+        answers: [
+          { hu: 'Igen, nehéz, de nagyon szeretem.', en: 'Yes, it is difficult, but I love it very much.' },
+          { hu: 'A ragozás nehéz, de a kiejtés könnyebb.', en: 'The endings are hard, but the pronunciation is easier.' }
+        ]
       }
     ]
   }
 ];
+
+/** Every workbook question, flattened, each tagged with the category it came from. */
+export function allInterviewQuestions() {
+  return interviewCategories.flatMap((cat) =>
+    cat.questions.map((q) => ({ ...q, categoryId: cat.id, categoryTitle: cat.title }))
+  );
+}
 
 // --- Sentence builder: Job & Workplace ---
 

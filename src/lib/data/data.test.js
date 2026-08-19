@@ -9,7 +9,8 @@ import {
   buildJobSentence,
   buildResidenceSentence,
   buildFamilySentence,
-  childCountSentence
+  childCountSentence,
+  allInterviewQuestions
 } from './citizenship.js';
 import { alphabet, groups, letterPhrase } from './alphabet.js';
 import { verbs, PRONOUNS } from './verbs.js';
@@ -169,6 +170,21 @@ describe('citizenship interview data', () => {
           expect(a.en, `${cat.id}: ${q.hu}`).toBeTruthy();
         }
       }
+    }
+  });
+
+  it('gives every question a stable, unique id for the workbook to save against', () => {
+    const ids = allInterviewQuestions().map((q) => q.id);
+    expect(ids.length).toBeGreaterThanOrEqual(15);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of ids) expect(id).toMatch(/^[a-z]+-[a-z-]+$/);
+  });
+
+  it('tags each flattened question with the category it came from', () => {
+    for (const q of allInterviewQuestions()) {
+      expect(q.categoryId, q.id).toBeTruthy();
+      expect(q.id.startsWith(`${q.categoryId}-`), q.id).toBe(true);
+      expect(q.categoryTitle, q.id).toBeTruthy();
     }
   });
 
