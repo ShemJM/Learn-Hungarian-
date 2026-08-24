@@ -97,6 +97,29 @@ describe('App (smoke test)', () => {
     expect(target.textContent).toContain('Introduce yourself out loud');
   });
 
+  it('saves a workbook answer to localStorage and shows it again after a remount', () => {
+    navigate('#/citizenship');
+    expect(target.textContent).toContain('My interview workbook');
+
+    const box = target.querySelector('#ans-personal-name');
+    expect(box).toBeTruthy();
+    box.value = 'A nevem Anna.';
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+    flushSync();
+
+    expect(localStorage.getItem('learn-hungarian-workbook-v1')).toContain('A nevem Anna.');
+
+    // Remounting is the closest thing to a page reload: the answer must come back.
+    unmount(app);
+    target.remove();
+    target = document.createElement('div');
+    document.body.appendChild(target);
+    app = mount(App, { target });
+    flushSync();
+    navigate('#/citizenship');
+    expect(target.querySelector('#ans-personal-name').value).toBe('A nevem Anna.');
+  });
+
   it('falls back to home for unknown routes', () => {
     navigate('#/does-not-exist');
     expect(target.textContent).toContain('Üdvözöllek');

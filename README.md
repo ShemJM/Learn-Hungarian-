@@ -59,9 +59,16 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   known words, completed readings/dialogues and pronunciation stars, persisted in
   `localStorage`.
 - **🪪 Citizenship interview prep** — common naturalisation (honosítás) interview questions
-  about yourself, your home, your job and your family, each with model answers and grammar
-  tips, plus interactive sentence builders so you can assemble grammatically correct answers
-  about your own real job, region and children.
+  about yourself, your home, your job, your family, your daily life and your Hungarian
+  studies, each with model answers and grammar tips, plus interactive sentence builders so
+  you can assemble grammatically correct answers about your own real job, region and children.
+- **📓 Interview workbook** — write your own true answer to every interview question and keep
+  it. Answers, private notes and a "ready to say" tick are saved to `localStorage` on your own
+  device as you type and are never uploaded anywhere. Start from a model answer with one click,
+  hear your own answer read back, and switch on rehearsal mode to hide the models and practise
+  from your own words. Because the answers live only in that browser, the workbook also lets
+  you download a `.json` backup (and restore or merge one), export a plain-text revision sheet,
+  or print the whole thing as a question-and-answer sheet for the day itself.
 
 ## Getting started
 
