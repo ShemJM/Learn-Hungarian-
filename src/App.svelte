@@ -14,6 +14,7 @@
   import Verbs from './pages/Verbs.svelte';
   import Practice from './pages/Practice.svelte';
   import Course from './pages/Course.svelte';
+  import Reels from './pages/Reels.svelte';
 
   import { progress } from './lib/progress.js';
 
@@ -77,6 +78,7 @@
     <a href="#/course" class:active={$route.page === 'course' || $route.page === 'practice'}>
       <span class="icon">🧭</span>Course
     </a>
+    <a href="#/reels" class:active={$route.page === 'reels'}><span class="icon">📱</span>Reels</a>
     {#each groups as group}
       <div class="group">
         <button
@@ -103,6 +105,8 @@
     <Home />
   {:else if $route.page === 'course'}
     <Course />
+  {:else if $route.page === 'reels'}
+    <Reels />
   {:else if $route.page === 'lessons'}
     {#if $route.param}
       <Lesson id={$route.param} />

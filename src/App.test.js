@@ -72,6 +72,23 @@ describe('App (smoke test)', () => {
     expect(target.textContent).toContain('Word Scramble');
   });
 
+  it('routes to the reels feed and saves a reel', () => {
+    navigate('#/reels');
+    expect(target.textContent).toContain('For you');
+    const reels = target.querySelectorAll('section.reel');
+    expect(reels.length).toBeGreaterThan(5);
+    expect(target.textContent).toContain('Swipe up');
+
+    target.querySelector('[aria-label="Save reel"]').click();
+    flushSync();
+    expect(JSON.parse(localStorage.getItem('learn-hungarian-progress-v1')).reelsLiked).toHaveLength(1);
+
+    [...target.querySelectorAll('[role="tab"]')].find((b) => b.textContent.includes('Saved')).click();
+    flushSync();
+    expect(target.querySelectorAll('section.reel')).toHaveLength(1);
+    expect(target.querySelector('[aria-label="Unsave reel"]')).toBeTruthy();
+  });
+
   it('routes to the quick fire game', () => {
     navigate('#/games/quickfire');
     expect(target.textContent).toContain('Quick Fire');

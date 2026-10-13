@@ -13,6 +13,13 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   step (soft gating — nothing is ever locked), already-fluent learners can mark whole units
   as known ("I know this") to jump ahead, and the Home dashboard's main button always knows
   where you left off.
+- **📱 Reels — doom-scroll Hungarian** — a full-screen, TikTok-style vertical feed where
+  every swipe is a one-screen micro-lesson cut from the course: new words, useful phrases,
+  quick-check and listening questions, grammar bites, "can you say it?" drills, verb tables,
+  overheard dialogue snippets and reading sentences. Audio autoplays as each reel snaps into
+  view (mute toggle, 🐢 slow replay), the feed never ends and leans toward lessons you have
+  started, quick-check answers feed spaced repetition, and double-tapping (or the heart)
+  saves a reel to your *Saved* tab. Arrow keys / `j` `k` scroll on desktop, `l` saves.
 - **✏️ A learn-by-doing exercise engine** — every lesson and grammar guide has a practice
   session mixing multiple choice, typed translation (EN→HU), cloze gap-fill, word-order
   tiles, and listening dictation. Typed answers are graded accent-leniently, corrections are
@@ -110,6 +117,7 @@ src/
     data/               the course content (course units, lessons, grammar, readings, dialogues, citizenship)
     components/         shared UI (AudioButton, PronunciationCheck, Quiz, ExerciseRunner, AccentBar)
     games/              the mini games
+    reels.js            reels feed: reel catalog, builders and weighted endless batches
     course.js           course progression: step completion, next step, review-pool gating
     exercises.js        exercise session builders (mcq / typed / cloze / word order / dictation)
     srs.js              Leitner spaced-repetition scheduling
