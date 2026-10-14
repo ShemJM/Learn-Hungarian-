@@ -28,6 +28,7 @@ export function defaultProgress() {
     exerciseScores: {},  // exercise set id ('lesson:food', 'grammar:cases', 'checkpoint:u3', 'verbs:past') -> best percent
     lessonsStarted: [],  // lesson ids whose vocabulary has been released into the review pool
     stepsSkipped: [],    // course step ids the learner marked as already known
+    reelsLiked: [],      // reel keys the learner double-tapped / hearted, newest first
     activity: [],        // newest first: { t, type, id, label }
     daysActive: [],      // dayStamps on which the learner did something (ascending)
     visit: { current: null, previous: null } // epoch ms of this visit and the one before
@@ -168,6 +169,21 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
       mutate((p) => {
         p.stepsSkipped = p.stepsSkipped.filter((id) => !stepIds.includes(id));
         touchDay(p, now);
+        return p;
+      }),
+    /** Heart or un-heart a reel. Liked reels form the "Saved" feed. */
+    toggleReelLike: (key, now = Date.now()) =>
+      mutate((p) => {
+        const liked = p.reelsLiked || [];
+        p.reelsLiked = liked.includes(key) ? liked.filter((k) => k !== key) : [key, ...liked];
+        touchDay(p, now);
+        return p;
+      }),
+    /** Called once when the learner leaves the reels feed, so the log gets one entry per binge. */
+    logReelSession: (watched, correct, answered, now = Date.now()) =>
+      mutate((p) => {
+        const score = answered ? `, ${correct}/${answered} checks right` : '';
+        appendActivity(p, { type: 'reels', id: 'reels', label: `Reels: ${watched} watched${score}` }, now);
         return p;
       }),
     /** Releases the lesson's words and phrases into the SRS review pool (idempotent). */

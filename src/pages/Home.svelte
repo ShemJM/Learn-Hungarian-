@@ -24,6 +24,7 @@
 
   const features = [
     { href: '#/course', icon: '🧭', title: 'The Course', desc: 'The guided path: every lesson, guide and practice session in the order that builds.' },
+    { href: '#/reels', icon: '📱', title: 'Reels', desc: 'Doom-scroll your way to Hungarian: an endless swipe feed of one-screen words, quick checks, grammar bites and dialogues.' },
     { href: '#/lessons', icon: '📚', title: 'Lessons', desc: `${lessons.length} themed vocabulary lessons with audio, pronunciation guides and quizzes.` },
     { href: '#/review', icon: '🔁', title: 'Daily Review', desc: 'Spaced repetition keeps every word fresh — a few cards a day, scheduled just before you would forget them.' },
     { href: '#/grammar', icon: '🧩', title: 'Grammar Guides', desc: `${grammarGuides.length} clear guides: vowel harmony, cases, conjugation and more.` },

@@ -220,3 +220,30 @@ describe('progress store', () => {
     });
   });
 });
+
+describe('progress store: reels', () => {
+  it('toggles liked reels, newest first', () => {
+    const store = createProgressStore(null);
+    store.toggleReelLike('word:food:1');
+    store.toggleReelLike('tip:cases:0');
+    expect(get(store).reelsLiked).toEqual(['tip:cases:0', 'word:food:1']);
+    store.toggleReelLike('word:food:1');
+    expect(get(store).reelsLiked).toEqual(['tip:cases:0']);
+  });
+
+  it('copes with saves from before reels existed', () => {
+    const storage = { getItem: () => JSON.stringify({ quizScores: { food: 80 } }), setItem: () => {} };
+    const store = createProgressStore(storage);
+    store.toggleReelLike('verb:enni');
+    expect(get(store).reelsLiked).toEqual(['verb:enni']);
+    expect(get(store).quizScores.food).toBe(80);
+  });
+
+  it('logs one activity entry per reels session', () => {
+    const store = createProgressStore(null);
+    store.logReelSession(12, 3, 4, 1000);
+    expect(get(store).activity[0]).toMatchObject({ type: 'reels', label: 'Reels: 12 watched, 3/4 checks right' });
+    store.logReelSession(5, 0, 0, 2000);
+    expect(get(store).activity[0].label).toBe('Reels: 5 watched');
+  });
+});
