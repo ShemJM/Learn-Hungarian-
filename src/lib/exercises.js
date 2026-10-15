@@ -39,7 +39,7 @@ function acceptedList(answer) {
  * with every lapse and every box they are below the top. Practice leans toward
  * what the learner actually gets wrong.
  */
-function reviewWeight(entry) {
+export function reviewWeight(entry) {
   if (!entry) return 1;
   return 1 + 2 * (entry.lapses || 0) + (BOX_COUNT - entry.box);
 }

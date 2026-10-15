@@ -89,6 +89,23 @@ describe('App (smoke test)', () => {
     expect(target.querySelector('[aria-label="Unsave reel"]')).toBeTruthy();
   });
 
+  it('shows the Due tab empty state and the feed settings sheet', () => {
+    navigate('#/reels');
+    [...target.querySelectorAll('[role="tab"]')].find((b) => b.textContent.includes('Due')).click();
+    flushSync();
+    expect(target.textContent).toContain('Nothing due right now');
+
+    target.querySelector('.ring-btn').click();
+    flushSync();
+    expect(target.textContent).toContain('Tune your feed');
+    expect(target.textContent).toContain('Lean-back mode');
+    [...target.querySelectorAll('.chip')].find((c) => c.textContent.includes('Quick check')).click();
+    flushSync();
+    const prefs = JSON.parse(localStorage.getItem('learn-hungarian-progress-v1')).reelsPrefs;
+    expect(prefs.types).not.toContain('quiz');
+    expect(prefs.types).toContain('word');
+  });
+
   it('routes to the quick fire game', () => {
     navigate('#/games/quickfire');
     expect(target.textContent).toContain('Quick Fire');

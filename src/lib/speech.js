@@ -28,13 +28,18 @@ export function ttsAvailable() {
   return typeof window !== 'undefined' && 'speechSynthesis' in window;
 }
 
-/** Speak Hungarian text aloud. rate < 1 slows it down for learners. */
-export function speak(text, { rate = 0.85 } = {}) {
+/**
+ * Speak Hungarian text aloud. rate < 1 slows it down for learners. `onend`
+ * fires when the utterance finishes (or errors) — callers must still keep a
+ * fallback timer, because browsers do not reliably fire it.
+ */
+export function speak(text, { rate = 0.85, onend = null } = {}) {
   if (!ttsAvailable()) return false;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'hu-HU';
   utterance.rate = rate;
+  if (onend) utterance.onend = utterance.onerror = () => onend();
   const voice = pickHungarianVoice();
   if (voice) utterance.voice = voice;
   window.speechSynthesis.speak(utterance);
@@ -62,6 +67,8 @@ export function listenOnce({ lang = 'hu-HU', timeoutMs = 8000 } = {}) {
       reject(new Error('Speech recognition is not supported in this browser. Try Chrome or Edge.'));
       return;
     }
+    // Stop any autoplaying audio first, or the mic transcribes the app's own voice.
+    window.speechSynthesis?.cancel();
     const rec = new SpeechRecognition();
     rec.lang = lang;
     rec.interimResults = false;

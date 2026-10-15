@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { verbs, PRONOUNS, getVerb, dictionaryForm } from './data/verbs.js';
-import { cellAnswers, drillableCells, buildDrill, MOODS } from './verbdrill.js';
+import { cellAnswers, drillableCells, buildDrill, cellChoices, MOODS } from './verbdrill.js';
 
 // A cheap deterministic rng.
 function seededRng(seed = 42) {
@@ -124,5 +124,30 @@ describe('buildDrill', () => {
     const a = buildDrill(verbs, { count: 5, rng: seededRng(1) });
     const b = buildDrill(verbs, { count: 5, rng: seededRng(1) });
     expect(a.map((q) => q.display)).toEqual(b.map((q) => q.display));
+  });
+});
+
+describe('cellChoices', () => {
+  it('contains the answer exactly once and only forms of the same verb', () => {
+    const verb = verbs.find((v) => v.inf === 'enni');
+    const forms = new Set(
+      drillableCells([verb], { tenses: MOODS }).flatMap((c) => cellAnswers(verb, c.definiteness, c.personIdx, c.tense))
+    );
+    for (let i = 0; i < 20; i++) {
+      const choices = cellChoices(verb, { personIdx: 2, definiteness: 'definite', tense: 'past' }, { tenses: MOODS, rng: seededRng(i + 1) });
+      expect(choices).toHaveLength(4);
+      expect(choices.filter((c) => c === 'ette')).toHaveLength(1);
+      expect(new Set(choices).size).toBe(4);
+      for (const c of choices) expect(forms.has(c)).toBe(true);
+    }
+  });
+
+  it('never offers an accepted variant of the answer as a distractor', () => {
+    const verb = verbs.find((v) => v.inf === 'tanulni');
+    for (let i = 0; i < 20; i++) {
+      const choices = cellChoices(verb, { personIdx: 1, definiteness: 'indefinite', tense: 'imperative' }, { rng: seededRng(i + 1) });
+      expect(choices).toContain('tanulj');
+      expect(choices).not.toContain('tanuljál');
+    }
   });
 });

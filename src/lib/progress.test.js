@@ -247,3 +247,28 @@ describe('progress store: reels', () => {
     expect(get(store).activity[0].label).toBe('Reels: 5 watched');
   });
 });
+
+describe('progress store: reels settings and daily goal', () => {
+  it('merges reel prefs over the defaults, including for saves from before they existed', () => {
+    const storage = { getItem: () => JSON.stringify({ reelsLiked: ['word:food:1'] }), setItem: () => {} };
+    const store = createProgressStore(storage);
+    expect(get(store).reelsPrefs).toEqual({ types: null, sources: null, leanBack: false, goal: 20 });
+    store.setReelsPrefs({ types: ['word'], goal: 30 });
+    expect(get(store).reelsPrefs).toEqual({ types: ['word'], sources: null, leanBack: false, goal: 30 });
+    store.setReelsPrefs({ leanBack: true });
+    expect(get(store).reelsPrefs.types).toEqual(['word']);
+    expect(get(store).reelsPrefs.leanBack).toBe(true);
+  });
+
+  it('counts reels per calendar day and resets on a new day', () => {
+    const store = createProgressStore(null);
+    const day1 = Date.UTC(2026, 0, 5, 12);
+    const day2 = Date.UTC(2026, 0, 6, 12);
+    store.bumpReelsToday(day1);
+    store.bumpReelsToday(day1);
+    expect(get(store).reelsToday.count).toBe(2);
+    store.bumpReelsToday(day2);
+    expect(get(store).reelsToday.count).toBe(1);
+    expect(get(store).daysActive).toHaveLength(2);
+  });
+});
