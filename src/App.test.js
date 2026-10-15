@@ -112,6 +112,64 @@ describe('App (smoke test)', () => {
     expect(target.textContent).toContain('Start');
   });
 
+  it('lists the puzzle games and the suffix lab on the games hub', () => {
+    navigate('#/games');
+    for (const title of ['Translation Crossword', 'Word Search', 'Suffix Lab']) {
+      expect(target.textContent).toContain(title);
+    }
+  });
+
+  it('renders a word search grid whose clues match hidden words', () => {
+    navigate('#/games/wordsearch');
+    expect(target.textContent).toContain('Word Search');
+    const cells = target.querySelectorAll('.grid-ws .cell');
+    expect(cells).toHaveLength(100); // normal level: 10 × 10
+    expect(target.querySelectorAll('.clues li').length).toBeGreaterThanOrEqual(6);
+    expect(target.textContent).toContain('Find the Hungarian for');
+  });
+
+  it('renders a crossword with numbered cells and across / down clues', () => {
+    navigate('#/games/crossword');
+    expect(target.textContent).toContain('Translation Crossword');
+    expect(target.textContent).toContain('Across');
+    expect(target.textContent).toContain('Down');
+    expect(target.querySelectorAll('.grid-cw .cell').length).toBeGreaterThan(20);
+    expect(target.querySelectorAll('.grid-cw .num').length).toBeGreaterThanOrEqual(5);
+    expect(target.querySelector('.current')).toBeTruthy();
+
+    // Reveal the active word: its cells fill in and its clue is struck through.
+    [...target.querySelectorAll('button')].find((b) => b.textContent.includes('Reveal this word')).click();
+    flushSync();
+    expect(target.querySelector('.clues li.solved')).toBeTruthy();
+  });
+
+  it('runs a suffix lab drill from setup to the first answer', () => {
+    navigate('#/games/suffixlab');
+    expect(target.textContent).toContain('Suffix Lab');
+    expect(target.textContent).toContain('Verb endings: present');
+    expect(target.textContent).toContain('Case endings');
+
+    [...target.querySelectorAll('button')].find((b) => b.textContent.includes('Start')).click();
+    flushSync();
+    expect(target.textContent).toContain('1 / 10');
+    const choices = target.querySelectorAll('.choice');
+    expect(choices.length).toBeGreaterThanOrEqual(2);
+    expect(choices.length).toBeLessThanOrEqual(4);
+    for (const c of choices) expect(c.textContent.trim()).toMatch(/^-/);
+
+    choices[0].click();
+    flushSync();
+    expect(target.textContent).toMatch(/Helyes|Not this time/);
+    expect(target.textContent).toMatch(/vowels/); // the one-line harmony explanation
+    expect(target.textContent).toContain('Next →');
+  });
+
+  it('opens the suffix lab from the grammar guides page', () => {
+    navigate('#/grammar');
+    expect(target.textContent).toContain('Suffix Lab');
+    expect(target.querySelector('a[href="#/games/suffixlab"]')).toBeTruthy();
+  });
+
   it('shows alphabet practice on the pronunciation page', () => {
     navigate('#/pronunciation');
     expect(target.textContent).toContain('Alphabet Practice');

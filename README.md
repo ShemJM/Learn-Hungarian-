@@ -70,7 +70,23 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   the other part and you say your lines out loud with pronunciation scoring.
 - **🎲 Mini games** — a full-screen *Quick Fire* speed round (a word flashes up, tap its
   translation before the timer runs out — built for a spare few minutes one-handed),
-  flashcards, matching pairs, word scramble and a listening challenge. Best scores are saved.
+  flashcards, matching pairs, word scramble, sentence builder and a listening challenge. Best
+  scores are saved.
+- **🧩 Puzzle games for remembering words** — a **Translation Crossword** generated fresh from
+  the course vocabulary every time (English clues, Hungarian answers, classic numbering, tap-to-type
+  grid with an accent row, check / reveal, 7/10 when only the accents are off) and a **Word Search**
+  (easy / normal / hard grids, English clues, tap-or-drag selection, hints, every found word read
+  aloud). Both make you retrieve the Hungarian from the English meaning — the direction that counts
+  in conversation.
+- **🧪 Suffix Lab** — exercises on exactly the endings that trip learners up: the personal verb
+  endings for én / te / ő / mi / ti / ők in the present, past and conditional (both indefinite and
+  definite, including the -ott/-ett forms and the -ssa/-zzük assimilations), the possessive endings
+  (házam, kutyád, nevünk, anyja…) and the case endings (-ban/-ben, -ba/-be, -n/-on/-en, -val/-vel
+  with its assimilation, Budapesten vs Londonban…). *Tap the ending* mode offers the harmony
+  siblings (-ok / -ek / -ök) as distractors; *Type the word* mode asks for the finished form. Every
+  answer is spoken and explained in one line, mistakes are collected for a retry round, and the
+  verb questions are built by decomposing the hand-written conjugation tables, so only genuinely
+  regular stem + ending forms are asked.
 - **📈 Progress tracking** — course steps, quiz and exercise scores, spaced-repetition state,
   known words, completed readings/dialogues and pronunciation stars, persisted in
   `localStorage`.
@@ -123,9 +139,10 @@ src/
   App.svelte            app shell + navigation
   pages/                one component per section (Lessons, Grammar, Reading, ...)
   lib/
-    data/               the course content (course units, lessons, grammar, readings, dialogues, citizenship, reel bites)
+    data/               the course content (course units, lessons, grammar, readings, dialogues, citizenship, reel bites, suffix tables)
     components/         shared UI (AudioButton, PronunciationCheck, Quiz, ExerciseRunner, AccentBar)
-    games/              the mini games
+    games/              the mini games (+ crossword.js / wordsearch.js puzzle generators)
+    suffixes.js         Suffix Lab question builder: decomposes real forms into stem + ending, builds choices
     reels.js            reels feed: reel catalog and builders, weighted endless batches, filters, re-queue, Due channel
     course.js           course progression: step completion, next step, review-pool gating
     exercises.js        exercise session builders (mcq / typed / cloze / word order / dictation)

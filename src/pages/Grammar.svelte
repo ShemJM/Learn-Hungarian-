@@ -18,6 +18,13 @@
     Hungarian grammar is logical and consistent — it just works differently from English. These guides
     cover everything a beginner needs, with audio examples throughout.
   </p>
+  <a class="card lab" href="#/games/suffixlab">
+    <h3>🧪 Suffix Lab — drill the endings</h3>
+    <p class="muted">
+      Tap or type the right suffix: én / te / mi verb endings (present, past, would), my / your / our on
+      nouns, and the case endings (in, into, on, with…). Every answer comes with audio and a one-line why.
+    </p>
+  </a>
   <div class="grid two">
     {#each grammarGuides as g, i}
       <a class="card guide" href={'#/grammar/' + g.id}>
@@ -103,10 +110,18 @@
 {/if}
 
 <style>
-  .guide {
+  .guide,
+  .lab {
     text-decoration: none;
     color: var(--ink);
     transition: transform 0.1s;
+    display: block;
+  }
+  .lab {
+    border-left: 4px solid var(--accent);
+  }
+  .lab h3 {
+    margin-top: 0;
   }
   .guide:hover {
     transform: translateY(-2px);
