@@ -7,11 +7,17 @@
   import QuickFire from '../lib/games/QuickFire.svelte';
   import SpellSay from '../lib/games/SpellSay.svelte';
   import SentenceBuilder from '../lib/games/SentenceBuilder.svelte';
+  import WordSearch from '../lib/games/WordSearch.svelte';
+  import Crossword from '../lib/games/Crossword.svelte';
+  import SuffixLab from '../lib/games/SuffixLab.svelte';
 
   let { game = null } = $props();
 
   const games = [
     { id: 'quickfire', icon: '⚡', title: 'Quick Fire', desc: 'Full-screen speed round: a word flashes up, tap its translation before the timer runs out.' },
+    { id: 'crossword', icon: '✏️', title: 'Translation Crossword', desc: 'English clues, Hungarian answers — a fresh crossword from the course vocabulary every time.' },
+    { id: 'wordsearch', icon: '🔍', title: 'Word Search', desc: 'Find the Hungarian word for each English clue hidden in the letter grid.' },
+    { id: 'suffixlab', icon: '🧪', title: 'Suffix Lab', desc: 'Pick the right ending: én / te / mi verb endings, my / your / our, and in / on / with.' },
     { id: 'flashcards', icon: '🃏', title: 'Flashcards', desc: 'Flip cards and mark the words you know.' },
     { id: 'matching', icon: '🧠', title: 'Matching Pairs', desc: 'Match Hungarian words with their English meanings against the clock.' },
     { id: 'scramble', icon: '🔀', title: 'Word Scramble', desc: 'Unscramble the Hungarian word from its English meaning.' },
@@ -24,6 +30,11 @@
 {#if !game}
   <h1>🎲 Mini Games</h1>
   <p class="muted">Five minutes of play beats an hour of staring at word lists. Best scores are saved.</p>
+  <p class="muted">
+    New words sticking badly? The <strong>crossword</strong> and <strong>word search</strong> make you
+    retrieve the Hungarian from the English meaning — the hardest direction, and the one that counts in
+    conversation. Grammar endings slipping? The <strong>Suffix Lab</strong> drills exactly those.
+  </p>
   <div class="grid two">
     {#each games as g}
       <a class="card item" href={'#/games/' + g.id}>
@@ -51,6 +62,12 @@
     <SpellSay />
   {:else if game === 'sentencebuilder'}
     <SentenceBuilder />
+  {:else if game === 'wordsearch'}
+    <WordSearch />
+  {:else if game === 'crossword'}
+    <Crossword />
+  {:else if game === 'suffixlab'}
+    <SuffixLab />
   {:else}
     <p>Game not found.</p>
   {/if}
