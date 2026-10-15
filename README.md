@@ -14,12 +14,21 @@ microphone-based pronunciation checks, and mini games to make it all stick.
   as known ("I know this") to jump ahead, and the Home dashboard's main button always knows
   where you left off.
 - **📱 Reels — doom-scroll Hungarian** — a full-screen, TikTok-style vertical feed where
-  every swipe is a one-screen micro-lesson cut from the course: new words, useful phrases,
-  quick-check and listening questions, grammar bites, "can you say it?" drills, verb tables,
-  overheard dialogue snippets and reading sentences. Audio autoplays as each reel snaps into
-  view (mute toggle, 🐢 slow replay), the feed never ends and leans toward lessons you have
-  started, quick-check answers feed spaced repetition, and double-tapping (or the heart)
-  saves a reel to your *Saved* tab. Arrow keys / `j` `k` scroll on desktop, `l` saves.
+  every swipe is a one-screen micro-lesson: eighteen kinds of reel cut from the course (new
+  words, phrases, quick-check and listening questions, gap-fills, word-order tiles, typed
+  recall, say-it-out-loud with the pronunciation checker, grammar bites and tables, "can you
+  say it?" drills, verb tables and conjugation checks across past/conditional/imperative,
+  dialogue snippets, reading sentences, alphabet letters, citizenship interview questions) plus
+  forty hand-written *bites*: did-you-knows, false friends, common mistakes, idioms, memory
+  hooks and life in Hungary. It is built to teach, not just to scroll: word reels ask "Got it /
+  Not yet", anything you miss comes back a few reels later as a *different* exercise on the
+  same item, every dozen reels a recap shows what you missed, and answers feed spaced
+  repetition. A **Due** tab turns today's spaced-repetition deck into reels; a settings sheet
+  filters reel types and topics, sets a daily goal (shown as a ring in the top bar, with a
+  celebration reel when you hit it) and switches on **lean-back mode** — hands-free listening
+  that plays each reel and moves on by itself, pausing on anything you need to answer. Audio
+  autoplays as each reel snaps into view (mute, 🐢 slow replay), and double-tapping saves a reel
+  to the *Saved* tab. Arrow keys / `j` `k` scroll on desktop, `l` saves.
 - **✏️ A learn-by-doing exercise engine** — every lesson and grammar guide has a practice
   session mixing multiple choice, typed translation (EN→HU), cloze gap-fill, word-order
   tiles, and listening dictation. Typed answers are graded accent-leniently, corrections are
@@ -114,10 +123,10 @@ src/
   App.svelte            app shell + navigation
   pages/                one component per section (Lessons, Grammar, Reading, ...)
   lib/
-    data/               the course content (course units, lessons, grammar, readings, dialogues, citizenship)
+    data/               the course content (course units, lessons, grammar, readings, dialogues, citizenship, reel bites)
     components/         shared UI (AudioButton, PronunciationCheck, Quiz, ExerciseRunner, AccentBar)
     games/              the mini games
-    reels.js            reels feed: reel catalog, builders and weighted endless batches
+    reels.js            reels feed: reel catalog and builders, weighted endless batches, filters, re-queue, Due channel
     course.js           course progression: step completion, next step, review-pool gating
     exercises.js        exercise session builders (mcq / typed / cloze / word order / dictation)
     srs.js              Leitner spaced-repetition scheduling

@@ -29,6 +29,8 @@ export function defaultProgress() {
     lessonsStarted: [],  // lesson ids whose vocabulary has been released into the review pool
     stepsSkipped: [],    // course step ids the learner marked as already known
     reelsLiked: [],      // reel keys the learner double-tapped / hearted, newest first
+    reelsPrefs: { types: null, sources: null, leanBack: false, goal: 20 }, // feed filters (null = everything) and settings
+    reelsToday: { day: null, count: 0 }, // reels watched on `day` (dayStamp), for the daily goal ring
     activity: [],        // newest first: { t, type, id, label }
     daysActive: [],      // dayStamps on which the learner did something (ascending)
     visit: { current: null, previous: null } // epoch ms of this visit and the one before
@@ -176,6 +178,21 @@ export function createProgressStore(storage = typeof localStorage !== 'undefined
       mutate((p) => {
         const liked = p.reelsLiked || [];
         p.reelsLiked = liked.includes(key) ? liked.filter((k) => k !== key) : [key, ...liked];
+        touchDay(p, now);
+        return p;
+      }),
+    /** Shallow-merge feed filters/settings. Silent — tuning the feed is not an achievement. */
+    setReelsPrefs: (patch) =>
+      mutate((p) => {
+        p.reelsPrefs = { ...defaultProgress().reelsPrefs, ...(p.reelsPrefs || {}), ...patch };
+        return p;
+      }),
+    /** One more reel watched today; the counter resets on a new calendar day. */
+    bumpReelsToday: (now = Date.now()) =>
+      mutate((p) => {
+        const day = dayStamp(now);
+        const today = p.reelsToday?.day === day ? p.reelsToday : { day, count: 0 };
+        p.reelsToday = { day, count: today.count + 1 };
         touchDay(p, now);
         return p;
       }),

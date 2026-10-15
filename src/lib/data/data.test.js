@@ -13,6 +13,7 @@ import {
   allInterviewQuestions
 } from './citizenship.js';
 import { alphabet, groups, letterPhrase } from './alphabet.js';
+import { bites, BITE_KINDS, getBite } from './bites.js';
 import { verbs, PRONOUNS } from './verbs.js';
 import { technique, tiers, allRolledRItems } from './rolledR.js';
 import { course, getUnit } from './course.js';
@@ -458,5 +459,35 @@ describe('rolled R practice data', () => {
   it('has no duplicate practice items across tiers', () => {
     const items = allRolledRItems().map((i) => i.hu);
     expect(new Set(items).size).toBe(items.length);
+  });
+});
+
+describe('bites data', () => {
+  it('has a healthy number of bites with unique ids', () => {
+    expect(bites.length).toBeGreaterThanOrEqual(40);
+    expect(new Set(bites.map((b) => b.id)).size).toBe(bites.length);
+  });
+
+  it('every bite has a known kind, a title, a body and complete examples', () => {
+    for (const b of bites) {
+      expect(BITE_KINDS[b.kind], b.id).toBeTruthy();
+      expect(b.title.length, b.id).toBeGreaterThan(3);
+      expect(b.body.length, b.id).toBeGreaterThan(40);
+      expect(b.body.length, b.id).toBeLessThan(420); // must fit one phone screen
+      expect(b.examples.length, b.id).toBeGreaterThan(0);
+      for (const ex of b.examples) {
+        expect(ex.hu, b.id).toBeTruthy();
+        expect(ex.en, b.id).toBeTruthy();
+      }
+    }
+  });
+
+  it('covers every kind', () => {
+    for (const kind of Object.keys(BITE_KINDS)) expect(bites.some((b) => b.kind === kind), kind).toBe(true);
+  });
+
+  it('getBite finds by id', () => {
+    expect(getBite('no-gender').kind).toBe('didyouknow');
+    expect(getBite('nope')).toBeNull();
   });
 });

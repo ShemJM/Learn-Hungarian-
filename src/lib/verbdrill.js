@@ -60,13 +60,27 @@ export function buildDrill(
       display: answers[0]
     };
     if (mode === 'choices') {
-      const others = drillableCells([verb], { tenses })
-        .filter((c) => !(c.personIdx === personIdx && c.definiteness === definiteness && c.tense === tense))
-        .map((c) => cellAnswers(verb, c.definiteness, c.personIdx, c.tense)[0])
-        .filter((form) => !answers.includes(form));
-      const distractors = sample([...new Set(others)], choiceCount - 1, rng);
-      question.choices = shuffle([answers[0], ...distractors], rng);
+      question.choices = cellChoices(verb, { personIdx, definiteness, tense }, { tenses, choiceCount, rng });
     }
     return question;
   });
+}
+
+/**
+ * Multiple-choice options for one cell: its display form plus distractors
+ * drawn from other cells of the SAME verb (across the given tenses), never an
+ * accepted variant of the answer. Shuffled.
+ */
+export function cellChoices(
+  verb,
+  { personIdx, definiteness, tense = 'present' },
+  { tenses = [tense], choiceCount = 4, rng = Math.random } = {}
+) {
+  const answers = cellAnswers(verb, definiteness, personIdx, tense);
+  const others = drillableCells([verb], { tenses })
+    .filter((c) => !(c.personIdx === personIdx && c.definiteness === definiteness && c.tense === tense))
+    .map((c) => cellAnswers(verb, c.definiteness, c.personIdx, c.tense)[0])
+    .filter((form) => !answers.includes(form));
+  const distractors = sample([...new Set(others)], choiceCount - 1, rng);
+  return shuffle([answers[0], ...distractors], rng);
 }
